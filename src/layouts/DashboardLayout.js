@@ -1,4 +1,4 @@
-import { Layout, Menu, Breadcrumb } from "antd";
+import { Layout, Menu } from "antd";
 import { AppstoreOutlined, SettingOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import "./dashboardlayout.css";
@@ -27,25 +27,22 @@ function DashboardLayout(props) {
             <Link to="/dashboard">Dashboard</Link>
           </Menu.Item>
           <Menu.Item key="2" icon={<SettingOutlined />}>
-            <Link to="/login">Project</Link>
+            <Link to="/project">Project</Link>
           </Menu.Item>
         </Menu>
       </Sider>
       <Layout className="site-layout" style={{ marginLeft: 200 }}>
         <Header className="site-layout-background" style={{ padding: 0 }} />
         <Content style={{ margin: "24px 16px 0", overflow: "initial" }}>
-          <Breadcrumb>
-            <Breadcrumb.Item>Dashboard</Breadcrumb.Item>
-          </Breadcrumb>
           <div
             className="site-layout-background"
-            style={{ padding: 24, textAlign: "center" }}
+            style={{ padding: "12px 24px" }}
           >
             {children}
           </div>
         </Content>
         <Footer style={{ textAlign: "center" }}>
-          Ant Design ©2018 Created by Ant UED
+          API Management Platform ©2022 Created by KoTA 107
         </Footer>
       </Layout>
     </Layout>

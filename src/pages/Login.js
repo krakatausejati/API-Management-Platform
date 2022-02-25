@@ -50,7 +50,7 @@ function Login() {
               htmlType="submit"
               className="login-form-button"
             >
-              SIGN IN
+              <Link to="/dashboard">SIGN IN</Link>
             </Button>
           </Form.Item>
         </Form>

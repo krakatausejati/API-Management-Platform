@@ -1,0 +1,44 @@
+.summary-total {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 2em;
+  text-align: center;
+}
+
+.summary-total > div {
+  margin: 0 1rem 0 0;
+  min-width: 300px;
+  min-height: 200px;
+}
+
+.ant-statistic-content {
+  font-size: 84px;
+}
+
+.header-datatable {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2em;
+}
+
+.header-datatable h1 {
+  font-size: 20px;
+  margin: 0;
+}
+
+.header-datatable .right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.header-datatable .right > div {
+  margin-left: 8px;
+  min-height: 30px;
+}
+
+.datatable-api {
+  margin-top: 1em;
+  border: 1px solid #000;
+  min-height: 100px;
+}
