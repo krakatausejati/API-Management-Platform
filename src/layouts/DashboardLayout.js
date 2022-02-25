@@ -1,5 +1,9 @@
-import { Layout, Menu } from "antd";
-import { AppstoreOutlined, SettingOutlined } from "@ant-design/icons";
+import { Layout, Menu, Avatar } from "antd";
+import {
+  AppstoreOutlined,
+  SettingOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import "./dashboardlayout.css";
 
@@ -32,7 +36,16 @@ function DashboardLayout(props) {
         </Menu>
       </Sider>
       <Layout className="site-layout" style={{ marginLeft: 200 }}>
-        <Header className="site-layout-background" style={{ padding: 0 }} />
+        <Header className="site-layout-background" style={{ padding: 0 }}>
+          <div className="user-profile">
+            <Avatar
+              size={24}
+              style={{ backgroundColor: "#87d068" }}
+              icon={<UserOutlined />}
+            />
+            <h4>Owner</h4>
+          </div>
+        </Header>
         <Content style={{ margin: "24px 16px 0", overflow: "initial" }}>
           <div
             className="site-layout-background"

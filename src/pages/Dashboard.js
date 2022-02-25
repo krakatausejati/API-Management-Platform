@@ -1,6 +1,7 @@
 import { Table, Breadcrumb, Button, Input, Statistic, Card } from "antd";
 import { PlusOutlined, CaretDownOutlined } from "@ant-design/icons";
 import { Line } from "@ant-design/charts";
+import { Link } from "react-router-dom";
 import "./dashboard.css";
 
 function Dashboard() {
@@ -143,9 +144,11 @@ function Dashboard() {
             </Button>
           </div>
           <div className="add-field">
-            <Button icon={<PlusOutlined />} type="primary" block>
-              Create API
-            </Button>
+            <Link to="/create-api">
+              <Button icon={<PlusOutlined />} type="primary" block>
+                Create API
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
