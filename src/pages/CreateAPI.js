@@ -30,8 +30,8 @@ export default function CreateAPI() {
           onValuesChange={onRequiredTypeChange}
           requiredMark={requiredMark}
         >
-          <div className="form-create-api">
-            <div className="left-side">
+          <div className="form-create-api" style={{display: 'flex', gap: '5rem'}}>
+            <div className="left-side" style={{minWidth: '450px'}}>
               <h2>Identity API</h2>
               <Form.Item label="Description">
                 <Input />
@@ -43,7 +43,7 @@ export default function CreateAPI() {
                 <Input />
               </Form.Item>
             </div>
-            <div className="right-side">
+            <div className="right-side" style={{minWidth: '450px'}}>
               <h2>Database</h2>
               <Form.Item label="Table">
                 <Select />

@@ -7,12 +7,15 @@ import {
   Card,
   Dropdown,
   Menu,
+  Space,
 } from "antd";
 import {
   PlusOutlined,
   CaretDownOutlined,
   SortAscendingOutlined,
   CalendarOutlined,
+  DeleteOutlined,
+  EyeOutlined,
 } from "@ant-design/icons";
 import { Line } from "@ant-design/charts";
 import { Link } from "react-router-dom";
@@ -28,7 +31,6 @@ function Dashboard() {
       project: "Project A",
       group: "Neural BI",
       description: "Get Data",
-      detail: "...",
     },
     {
       key: "2",
@@ -38,7 +40,6 @@ function Dashboard() {
       project: "Project A",
       group: "Neural BI",
       description: "Get User",
-      detail: "...",
     },
   ];
 
@@ -72,6 +73,16 @@ function Dashboard() {
       title: "",
       dataIndex: "detail",
       key: "detail",
+      render: (text, record) => (
+        <Space>
+          <Link to={"/detail"}>
+            <Button icon={<EyeOutlined />} type="primary" />
+          </Link>
+          <Link to={"/delete"}>
+            <Button icon={<DeleteOutlined />} danger />
+          </Link>
+        </Space>
+      ),
     },
   ];
 
