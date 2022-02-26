@@ -3,6 +3,7 @@ import Login from "../pages/Login";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Dashboard from "../pages/Dashboard";
 import CreateAPI from "../pages/CreateAPI";
+import CreateProject from "../pages/CreateProject";
 import Project from "../pages/Project";
 
 function Routes() {
@@ -20,6 +21,9 @@ function Routes() {
         </Route>
         <Route path="/project" exact>
           <DashboardLayout children={<Project />} />
+        </Route>
+        <Route path="/create-project" exact>
+          <DashboardLayout children={<CreateProject />} />
         </Route>
       </Switch>
     </Router>

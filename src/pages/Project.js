@@ -1,5 +1,6 @@
 import { Table, Breadcrumb, Button, Input } from "antd";
 import { PlusOutlined, CaretDownOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 
 function Project() {
   const dataSource = [
@@ -66,15 +67,12 @@ function Project() {
           <div className="search-field">
             <Search placeholder="search Project's" onSearch={onSearch} />
           </div>
-          <div className="sort-field">
-            <Button block>
-              sort by <CaretDownOutlined />
-            </Button>
-          </div>
           <div className="add-field">
-            <Button icon={<PlusOutlined />} type="primary" block>
-              Create Project
-            </Button>
+            <Link to={"/create-project"}>
+              <Button icon={<PlusOutlined />} type="primary" block>
+                Create Project
+              </Button>
+            </Link>
           </div>
         </div>
       </div>

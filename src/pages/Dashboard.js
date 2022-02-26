@@ -1,5 +1,19 @@
-import { Table, Breadcrumb, Button, Input, Statistic, Card } from "antd";
-import { PlusOutlined, CaretDownOutlined } from "@ant-design/icons";
+import {
+  Table,
+  Breadcrumb,
+  Button,
+  Input,
+  Statistic,
+  Card,
+  Dropdown,
+  Menu,
+} from "antd";
+import {
+  PlusOutlined,
+  CaretDownOutlined,
+  SortAscendingOutlined,
+  CalendarOutlined,
+} from "@ant-design/icons";
 import { Line } from "@ant-design/charts";
 import { Link } from "react-router-dom";
 import "./dashboard.css";
@@ -97,6 +111,17 @@ function Dashboard() {
 
   let chart;
 
+  const menu = (
+    <Menu>
+      <Menu.Item key="1" icon={<SortAscendingOutlined />}>
+        Ascending
+      </Menu.Item>
+      <Menu.Item key="2" icon={<CalendarOutlined />}>
+        Created at
+      </Menu.Item>
+    </Menu>
+  );
+
   return (
     <>
       <Breadcrumb>
@@ -139,9 +164,11 @@ function Dashboard() {
             <Search placeholder="search API's" onSearch={onSearch} />
           </div>
           <div className="sort-field">
-            <Button block>
-              sort by <CaretDownOutlined />
-            </Button>
+            <Dropdown overlay={menu}>
+              <Button block>
+                sort by <CaretDownOutlined />
+              </Button>
+            </Dropdown>
           </div>
           <div className="add-field">
             <Link to="/create-api">

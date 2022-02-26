@@ -1,0 +1,16 @@
+.form-create-project {
+  display: flex;
+  gap: 5rem;
+}
+
+.form-create-project > div {
+  min-width: 450px;
+}
+
+.ant-checkbox-wrapper + .ant-checkbox-wrapper {
+  margin: 0;
+}
+
+.ant-checkbox-wrapper span {
+  color: #000000d9;
+}
