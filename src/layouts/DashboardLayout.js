@@ -1,16 +1,20 @@
-import { Layout, Menu, Avatar } from "antd";
+import { Layout, Menu, Avatar, Button } from "antd";
 import {
   AppstoreOutlined,
   SettingOutlined,
   GroupOutlined,
   UserOutlined,
+  LogoutOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import "./dashboardlayout.css";
+import { useKeycloak } from "@react-keycloak/web";
+
 
 const { Header, Content, Footer, Sider } = Layout;
 
 function DashboardLayout(props) {
+  const { keycloak, initialized } = useKeycloak();
   const { children } = props;
   return (
     <Layout hasSider>
@@ -37,6 +41,17 @@ function DashboardLayout(props) {
           <Menu.Item key="3" icon={<GroupOutlined />}>
             <Link to="/group">Group</Link>
           </Menu.Item>
+          <Menu.Item key="4"  icon={<LogoutOutlined />}>
+            <Button
+                type="danger"
+                htmlType="submit"
+                className="login-form-button"
+                onClick={() => keycloak.logout()}
+              >
+                <Link to="/login">Logout</Link>
+              </Button>
+          </Menu.Item>
+
         </Menu>
       </Sider>
       <Layout className="site-layout" style={{ marginLeft: 200 }}>
@@ -47,7 +62,9 @@ function DashboardLayout(props) {
               style={{ backgroundColor: "#87d068" }}
               icon={<UserOutlined />}
             />
-            <h4>Owner</h4>
+            {!!keycloak.authenticated && (
+              <h4>{keycloak.tokenParsed.preferred_username}</h4>
+            )}
           </div>
         </Header>
         <Content style={{ margin: "24px 16px 0", overflow: "initial" }}>
