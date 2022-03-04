@@ -2,6 +2,7 @@ import { Layout, Menu, Avatar } from "antd";
 import {
   AppstoreOutlined,
   SettingOutlined,
+  GroupOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
@@ -32,6 +33,9 @@ function DashboardLayout(props) {
           </Menu.Item>
           <Menu.Item key="2" icon={<SettingOutlined />}>
             <Link to="/project">Project</Link>
+          </Menu.Item>
+          <Menu.Item key="3" icon={<GroupOutlined />}>
+            <Link to="/group">Group</Link>
           </Menu.Item>
         </Menu>
       </Sider>

@@ -47,15 +47,11 @@ function CreateProject() {
               <Form.Item name="remember" valuePropName="checked">
                 <Checkbox.Group
                   options={user}
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    color: "rgba(0, 0, 0, 0.85)",
-                    margin: 0,
-                    backgroundColor: "#fff",
-                    padding: "1em",
-                  }}
-                ></Checkbox.Group>
+                  className="checkbox-group"
+                  // style={{
+
+                  // }}
+                />
               </Form.Item>
             </div>
             <div className="right-side">

@@ -6,11 +6,15 @@ import CreateAPI from "../pages/CreateAPI";
 import DetailAPI from "../pages/DetailAPI";
 import CreateProject from "../pages/CreateProject";
 import Project from "../pages/Project";
+import Group from "../pages/Group";
 
 function Routes() {
   return (
     <Router>
       <Switch>
+        <Route path="/" exact>
+          <Login />
+        </Route>
         <Route path="/login" exact>
           <Login />
         </Route>
@@ -28,6 +32,9 @@ function Routes() {
         </Route>
         <Route path="/create-project" exact>
           <DashboardLayout children={<CreateProject />} />
+        </Route>
+        <Route path="/group" exact>
+          <DashboardLayout children={<Group />} />
         </Route>
       </Switch>
     </Router>

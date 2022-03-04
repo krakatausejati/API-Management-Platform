@@ -91,15 +91,15 @@ function Dashboard() {
   const onSearch = (value) => console.log(value);
 
   const data = [
-    { year: "1991", value: 3 },
-    { year: "1992", value: 4 },
-    { year: "1993", value: 3.5 },
-    { year: "1994", value: 5 },
-    { year: "1995", value: 4.9 },
-    { year: "1996", value: 6 },
-    { year: "1997", value: 7 },
-    { year: "1998", value: 9 },
-    { year: "1999", value: 13 },
+    { day: "monday", value: 3 },
+    { day: "tuesday", value: 4 },
+    { day: "wednesday", value: 3.5 },
+    { day: "thursday", value: 5 },
+    { day: "friday", value: 4.9 },
+    { day: "saturday", value: 6 },
+    { day: "sunday", value: 7 },
+    // { day: "1998", value: 9 },
+    // { day: "1999", value: 13 },
   ];
 
   const config = {
@@ -107,7 +107,7 @@ function Dashboard() {
     width: 300,
     height: 200,
     autoFit: false,
-    xField: "year",
+    xField: "day",
     yField: "value",
     point: {
       size: 5,
@@ -190,7 +190,7 @@ function Dashboard() {
           </div>
         </div>
       </div>
-      <div className="datatable-api">
+      <div className="datatable datatable-api">
         <Table dataSource={dataSource} columns={columns} />
       </div>
     </>

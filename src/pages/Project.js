@@ -1,5 +1,5 @@
 import { Table, Breadcrumb, Button, Input } from "antd";
-import { PlusOutlined, CaretDownOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
 function Project() {
@@ -76,7 +76,7 @@ function Project() {
           </div>
         </div>
       </div>
-      <div className="datatable-api">
+      <div className="datatable datatable-api">
         <Table dataSource={dataSource} columns={columns} />
       </div>
     </>
