@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Table, Breadcrumb, Button, Input, Form, Modal } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 
 function Group() {
   const dataSource = [
@@ -8,6 +9,7 @@ function Group() {
       key: "1",
       no: "1",
       name: "BI",
+      sum_api: "12",
       created_at: "12-02-2022 21:04:25",
       created_by: "syihab",
       detail: "...",
@@ -16,6 +18,7 @@ function Group() {
       key: "2",
       no: "2",
       name: "Senopati",
+      sum_api: "9",
       created_at: "12-02-2022 21:04:25",
       created_by: "atauu",
       detail: "...",
@@ -32,6 +35,23 @@ function Group() {
       title: "Name",
       dataIndex: "name",
       key: "name",
+      render: (data) => (
+        <>
+          <Link
+            to={{
+              pathname: "/detail-group",
+              state: { breadcrumb: "Group", name: data },
+            }}
+          >
+            {data}
+          </Link>
+        </>
+      ),
+    },
+    {
+      title: "Total of API",
+      dataIndex: "sum_api",
+      key: "sum_api",
     },
     {
       title: "Created at",
@@ -72,39 +92,39 @@ function Group() {
     <>
       {/* Modal */}
       <Modal
-        title="Add Group"
+        title='Add Group'
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
         footer={[
-          <Button key="add-group" onClick={handleOk} type="primary">
+          <Button key='add-group' onClick={handleOk} type='primary'>
             Add Group
           </Button>,
         ]}
       >
-        <Form layout="vertical">
-          <Form.Item label="Group Name" style={{ width: "100%" }}>
+        <Form layout='vertical'>
+          <Form.Item label='Group Name' style={{ width: "100%" }}>
             <Input />
           </Form.Item>
         </Form>
       </Modal>
       {/* Modal */}
 
-      <div className="breadcrumb">
+      <div className='breadcrumb'>
         <Breadcrumb>
           <Breadcrumb.Item>Group</Breadcrumb.Item>
         </Breadcrumb>
       </div>
-      <div className="header-datatable">
+      <div className='header-datatable'>
         <h1>Your Group's</h1>
-        <div className="right">
-          <div className="search-field">
+        <div className='right'>
+          <div className='search-field'>
             <Search placeholder="search Group's" onSearch={onSearch} />
           </div>
-          <div className="add-field">
+          <div className='add-field'>
             <Button
               icon={<PlusOutlined />}
-              type="primary"
+              type='primary'
               block
               onClick={showModal}
             >
@@ -113,7 +133,7 @@ function Group() {
           </div>
         </div>
       </div>
-      <div className="datatable datatable-group">
+      <div className='datatable datatable-group'>
         <Table dataSource={dataSource} columns={columns} />
       </div>
     </>

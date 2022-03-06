@@ -1,6 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Breadcrumb, Table, Card, Statistic, Form, Input, Tag } from "antd";
+import {
+  Breadcrumb,
+  Table,
+  Card,
+  Statistic,
+  Button,
+  Form,
+  Input,
+  Tag,
+} from "antd";
+import { ExportOutlined } from "@ant-design/icons";
 import "./detail-api.css";
 
 function DetailAPI() {
@@ -115,7 +125,25 @@ function DetailAPI() {
         </div>
       </div>
       <div className="recent-access" style={{ marginTop: "1.5rem" }}>
-        <h1>Recent Access</h1>
+        <div
+          className="header-access"
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "1rem",
+          }}
+        >
+          <h1 style={{ margin: 0 }}>Recent Access</h1>
+          <div
+            className="right"
+            style={{ display: "flex", justifyContent: "flex-end" }}
+          >
+            <Button icon={<ExportOutlined />} type="primary" block>
+              Export Log
+            </Button>
+          </div>
+        </div>
         <Table dataSource={dataSource} columns={columns} />
       </div>
     </>

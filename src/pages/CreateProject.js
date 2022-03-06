@@ -25,10 +25,10 @@ function CreateProject() {
         </Breadcrumb.Item>
         <Breadcrumb.Item>Create Project</Breadcrumb.Item>
       </Breadcrumb>
-      <div className="create-project" style={{ marginTop: "16px" }}>
+      <div className='create-project' style={{ marginTop: "16px" }}>
         <Form
           form={form}
-          layout="vertical"
+          layout='vertical'
           initialValues={{
             requiredMarkValue: requiredMark,
           }}
@@ -36,40 +36,34 @@ function CreateProject() {
           requiredMark={requiredMark}
         >
           <h2>Create New Project</h2>
-          <div className="form-create-project">
-            <div className="left-side">
+          <div className='form-create-project'>
+            <div className='left-side'>
               <h3>Project Name</h3>
               <Form.Item>
                 <Input />
               </Form.Item>
               <p>Give a name to this project.</p>
               <h3>Team Members</h3>
-              <Form.Item name="remember" valuePropName="checked">
-                <Checkbox.Group
-                  options={user}
-                  className="checkbox-group"
-                  // style={{
-
-                  // }}
-                />
+              <Form.Item name='remember' valuePropName='checked'>
+                <Checkbox.Group options={user} className='checkbox-group' />
               </Form.Item>
             </div>
-            <div className="right-side">
+            <div className='right-side'>
               <h3>Database Configuration</h3>
-              <Form.Item label="Port">
+              <Form.Item label='Port'>
                 <Input />
               </Form.Item>
-              <Form.Item label="URL">
+              <Form.Item label='URL'>
                 <Input />
               </Form.Item>
-              <Form.Item label="Username">
+              <Form.Item label='Username'>
                 <Input />
               </Form.Item>
-              <Form.Item label="Password">
+              <Form.Item label='Password'>
                 <Input />
               </Form.Item>
               <Form.Item style={{ marginTop: "24px" }}>
-                <Button type="primary" htmlType="submit">
+                <Button type='primary' htmlType='submit'>
                   SUBMIT
                 </Button>
               </Form.Item>

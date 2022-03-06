@@ -37,7 +37,7 @@ function Dashboard() {
       no: "2",
       endpoints:
         "https://api.management.nbi.com/{user}/{project_name}/{group_name}/(free}",
-      project: "Project A",
+      project: "Project B",
       group: "Neural BI",
       description: "Get User",
     },
@@ -58,11 +58,35 @@ function Dashboard() {
       title: "Project Name",
       dataIndex: "project",
       key: "project",
+      render: (data) => (
+        <>
+          <Link
+            to={{
+              pathname: "/detail-project",
+              state: { breadcrumb: "Dashboard", name: data },
+            }}
+          >
+            {data}
+          </Link>
+        </>
+      ),
     },
     {
       title: "Group Name",
       dataIndex: "group",
       key: "group",
+      render: (data) => (
+        <>
+          <Link
+            to={{
+              pathname: "/detail-group",
+              state: { breadcrumb: "Dashboard" },
+            }}
+          >
+            {data}
+          </Link>
+        </>
+      ),
     },
     {
       title: "Description",
@@ -73,10 +97,10 @@ function Dashboard() {
       title: "",
       dataIndex: "detail",
       key: "detail",
-      render: (text, record) => (
+      render: () => (
         <Space>
           <Link to={"/detail"}>
-            <Button icon={<EyeOutlined />} type="primary" />
+            <Button icon={<EyeOutlined />} type='primary' />
           </Link>
           <Link to={"/delete"}>
             <Button icon={<DeleteOutlined />} danger />
@@ -98,8 +122,6 @@ function Dashboard() {
     { day: "friday", value: 4.9 },
     { day: "saturday", value: 6 },
     { day: "sunday", value: 7 },
-    // { day: "1998", value: 9 },
-    // { day: "1999", value: 13 },
   ];
 
   const config = {
@@ -124,10 +146,10 @@ function Dashboard() {
 
   const menu = (
     <Menu>
-      <Menu.Item key="1" icon={<SortAscendingOutlined />}>
+      <Menu.Item key='1' icon={<SortAscendingOutlined />}>
         Ascending
       </Menu.Item>
-      <Menu.Item key="2" icon={<CalendarOutlined />}>
+      <Menu.Item key='2' icon={<CalendarOutlined />}>
         Created at
       </Menu.Item>
     </Menu>
@@ -138,8 +160,8 @@ function Dashboard() {
       <Breadcrumb>
         <Breadcrumb.Item>Dashboard</Breadcrumb.Item>
       </Breadcrumb>
-      <div className="summary-total">
-        <div className="sum-request">
+      <div className='summary-total'>
+        <div className='sum-request'>
           <Card>
             <Line
               {...config}
@@ -147,20 +169,20 @@ function Dashboard() {
             />
           </Card>
         </div>
-        <div className="sum-success">
+        <div className='sum-success'>
           <Card>
             <Statistic
-              title="Total of Success"
+              title='Total of Success'
               value={123}
               valueStyle={{ color: "#3f8600" }}
             />
             <p>requests</p>
           </Card>
         </div>
-        <div className="sum-fail">
+        <div className='sum-fail'>
           <Card>
             <Statistic
-              title="Total of Fail"
+              title='Total of Fail'
               value={76}
               valueStyle={{ color: "#cf1322" }}
             />
@@ -168,29 +190,34 @@ function Dashboard() {
           </Card>
         </div>
       </div>
-      <div className="header-datatable">
+      <div className='header-datatable'>
         <h1>Your API's</h1>
-        <div className="right">
-          <div className="search-field">
+        <div className='right'>
+          <div className='search-field'>
             <Search placeholder="search API's" onSearch={onSearch} />
           </div>
-          <div className="sort-field">
+          <div className='sort-field'>
             <Dropdown overlay={menu}>
               <Button block>
                 sort by <CaretDownOutlined />
               </Button>
             </Dropdown>
           </div>
-          <div className="add-field">
-            <Link to="/create-api">
-              <Button icon={<PlusOutlined />} type="primary" block>
+          <div className='add-field'>
+            <Link
+              to={{
+                pathname: "/create-api",
+                state: { breadcrumb: "Dashboard" },
+              }}
+            >
+              <Button icon={<PlusOutlined />} type='primary' block>
                 Create API
               </Button>
             </Link>
           </div>
         </div>
       </div>
-      <div className="datatable datatable-api">
+      <div className='datatable datatable-api'>
         <Table dataSource={dataSource} columns={columns} />
       </div>
     </>
