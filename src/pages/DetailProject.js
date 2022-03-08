@@ -1,14 +1,15 @@
-import { Table, Breadcrumb, Button, Input } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Breadcrumb, Table } from "antd";
+import { Link, useLocation } from "react-router-dom";
 
-function Project() {
+function DetailProject() {
+  let data = useLocation();
+  const breadcrumb = data.state.breadcrumb;
   const dataSource = [
     {
       key: "1",
       no: "1",
-      name: "Project A",
-      sum_group: "2",
+      name: "BI",
+      sum_api: "12",
       created_at: "12-02-2022 21:04:25",
       created_by: "syihab",
       detail: "...",
@@ -16,8 +17,8 @@ function Project() {
     {
       key: "2",
       no: "2",
-      name: "Project B",
-      sum_group: "3",
+      name: "Senopati",
+      sum_api: "9",
       created_at: "12-02-2022 21:04:25",
       created_by: "atauu",
       detail: "...",
@@ -38,8 +39,8 @@ function Project() {
         <>
           <Link
             to={{
-              pathname: "/detail-project",
-              state: { breadcrumb: "Project", name: data },
+              pathname: "/detail-group",
+              state: { breadcrumb: "Group", name: data },
             }}
           >
             {data}
@@ -48,9 +49,9 @@ function Project() {
       ),
     },
     {
-      title: "Total of Group",
-      dataIndex: "sum_group",
-      key: "sum_group",
+      title: "Total of API",
+      dataIndex: "sum_api",
+      key: "sum_api",
     },
     {
       title: "Created at",
@@ -69,37 +70,24 @@ function Project() {
     },
   ];
 
-  const { Search } = Input;
-
-  const onSearch = (value) => console.log(value);
-
   return (
     <>
       <div className='breadcrumb'>
         <Breadcrumb>
-          <Breadcrumb.Item>Project</Breadcrumb.Item>
+          <Breadcrumb.Item>
+            <Link to={`/${breadcrumb.toLowerCase()}`}>{breadcrumb}</Link>
+          </Breadcrumb.Item>
+          <Breadcrumb.Item>{data.state.name}</Breadcrumb.Item>
         </Breadcrumb>
       </div>
       <div className='header-datatable'>
-        <h1>Your Project's</h1>
-        <div className='right'>
-          <div className='search-field'>
-            <Search placeholder="search Project's" onSearch={onSearch} />
-          </div>
-          <div className='add-field'>
-            <Link to={"/create-project"}>
-              <Button icon={<PlusOutlined />} type='primary' block>
-                Create Project
-              </Button>
-            </Link>
-          </div>
-        </div>
+        <h1>List Group of {data.state.name}</h1>
       </div>
-      <div className='datatable datatable-api'>
+      <div className='datatable datatable-group'>
         <Table dataSource={dataSource} columns={columns} />
       </div>
     </>
   );
 }
 
-export default Project;
+export default DetailProject;

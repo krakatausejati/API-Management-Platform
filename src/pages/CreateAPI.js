@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Breadcrumb, Form, Input, Switch, Select, Button } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import "./create-api.css";
 
 export default function CreateAPI() {
+  let data = useLocation();
+  const breadcrumb = data.state.breadcrumb;
   const [form] = Form.useForm();
   const [requiredMark, setRequiredMarkType] = useState("");
 
@@ -16,48 +18,51 @@ export default function CreateAPI() {
     <>
       <Breadcrumb>
         <Breadcrumb.Item>
-          <Link to={"/dashboard"}>Dashboard</Link>
+          <Link to={`/${breadcrumb.toLowerCase()}`}>{breadcrumb}</Link>
         </Breadcrumb.Item>
         <Breadcrumb.Item>Create API</Breadcrumb.Item>
       </Breadcrumb>
-      <div className="create-api" style={{ marginTop: "16px" }}>
+      <div className='create-api' style={{ marginTop: "16px" }}>
         <Form
           form={form}
-          layout="vertical"
+          layout='vertical'
           initialValues={{
             requiredMarkValue: requiredMark,
           }}
           onValuesChange={onRequiredTypeChange}
           requiredMark={requiredMark}
         >
-          <div className="form-create-api" style={{display: 'flex', gap: '5rem'}}>
-            <div className="left-side" style={{minWidth: '450px'}}>
+          <div
+            className='form-create-api'
+            style={{ display: "flex", gap: "5rem" }}
+          >
+            <div className='left-side' style={{ minWidth: "450px" }}>
               <h2>Identity API</h2>
-              <Form.Item label="Description">
+              <Form.Item label='Description'>
                 <Input />
               </Form.Item>
-              <Form.Item label="Group">
+              <Form.Item label='Group'>
                 <Select />
               </Form.Item>
-              <Form.Item label="Endpoints">
+              <Form.Item label='Endpoints'>
                 <Input />
               </Form.Item>
             </div>
-            <div className="right-side" style={{minWidth: '450px'}}>
+            <div className='right-side' style={{ minWidth: "450px" }}>
               <h2>Database</h2>
-              <Form.Item label="Table">
+              <Form.Item label='Table'>
                 <Select />
               </Form.Item>
               <h2>Limits</h2>
-              <Form.Item label="Max Limit">
+              <Form.Item label='Max Limit'>
                 <Input addonAfter={"per day"} />
               </Form.Item>
-              <Form.Item label="Private">
+              <Form.Item label='Private'>
                 <Switch />
               </Form.Item>
             </div>
           </div>
-          <div className="preview-generated-api">
+          <div className='preview-generated-api'>
             <h4>
               <InfoCircleOutlined /> Preview Generated API
             </h4>
@@ -69,7 +74,7 @@ export default function CreateAPI() {
             />
           </div>
           <Form.Item style={{ marginTop: "24px" }}>
-            <Button type="primary" htmlType="submit">
+            <Button type='primary' htmlType='submit'>
               SUBMIT
             </Button>
           </Form.Item>
