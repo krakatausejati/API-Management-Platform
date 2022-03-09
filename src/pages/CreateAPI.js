@@ -41,9 +41,6 @@ export default function CreateAPI() {
               <Form.Item label='Description'>
                 <Input />
               </Form.Item>
-              <Form.Item label='Group'>
-                <Select />
-              </Form.Item>
               <Form.Item label='Endpoints'>
                 <Input />
               </Form.Item>

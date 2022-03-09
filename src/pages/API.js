@@ -1,5 +1,12 @@
-import { DeleteOutlined, EyeOutlined, PlusOutlined } from "@ant-design/icons";
-import { Breadcrumb, Button, Input, Space, Table } from "antd";
+import {
+  DeleteOutlined,
+  EyeOutlined,
+  PlusOutlined,
+  CaretDownOutlined,
+  SortAscendingOutlined,
+  CalendarOutlined,
+} from "@ant-design/icons";
+import { Breadcrumb, Button, Space, Table, Dropdown, Menu, Input } from "antd";
 import { Link } from "react-router-dom";
 
 function Api() {
@@ -71,6 +78,17 @@ function Api() {
 
   const onSearch = (value) => console.log(value);
 
+  const menu = (
+    <Menu>
+      <Menu.Item key='1' icon={<SortAscendingOutlined />}>
+        Ascending
+      </Menu.Item>
+      <Menu.Item key='2' icon={<CalendarOutlined />}>
+        Created at
+      </Menu.Item>
+    </Menu>
+  );
+
   return (
     <>
       <div className='breadcrumb'>
@@ -83,6 +101,13 @@ function Api() {
         <div className='right'>
           <div className='search-field'>
             <Search placeholder="search API's" onSearch={onSearch} />
+          </div>
+          <div className='sort-field'>
+            <Dropdown overlay={menu}>
+              <Button block>
+                sort by <CaretDownOutlined />
+              </Button>
+            </Dropdown>
           </div>
           <div className='add-field'>
             <Link

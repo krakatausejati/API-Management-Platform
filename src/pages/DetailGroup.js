@@ -1,6 +1,13 @@
-import { DeleteOutlined, EyeOutlined } from "@ant-design/icons";
-import { Breadcrumb, Button, Space, Table } from "antd";
+import { Breadcrumb, Button, Space, Table, Dropdown, Menu, Input } from "antd";
 import { Link, useLocation } from "react-router-dom";
+import {
+  DeleteOutlined,
+  EyeOutlined,
+  PlusOutlined,
+  CaretDownOutlined,
+  SortAscendingOutlined,
+  CalendarOutlined,
+} from "@ant-design/icons";
 
 function DetailGroup() {
   let data = useLocation();
@@ -69,6 +76,21 @@ function DetailGroup() {
     },
   ];
 
+  const { Search } = Input;
+
+  const onSearch = (value) => console.log(value);
+
+  const menu = (
+    <Menu>
+      <Menu.Item key='1' icon={<SortAscendingOutlined />}>
+        Ascending
+      </Menu.Item>
+      <Menu.Item key='2' icon={<CalendarOutlined />}>
+        Created at
+      </Menu.Item>
+    </Menu>
+  );
+
   return (
     <>
       <div className='breadcrumb'>
@@ -81,6 +103,30 @@ function DetailGroup() {
       </div>
       <div className='header-datatable'>
         <h1>List API of {data.state.name}</h1>
+        <div className='right'>
+          <div className='search-field'>
+            <Search placeholder="search API's" onSearch={onSearch} />
+          </div>
+          <div className='sort-field'>
+            <Dropdown overlay={menu}>
+              <Button block>
+                sort by <CaretDownOutlined />
+              </Button>
+            </Dropdown>
+          </div>
+          <div className='add-field'>
+            <Link
+              to={{
+                pathname: "/create-api",
+                state: { breadcrumb: "Dashboard" },
+              }}
+            >
+              <Button icon={<PlusOutlined />} type='primary' block>
+                Create API
+              </Button>
+            </Link>
+          </div>
+        </div>
       </div>
       <div className='datatable datatable-group'>
         <Table dataSource={dataSource} columns={columns} />

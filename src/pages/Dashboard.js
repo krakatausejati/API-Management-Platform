@@ -1,23 +1,6 @@
-import {
-  Table,
-  Breadcrumb,
-  Button,
-  Input,
-  Statistic,
-  Card,
-  Dropdown,
-  Menu,
-  Space,
-} from "antd";
-import {
-  PlusOutlined,
-  CaretDownOutlined,
-  SortAscendingOutlined,
-  CalendarOutlined,
-  DeleteOutlined,
-  EyeOutlined,
-} from "@ant-design/icons";
 import { Line } from "@ant-design/charts";
+import { DeleteOutlined, EyeOutlined } from "@ant-design/icons";
+import { Breadcrumb, Button, Card, Space, Statistic, Table } from "antd";
 import { Link } from "react-router-dom";
 import "./dashboard.css";
 
@@ -110,10 +93,6 @@ function Dashboard() {
     },
   ];
 
-  const { Search } = Input;
-
-  const onSearch = (value) => console.log(value);
-
   const data = [
     { day: "monday", value: 3 },
     { day: "tuesday", value: 4 },
@@ -143,17 +122,6 @@ function Dashboard() {
   };
 
   let chart;
-
-  const menu = (
-    <Menu>
-      <Menu.Item key='1' icon={<SortAscendingOutlined />}>
-        Ascending
-      </Menu.Item>
-      <Menu.Item key='2' icon={<CalendarOutlined />}>
-        Created at
-      </Menu.Item>
-    </Menu>
-  );
 
   return (
     <>
@@ -192,30 +160,6 @@ function Dashboard() {
       </div>
       <div className='header-datatable'>
         <h1>Your API's</h1>
-        <div className='right'>
-          <div className='search-field'>
-            <Search placeholder="search API's" onSearch={onSearch} />
-          </div>
-          <div className='sort-field'>
-            <Dropdown overlay={menu}>
-              <Button block>
-                sort by <CaretDownOutlined />
-              </Button>
-            </Dropdown>
-          </div>
-          <div className='add-field'>
-            <Link
-              to={{
-                pathname: "/create-api",
-                state: { breadcrumb: "Dashboard" },
-              }}
-            >
-              <Button icon={<PlusOutlined />} type='primary' block>
-                Create API
-              </Button>
-            </Link>
-          </div>
-        </div>
       </div>
       <div className='datatable datatable-api'>
         <Table dataSource={dataSource} columns={columns} />
