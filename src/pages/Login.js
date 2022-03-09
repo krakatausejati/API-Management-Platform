@@ -22,7 +22,7 @@ function Login() {
         <h1>Login.</h1>
         <p>Please login to your account.</p>
         <Form name="normal_login" className="login-form">
-          <Form.Item
+          {/* <Form.Item
             name="email"
             rules={[
               {
@@ -46,7 +46,7 @@ function Login() {
               type="password"
               placeholder="Password"
             />
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item>
             {!keycloak.authenticated && (
               <Button
