@@ -117,7 +117,7 @@ function DetailGroup() {
           <div className='add-field'>
             <Link
               to={{
-                pathname: "/create-api",
+                pathname: "/form-api",
                 state: { breadcrumb: "Dashboard" },
               }}
             >

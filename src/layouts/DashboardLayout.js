@@ -1,16 +1,14 @@
-import { Layout, Menu, Avatar, Button } from "antd";
 import {
-  AppstoreOutlined,
-  SettingOutlined,
-  GroupOutlined,
   ApiOutlined,
-  UserOutlined,
+  AppstoreOutlined,
   LogoutOutlined,
+  SettingOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
+import { useKeycloak } from "@react-keycloak/web";
+import { Avatar, Layout, Menu } from "antd";
 import { Link } from "react-router-dom";
 import "./dashboardlayout.css";
-import { useKeycloak } from "@react-keycloak/web";
-
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -42,20 +40,18 @@ function DashboardLayout(props) {
           <Menu.Item key='3' icon={<SettingOutlined />}>
             <Link to='/project'>Project</Link>
           </Menu.Item>
-          <Menu.Item key='4' icon={<GroupOutlined />}>
-            <Link to='/group'>Group</Link>
+          <Menu.Item key='4' icon={<LogoutOutlined />}>
+            {/* <Button
+              type='danger'
+              htmlType='submit'
+              className='login-form-button'
+              onClick={() => keycloak.logout()}
+            > */}
+            <span onClick={() => keycloak.logout()} style={{ color: "#fff" }}>
+              <Link to='/login'>Logout</Link>
+            </span>
+            {/* </Button> */}
           </Menu.Item>
-          <Menu.Item key="4"  icon={<LogoutOutlined />}>
-            <Button
-                type="danger"
-                htmlType="submit"
-                className="login-form-button"
-                onClick={() => keycloak.logout()}
-              >
-                <Link to="/login">Logout</Link>
-              </Button>
-          </Menu.Item>
-
         </Menu>
       </Sider>
       <Layout className='site-layout' style={{ marginLeft: 200 }}>

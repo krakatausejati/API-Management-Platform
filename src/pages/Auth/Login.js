@@ -8,9 +8,9 @@ function Login() {
   const { keycloak, initialized } = useKeycloak();
 
   return (
-    <section className="login">
-      <div className="hero-login">
-        <div className="content">
+    <section className='login'>
+      <div className='hero-login'>
+        <div className='content'>
           <h1>API Management Platform</h1>
           <p>
             Make exchanging data more easier, secure and
@@ -18,10 +18,10 @@ function Login() {
           </p>
         </div>
       </div>
-      <div className="form-login">
+      <div className='form-login'>
         <h1>Login.</h1>
         <p>Please login to your account.</p>
-        <Form name="normal_login" className="login-form">
+        <Form name='normal_login' className='login-form'>
           {/* <Form.Item
             name="email"
             rules={[
@@ -50,12 +50,12 @@ function Login() {
           <Form.Item>
             {!keycloak.authenticated && (
               <Button
-                type="primary"
-                htmlType="submit"
-                className="login-form-button"
+                type='primary'
+                htmlType='submit'
+                className='login-form-button'
                 onClick={() => keycloak.login()}
               >
-                <Link to="/dashboard">SIGN IN</Link>
+                <Link to='/dashboard'>SIGN IN</Link>
               </Button>
             )}
           </Form.Item>

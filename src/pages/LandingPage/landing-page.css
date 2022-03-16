@@ -1,0 +1,9 @@
+html {
+  height: 100%;
+}
+.jumbotron {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  text-align: center;
+}

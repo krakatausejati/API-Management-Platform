@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Table, Breadcrumb, Button, Input, Form, Modal } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
-function Group() {
+function DetailProject() {
+  let data = useLocation();
+  const breadcrumb = data.state.breadcrumb;
   const dataSource = [
     {
       key: "1",
@@ -59,7 +61,7 @@ function Group() {
       key: "created_at",
     },
     {
-      title: "Created by",
+      title: "Project Owner",
       dataIndex: "created_by",
       key: "created_by",
     },
@@ -69,10 +71,6 @@ function Group() {
       key: "detail",
     },
   ];
-
-  const { Search } = Input;
-
-  const onSearch = (value) => console.log(value);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -112,25 +110,23 @@ function Group() {
 
       <div className='breadcrumb'>
         <Breadcrumb>
-          <Breadcrumb.Item>Group</Breadcrumb.Item>
+          <Breadcrumb.Item>
+            <Link to={`/${breadcrumb.toLowerCase()}`}>{breadcrumb}</Link>
+          </Breadcrumb.Item>
+          <Breadcrumb.Item>{data.state.name}</Breadcrumb.Item>
         </Breadcrumb>
       </div>
       <div className='header-datatable'>
-        <h1>Your Group's</h1>
-        <div className='right'>
-          <div className='search-field'>
-            <Search placeholder="search Group's" onSearch={onSearch} />
-          </div>
-          <div className='add-field'>
-            <Button
-              icon={<PlusOutlined />}
-              type='primary'
-              block
-              onClick={showModal}
-            >
-              Create Group
-            </Button>
-          </div>
+        <h1>List Group of {data.state.name}</h1>
+        <div className='add-field'>
+          <Button
+            icon={<PlusOutlined />}
+            type='primary'
+            block
+            onClick={showModal}
+          >
+            Create Group
+          </Button>
         </div>
       </div>
       <div className='datatable datatable-group'>
@@ -140,4 +136,4 @@ function Group() {
   );
 }
 
-export default Group;
+export default DetailProject;

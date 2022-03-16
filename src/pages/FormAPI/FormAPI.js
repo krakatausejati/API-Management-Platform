@@ -4,7 +4,7 @@ import { Breadcrumb, Form, Input, Switch, Select, Button } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import "./create-api.css";
 
-export default function CreateAPI() {
+export default function FormAPI() {
   let data = useLocation();
   const breadcrumb = data.state.breadcrumb;
   const [form] = Form.useForm();
@@ -52,7 +52,7 @@ export default function CreateAPI() {
               </Form.Item>
               <h2>Limits</h2>
               <Form.Item label='Max Limit'>
-                <Input addonAfter={"per day"} />
+                <Input addonAfter={"per hours"} />
               </Form.Item>
               <Form.Item label='Private'>
                 <Switch />
