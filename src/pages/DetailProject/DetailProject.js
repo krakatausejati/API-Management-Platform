@@ -1,31 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Table, Breadcrumb, Button, Input, Form, Modal } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { Link, useLocation } from "react-router-dom";
+import groupService from "../../services/project.service";
 
 function DetailProject() {
   let data = useLocation();
+  const [form] = Form.useForm();
+  const [group, setGroup] = useState([]);
+
+  const init = () => {
+    groupService
+      .getAllGroup()
+      .then((response) => {
+        console.log("Printing group data", response.data);
+        setGroup(response.data);
+      })
+      .catch((error) => {
+        console.log("Something went wrong", error);
+      });
+  };
+
+  useEffect(() => {
+    init();
+  }, []);
+
   const breadcrumb = data.state.breadcrumb;
-  const dataSource = [
-    {
-      key: "1",
-      no: "1",
-      name: "BI",
-      sum_api: "12",
-      created_at: "12-02-2022 21:04:25",
-      created_by: "syihab",
-      detail: "...",
-    },
-    {
-      key: "2",
-      no: "2",
-      name: "Senopati",
-      sum_api: "9",
-      created_at: "12-02-2022 21:04:25",
-      created_by: "atauu",
-      detail: "...",
-    },
-  ];
+  const dataSource = group.map((groupItem, index) => ({
+    key: `${index}`,
+    no: `${index}`,
+    name: `${groupItem.groupName}`,
+    sum_api: "12",
+    created_at: `${groupItem.createdAt}`,
+    created_by: `${groupItem.createdBy}`,
+    detail: "...",
+  }));
 
   const columns = [
     {
@@ -78,7 +87,18 @@ function DetailProject() {
     setIsModalVisible(true);
   };
 
-  const handleOk = () => {
+  const handleOk = (groupName) => {
+    // groupService.createGroup(groupName);
+    groupService
+      .getAllGroup()
+      .then((response) => {
+        console.log("Printing connection data", response.data);
+      })
+      .catch((error) => {
+        console.log("Something went wrong", error);
+      });
+    console.log(groupName);
+    form.resetFields();
     setIsModalVisible(false);
   };
 
@@ -92,16 +112,32 @@ function DetailProject() {
       <Modal
         title='Add Group'
         visible={isModalVisible}
-        onOk={handleOk}
         onCancel={handleCancel}
         footer={[
-          <Button key='add-group' onClick={handleOk} type='primary'>
+          <Button
+            key='add-group'
+            onClick={() => {
+              form
+                .validateFields()
+                .then((values) => {
+                  handleOk(values);
+                })
+                .catch((info) => {
+                  console.log("Validate Failed:", info);
+                });
+            }}
+            type='primary'
+          >
             Add Group
           </Button>,
         ]}
       >
         <Form layout='vertical'>
-          <Form.Item label='Group Name' style={{ width: "100%" }}>
+          <Form.Item
+            label='Group Name'
+            name='groupName'
+            style={{ width: "100%" }}
+          >
             <Input />
           </Form.Item>
         </Form>

@@ -1,28 +1,37 @@
+import React, { useState, useEffect } from "react";
 import { Table, Breadcrumb, Button, Input } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import projectService from "../../services/project.service";
 
 function Project() {
-  const dataSource = [
-    {
-      key: "1",
-      no: "1",
-      name: "Project A",
-      sum_group: "2",
-      created_at: "12-02-2022 21:04:25",
-      created_by: "syihab",
-      detail: "...",
-    },
-    {
-      key: "2",
-      no: "2",
-      name: "Project B",
-      sum_group: "3",
-      created_at: "12-02-2022 21:04:25",
-      created_by: "atauu",
-      detail: "...",
-    },
-  ];
+  const [project, setProject] = useState([]);
+
+  const init = () => {
+    projectService
+      .getAllProject()
+      .then((response) => {
+        console.log("Printing project data", response.data);
+        setProject(response.data);
+      })
+      .catch((error) => {
+        console.log("Something went wrong", error);
+      });
+  };
+
+  useEffect(() => {
+    init();
+  }, []);
+
+  const dataSource = project.map((projectItem, index) => ({
+    key: `${index}`,
+    no: `${index}`,
+    name: `${projectItem.projectName}`,
+    sum_group: "12",
+    created_at: `${projectItem.createdAt}`,
+    created_by: `${projectItem.projectOwner}`,
+    detail: "...",
+  }));
 
   const columns = [
     {
@@ -53,7 +62,7 @@ function Project() {
       key: "sum_group",
     },
     {
-      title: "Created at",
+      title: "Product Owner",
       dataIndex: "created_at",
       key: "created_at",
     },

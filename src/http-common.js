@@ -1,9 +1,9 @@
 import axios from "axios";
 
-export default axios.create({
-  baseURL: "http://localhost:8080/api",
+export const project = axios.create({
+  baseURL: "http://localhost:8080/project",
   headers: {
     "Content-Type": "application/json",
-    "Accept": "*",
+    "Access-Control-Allow-Origin": "*",
   },
 });

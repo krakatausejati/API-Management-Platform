@@ -4,15 +4,14 @@ import PrivateRoute from "../helpers/PrivateRoute";
 import keycloak from "../Keycloak";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Api from "../pages/API/API";
-import FormAPI from "../pages/FormAPI/FormAPI";
+import Login from "../pages/Auth/Login";
 import CreateProject from "../pages/CreateProject/CreateProject";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import DetailAPI from "../pages/DetailAPI/DetailAPI";
 import DetailGroup from "../pages/DetailGroup/DetailGroup";
 import DetailProject from "../pages/DetailProject/DetailProject";
-import Login from "../pages/Auth/Login";
+import FormAPI from "../pages/FormAPI/FormAPI";
 import Project from "../pages/Project/Project";
-import LandingPage from "../pages/LandingPage/LandingPage";
 
 function Routes() {
   return (
@@ -21,9 +20,6 @@ function Routes() {
         <Switch>
           <Route path='/' exact>
             <Login />
-          </Route>
-          <Route path='/tes' exact>
-            <LandingPage />
           </Route>
           <Route path='/login' exact>
             <Login />

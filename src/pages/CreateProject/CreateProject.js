@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Breadcrumb, Form, Input, Checkbox, Button, Modal, Select } from "antd";
 import { Link } from "react-router-dom";
 import "./create-project.css";
-import connectionService from "../../services/connection.service";
+import connectionService from "../../services/project.service";
 
 function CreateProject() {
   const [form] = Form.useForm();
@@ -11,7 +11,7 @@ function CreateProject() {
 
   const init = () => {
     connectionService
-      .getAll()
+      .getAllConnection()
       .then((response) => {
         console.log("Printing connection data", response.data);
         setConnection(response.data);
@@ -120,8 +120,8 @@ function CreateProject() {
               <h3>Database Configuration</h3>
               <Form.Item label='Connection'>
                 <Select>
-                  {connection.map((connection) => (
-                    <Option value={connection.connectionName}>
+                  {connection.map((connection, index) => (
+                    <Option value={connection.connectionName} key={index}>
                       {connection.connectionName}
                     </Option>
                   ))}
