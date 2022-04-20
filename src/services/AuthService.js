@@ -1,7 +1,7 @@
 import axiosInstance from "../helpers/Axios";
 import { BASE_URL } from "../helpers/Constant";
 
-export const authenticationService = {
+export const AuthService = {
 	login,
 };
 

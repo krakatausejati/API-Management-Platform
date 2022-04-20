@@ -3,11 +3,11 @@ import { useKeycloak } from "@react-keycloak/web";
 import { Button, Form, Input } from "antd";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { authenticationService } from "../../services/AuthService";
+import { AuthService } from "../../services/AuthService";
 import "./login.css";
 
 function Login() {
-	const { keycloak, initialized } = useKeycloak();
+	// const { keycloak, initialized } = useKeycloak();
 
 	const [state, setState] = useState({
 		email_username: "",
@@ -25,12 +25,10 @@ function Login() {
 	const handleLogin = (values) => {
 		const { email_username, password } = values;
 
-		authenticationService
-			.login(email_username, password)
-			.then((response) => {
-				// localStorage.setItem("token", response);
-				console.log(response);
-			});
+		AuthService.login(email_username, password).then((response) => {
+			// localStorage.setItem("token", response);
+			console.log(response);
+		});
 	};
 
 	return (
@@ -47,7 +45,7 @@ function Login() {
 			<div className='form-login'>
 				<h1>Login.</h1>
 				<p>Please login to your account.</p>
-				{!keycloak.authenticated && (
+				{/* {!keycloak.authenticated && ( */}
 				<Form
 					name='normal_login'
 					className='login-form'
@@ -103,7 +101,7 @@ function Login() {
 						</Button>
 					</Form.Item>
 				</Form>
-				)}
+				{/* )} */}
 			</div>
 		</section>
 	);

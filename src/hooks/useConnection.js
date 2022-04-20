@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
-import connectionService from "../services/ConnectionService";
+import { ConnectionService } from "../services/ConnectionService";
 
 const useConnection = () => {
 	const [connection, setConnection] = useState([]);
 
 	useEffect(() => {
-		connectionService
-			.getAllConnection()
+		ConnectionService.getAllConnection()
 			.then((response) => {
 				setConnection(response.data);
 			})
@@ -18,4 +17,4 @@ const useConnection = () => {
 	return connection;
 };
 
-export  default useConnection;
+export default useConnection;

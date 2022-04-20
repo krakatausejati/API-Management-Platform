@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
-import groupService from "../services/GroupService";
+import { GroupService } from "../services/GroupService";
 
 const useGroup = () => {
 	const [group, setGroup] = useState([]);
 
 	useEffect(() => {
-		groupService
-			.getAllGroup()
+		GroupService.getAllGroup(1)
 			.then((response) => {
 				setGroup(response.data);
 			})

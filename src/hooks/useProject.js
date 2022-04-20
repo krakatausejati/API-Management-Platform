@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
-import projectService from "../services/ProjectService";
+import { ProjectService } from "../services/ProjectService";
 
 const useProject = () => {
 	const [project, setProject] = useState([]);
 
 	useEffect(() => {
-		projectService
-			.getAllProject()
+		ProjectService.getAllProject()
 			.then((response) => {
 				setProject(response.data);
 			})

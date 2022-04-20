@@ -3,7 +3,7 @@ import { Table, Breadcrumb, Button, Input, Form, Modal } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { Link, useLocation } from "react-router-dom";
 import useGroup from "../../hooks/useGroup";
-import groupServices from "../../services/s";
+import { GroupService } from "../../services/GroupService";
 import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
 
 function DetailProject() {
@@ -79,8 +79,7 @@ function DetailProject() {
 
 	const handleOk = (groupName) => {
 		// groupService.createGroup(groupName);
-		groupServices
-			.createGroup(groupName)
+		GroupService.createGroup(groupName)
 			.then((response) => {
 				console.log("Printing connection data", response.data);
 			})

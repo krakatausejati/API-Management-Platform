@@ -10,7 +10,7 @@ function Project() {
 	const project = useProject();
 
 	const dataProject = project.map((projectItem, index) => ({
-		key: `${projectItem.id}`,
+		key: `${projectItem.idProject}`,
 		no: `${index + 1}`,
 		name: `${projectItem.projectName}`,
 		sum_group: "12",
