@@ -10,6 +10,16 @@ const getAllGroup = () => {
   return project.get("/group");
 };
 
+//table
+const getAllTables = () => {
+  return project.get("/schema/table");
+};
+
+//column
+const getAllColumn = () => {
+  return project.get("/schema/column");
+};
+
 const createGroup = (groupName) => {
   let today = new Date();
   let date =
@@ -34,4 +44,4 @@ const getAllProject = () => {
   return project.get("");
 };
 
-export default { getAllConnection, getAllGroup, createGroup, getAllProject };
+export default { getAllConnection, getAllGroup, getAllTables, getAllColumn, createGroup, getAllProject };
