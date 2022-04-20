@@ -118,7 +118,7 @@ function DetailGroup() {
             <Link
               to={{
                 pathname: "/form-api",
-                state: { breadcrumb: "Dashboard" },
+                state: { breadcrumb: data.state.name },
               }}
             >
               <Button icon={<PlusOutlined />} type='primary' block>

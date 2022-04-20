@@ -1,8 +1,88 @@
 import "./App.less";
-import Routes from "./Routes/Routes";
+import { ReactKeycloakProvider } from "@react-keycloak/web";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import PrivateRoute from "./helpers/PrivateRoute";
+import keycloak from "./Keycloak";
+import DashboardLayout from "./layouts/DashboardLayout";
+import Api from "./pages/API/API";
+import Login from "./pages/Auth/Login";
+import CreateProject from "./pages/CreateProject/CreateProject";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import DetailAPI from "./pages/DetailAPI/DetailAPI";
+import DetailGroup from "./pages/DetailGroup/DetailGroup";
+import DetailProject from "./pages/DetailProject/DetailProject";
+import FormAPI from "./pages/FormAPI/FormAPI";
+import Project from "./pages/Project/Project";
 
 function App() {
-  return <Routes />;
+	// const { keycloak } = useKeycloak();
+
+	// useEffect(() => {
+	// 	axiosIns.interceptors.request.use(
+	// 		(config) => {
+	// 			config.headers.Authorization = `${keycloak.token}`;
+	// 			return config;
+	// 		},
+	// 		(error) => {
+	// 			return Promise.reject(error);
+	// 		}
+	// 	);
+	// }, []);
+
+	return (
+		<Router>
+			{/* <ReactKeycloakProvider authClient={keycloak}> */}
+			<Switch>
+				<Route path='/' exact>
+					<Login />
+				</Route>
+				<Route path='/login' exact>
+					<Login />
+				</Route>
+				<Route path='/dashboard' exact>
+					{/* <PrivateRoute> */}
+					<DashboardLayout children={<Dashboard />} />
+					{/* </PrivateRoute> */}
+				</Route>
+				<Route path='/form-api' exact>
+					{/* <PrivateRoute> */}
+					<DashboardLayout children={<FormAPI />} />
+					{/* </PrivateRoute> */}
+				</Route>
+				<Route path='/detail' exact>
+					{/* <PrivateRoute> */}
+					<DashboardLayout children={<DetailAPI />} />
+					{/* </PrivateRoute> */}
+				</Route>
+				<Route path='/project' exact>
+					{/* <PrivateRoute> */}
+					<DashboardLayout children={<Project />} />
+					{/* </PrivateRoute> */}
+				</Route>
+				<Route path='/project/:id/group' exact>
+					{/* <PrivateRoute> */}
+					<DashboardLayout children={<DetailProject />} />
+					{/* </PrivateRoute> */}
+				</Route>
+				<Route path='/create-project' exact>
+					{/* <PrivateRoute> */}
+					<DashboardLayout children={<CreateProject />} />
+					{/* </PrivateRoute> */}
+				</Route>
+				<Route path='/detail-group' exact>
+					{/* <PrivateRoute> */}
+					<DashboardLayout children={<DetailGroup />} />
+					{/* </PrivateRoute> */}
+				</Route>
+				<Route path='/api' exact>
+					{/* <PrivateRoute> */}
+					<DashboardLayout children={<Api />} />
+					{/* </PrivateRoute> */}
+				</Route>
+			</Switch>
+			{/* </ReactKeycloakProvider> */}
+		</Router>
+	);
 }
 
 export default App;

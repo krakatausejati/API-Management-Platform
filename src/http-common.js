@@ -1,9 +1,12 @@
 import axios from "axios";
+import { BASE_URL } from "./helpers/Constant";
+import { AuthHeader } from "./helpers/RequestHelper";
 
 export const project = axios.create({
-  baseURL: "http://localhost:8080/project",
-  headers: {
-    "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "*",
-  },
+	baseURL: BASE_URL.PROJECT,
+	headers: {
+		"Content-Type": "application/json",
+		"Access-Control-Allow-Origin": "*",
+		// ...AuthHeader(),
+	},
 });
