@@ -39,7 +39,7 @@ function DashboardLayout(props) {
 						<Link to='/project'>Project</Link>
 					</Menu.Item>
 					<Menu.Item key='3' icon={<DatabaseOutlined />}>
-						<Link to='/api'>Connection</Link>
+						<Link to='/connection'>Connection</Link>
 					</Menu.Item>
 					<Menu.Item key='4' icon={<ApiOutlined />}>
 						<Link to='/api'>API Public</Link>

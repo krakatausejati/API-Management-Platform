@@ -6,13 +6,13 @@ import keycloak from "./Keycloak";
 import DashboardLayout from "./layouts/DashboardLayout";
 import Api from "./pages/API/API";
 import Login from "./pages/Auth/Login";
-import CreateProject from "./pages/CreateProject/CreateProject";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import DetailAPI from "./pages/DetailAPI/DetailAPI";
 import DetailGroup from "./pages/DetailGroup/DetailGroup";
 import DetailProject from "./pages/DetailProject/DetailProject";
 import FormAPI from "./pages/FormAPI/FormAPI";
 import Project from "./pages/Project/Project";
+import Connection from "./pages/Connection/Connection";
 
 function App() {
 	// const { keycloak } = useKeycloak();
@@ -59,14 +59,9 @@ function App() {
 					<DashboardLayout children={<Project />} />
 					{/* </PrivateRoute> */}
 				</Route>
-				<Route path='/project/:id/group' exact>
+				<Route path='/project/:idProject/group' exact>
 					{/* <PrivateRoute> */}
 					<DashboardLayout children={<DetailProject />} />
-					{/* </PrivateRoute> */}
-				</Route>
-				<Route path='/create-project' exact>
-					{/* <PrivateRoute> */}
-					<DashboardLayout children={<CreateProject />} />
 					{/* </PrivateRoute> */}
 				</Route>
 				<Route path='/detail-group' exact>
@@ -77,6 +72,11 @@ function App() {
 				<Route path='/api' exact>
 					{/* <PrivateRoute> */}
 					<DashboardLayout children={<Api />} />
+					{/* </PrivateRoute> */}
+				</Route>
+				<Route path='/connection' exact>
+					{/* <PrivateRoute> */}
+					<DashboardLayout children={<Connection />} />
 					{/* </PrivateRoute> */}
 				</Route>
 			</Switch>

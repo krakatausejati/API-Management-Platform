@@ -12,9 +12,8 @@ function getAllGroup(idProject) {
 
 function createGroup(groupName, idProject) {
 	let dataGroup = {
-		groupName: "geup",
+		groupName,
 		createdBy: "owner",
-		createdAt: new Date(),
 	};
 
 	return axiosInstance(BASE_URL.PROJECT).post(

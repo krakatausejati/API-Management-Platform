@@ -1,13 +1,16 @@
-import React from "react";
-import { Table, Breadcrumb, Button, Input } from "antd";
+import React, { useState } from "react";
+import { Table, Breadcrumb, Button, Input, Modal, Form } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import useProject from "../../hooks/useProject";
 import { useKeycloak } from "@react-keycloak/web";
 import moment from "moment";
+import { ProjectService } from "../../services/ProjectService";
 
 function Project() {
 	const project = useProject();
+	const [form] = Form.useForm();
+	const [isModalVisible, setIsModalVisible] = useState(false);
 
 	const dataProject = project.map((projectItem, index) => ({
 		key: `${projectItem.idProject}`,
@@ -32,15 +35,15 @@ function Project() {
 			title: "Name",
 			dataIndex: "name",
 			key: "name",
-			render: (data) => (
+			render: (text, record) => (
 				<>
 					<Link
 						to={{
-							pathname: `/project/1/group`,
-							state: { breadcrumb: "Project", name: data },
+							pathname: `/project/${record.key}/group`,
+							state: { breadcrumb: "Project", name: text },
 						}}
 					>
-						{data}
+						{text}
 					</Link>
 				</>
 			),
@@ -51,7 +54,7 @@ function Project() {
 			key: "sum_group",
 		},
 		{
-			title: "Product Owner",
+			title: "Project Owner",
 			dataIndex: "created_by",
 			key: "created_by",
 		},
@@ -70,11 +73,68 @@ function Project() {
 	const dataSource = dataProject ? dataProject : "Empty Project";
 
 	const { Search } = Input;
-
 	const onSearch = (value) => console.log(value);
+
+	const showModal = () => {
+		setIsModalVisible(true);
+	};
+
+	const handleOk = (values) => {
+		const { projectName } = values;
+
+		ProjectService.createProject(projectName)
+			.then((response) => {
+				window.location.reload();
+			})
+			.catch((error) => {
+				console.log("Something went wrong", error);
+			});
+
+		setIsModalVisible(false);
+	};
+
+	const handleCancel = () => {
+		setIsModalVisible(false);
+	};
 
 	return (
 		<>
+			{/* Modal */}
+			<Modal
+				title='Add Project'
+				visible={isModalVisible}
+				onOk={() => {
+					form.validateFields()
+						.then((values) => {
+							form.resetFields();
+							handleOk(values);
+						})
+						.catch((info) => {
+							console.log("Validate Failed:", info);
+						});
+				}}
+				onCancel={handleCancel}
+				okText='Create Project'
+				cancelText='Cancel'
+			>
+				<Form layout='vertical' form={form}>
+					<Form.Item
+						label='Project Name'
+						name='projectName'
+						style={{ width: "100%" }}
+						rules={[
+							{
+								required: true,
+								message: "Please input the group name!",
+							},
+						]}
+					>
+						<Input />
+					</Form.Item>
+				</Form>
+			</Modal>
+			{/* Modal */}
+
 			<div className='breadcrumb'>
 				<Breadcrumb>
 					<Breadcrumb.Item>Project</Breadcrumb.Item>
@@ -90,15 +150,14 @@ function Project() {
 						/>
 					</div>
 					<div className='add-field'>
-						<Link to={"/create-project"}>
-							<Button
-								icon={<PlusOutlined />}
-								type='primary'
-								block
-							>
-								Create Project
-							</Button>
-						</Link>
+						<Button
+							icon={<PlusOutlined />}
+							type='primary'
+							block
+							onClick={showModal}
+						>
+							Create Project
+						</Button>
 					</div>
 				</div>
 			</div>

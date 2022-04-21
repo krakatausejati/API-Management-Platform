@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { Table, Breadcrumb, Button, Input, Form, Modal } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { Link, useLocation } from "react-router-dom";
+import { Button, Form, Input, Modal, Table } from "antd";
+import moment from "moment";
+import React, { useState } from "react";
+import { Link, useLocation, useParams } from "react-router-dom";
+import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
 import useGroup from "../../hooks/useGroup";
 import { GroupService } from "../../services/GroupService";
-import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
-import moment from "moment";
 
 function DetailProject() {
 	let data = useLocation();
+	let { idProject } = useParams();
+	const id = parseInt(idProject, 10);
 	const [form] = Form.useForm();
-	const group = useGroup();
+	const group = useGroup(id);
 
 	const breadcrumb =
 		typeof data.state.breadcrumb === "undefined"
@@ -81,17 +83,15 @@ function DetailProject() {
 		setIsModalVisible(true);
 	};
 
-	const handleOk = (groupName) => {
-		// groupService.createGroup(groupName);
-		GroupService.createGroup(groupName)
+	const handleOk = (values) => {
+		const { groupName } = values;
+		GroupService.createGroup(groupName, id)
 			.then((response) => {
-				console.log("Printing connection data", response.data);
+				window.location.reload();
 			})
 			.catch((error) => {
 				console.log("Something went wrong", error);
 			});
-		console.log(groupName);
-		form.resetFields();
 		setIsModalVisible(false);
 	};
 
@@ -105,30 +105,31 @@ function DetailProject() {
 			<Modal
 				title='Add Group'
 				visible={isModalVisible}
+				onOk={() => {
+					form.validateFields()
+						.then((values) => {
+							form.resetFields();
+							handleOk(values);
+						})
+						.catch((info) => {
+							console.log("Validate Failed:", info);
+						});
+				}}
 				onCancel={handleCancel}
-				footer={[
-					<Button
-						key='add-group'
-						onClick={() => {
-							form.validateFields()
-								.then((values) => {
-									handleOk(values);
-								})
-								.catch((info) => {
-									console.log("Validate Failed:", info);
-								});
-						}}
-						type='primary'
-					>
-						Add Group
-					</Button>,
-				]}
+				okText='Create Group'
+				cancelText='Cancel'
 			>
-				<Form layout='vertical'>
+				<Form layout='vertical' form={form}>
 					<Form.Item
 						label='Group Name'
 						name='groupName'
 						style={{ width: "100%" }}
+						rules={[
+							{
+								required: true,
+								message: "Please input the group name!",
+							},
+						]}
 					>
 						<Input />
 					</Form.Item>
