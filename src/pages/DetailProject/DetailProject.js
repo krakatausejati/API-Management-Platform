@@ -5,6 +5,7 @@ import { Link, useLocation } from "react-router-dom";
 import useGroup from "../../hooks/useGroup";
 import { GroupService } from "../../services/GroupService";
 import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
+import moment from "moment";
 
 function DetailProject() {
 	let data = useLocation();
@@ -21,7 +22,10 @@ function DetailProject() {
 		no: `${index + 1}`,
 		name: `${groupItem.groupName}`,
 		sum_api: "12",
-		created_at: `${groupItem.createdAt}`,
+		created_at: `${moment
+			.utc(groupItem.createdAt)
+			.local()
+			.format("DD MMMM YYYY, HH:m:s a")}`,
 		created_by: `${groupItem.createdBy}`,
 		detail: "...",
 	}));

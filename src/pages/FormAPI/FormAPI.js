@@ -18,8 +18,8 @@ export default function FormAPI() {
 	let data = useLocation();
 	const breadcrumb = data.state.breadcrumb;
 	const tables = useSchemaTable();
-	const columns = useSchemaColumn();
-	const [isTableSelected, setIsTableSelected] = useState(false);
+	const [tableSelected, setTableSelected] = useState("");
+	const columns = useSchemaColumn(tableSelected);
 	const [form] = Form.useForm();
 	const [requiredMark, setRequiredMarkType] = useState("");
 
@@ -78,7 +78,7 @@ export default function FormAPI() {
 							<Form.Item label='Table'>
 								<Select
 									onChange={(value) => {
-										setIsTableSelected(true);
+										setTableSelected(value);
 									}}
 								>
 									{tables.map((tables, index) => (
@@ -88,7 +88,7 @@ export default function FormAPI() {
 									))}
 								</Select>
 							</Form.Item>
-							{isTableSelected ? (
+							{tableSelected ? (
 								<Form.Item
 									label='Column'
 									name='remember'
