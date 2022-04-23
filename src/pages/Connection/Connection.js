@@ -170,7 +170,7 @@ function Connection() {
 							</Form.Item>
 							<Form.Item
 								label='Database Username'
-								name='databaseUserame'
+								name='databaseUsername'
 								style={{ width: "100%" }}
 								rules={[
 									{

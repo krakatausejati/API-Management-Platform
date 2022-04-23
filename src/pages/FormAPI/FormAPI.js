@@ -12,14 +12,24 @@ import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import useSchemaColumn from "../../hooks/useSchemaColumn";
 import useSchemaTable from "../../hooks/useSchemaTable";
+import useConnection from "../../hooks/useConnection";
 import "./create-api.css";
 
 export default function FormAPI() {
+	const connections = useConnection();
+	const [connectionSelected, setConnectionSelected] = useState("");
+
+	const config = connectionSelected
+		? connectionConfig(connectionSelected)
+		: null;
+
+	const tables = useSchemaTable(config || null);
+
+	const [tableSelected, setTableSelected] = useState("");
+	const columns = useSchemaColumn(tableSelected, config || null);
+
 	let data = useLocation();
 	const breadcrumb = data.state.breadcrumb;
-	const tables = useSchemaTable();
-	const [tableSelected, setTableSelected] = useState("");
-	const columns = useSchemaColumn(tableSelected);
 	const [form] = Form.useForm();
 	const [requiredMark, setRequiredMarkType] = useState("");
 
@@ -33,6 +43,25 @@ export default function FormAPI() {
 		label: `${columnItem.columnName} | ${columnItem.columnType}`,
 		value: columnItem.columnName,
 	}));
+
+	const listUserData = [
+		{
+			label: "Shofwan",
+			value: "Shofwan",
+		},
+		{
+			label: "Atau",
+			value: "Atau",
+		},
+	];
+
+	function connectionConfig(connectionSelected) {
+		let connection = connections.find(
+			(connectionItem) => connectionItem?.id === connectionSelected
+		);
+
+		return connection;
+	}
 
 	return (
 		<>
@@ -69,29 +98,57 @@ export default function FormAPI() {
 							<Form.Item label='Endpoints'>
 								<Input />
 							</Form.Item>
+							<Form.Item label='Private'>
+								<Switch />
+							</Form.Item>
+							<Form.Item valuePropName='checked'>
+								<Checkbox.Group
+									options={listUserData}
+									className='checkbox-group'
+								/>
+							</Form.Item>
 						</div>
 						<div
 							className='right-side'
 							style={{ minWidth: "600px" }}
 						>
 							<h2>Database</h2>
-							<Form.Item label='Table'>
+							<Form.Item label='Connections'>
 								<Select
 									onChange={(value) => {
-										setTableSelected(value);
+										setConnectionSelected(value);
 									}}
 								>
-									{tables.map((tables, index) => (
-										<Option value={tables} key={index}>
-											{tables}
+									{connections.map((connections, index) => (
+										<Option
+											value={connections.id}
+											key={connections.id}
+										>
+											{connections.connectionName}
 										</Option>
 									))}
 								</Select>
 							</Form.Item>
+
+							{connectionSelected ? (
+								<Form.Item label='Table'>
+									<Select
+										onChange={(value) => {
+											setTableSelected(value);
+										}}
+									>
+										{tables.map((tables, index) => (
+											<Option value={tables} key={index}>
+												{tables}
+											</Option>
+										))}
+									</Select>
+								</Form.Item>
+							) : null}
+
 							{tableSelected ? (
 								<Form.Item
 									label='Column'
-									name='remember'
 									valuePropName='checked'
 								>
 									{" "}
@@ -104,9 +161,6 @@ export default function FormAPI() {
 							<h2>Limits</h2>
 							<Form.Item label='Max Limit'>
 								<Input addonAfter={"per hours"} />
-							</Form.Item>
-							<Form.Item label='Private'>
-								<Switch />
 							</Form.Item>
 						</div>
 					</div>

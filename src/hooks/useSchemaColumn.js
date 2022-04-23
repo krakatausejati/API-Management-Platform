@@ -1,20 +1,22 @@
 import { useState, useEffect } from "react";
 import { SchemaService } from "../services/SchemaService";
 
-const useSchemaColumn = (selectedTable) => {
-	const [tables, setTables] = useState([]);
+const useSchemaColumn = (selectedTable, config) => {
+	const [columns, setColumns] = useState([]);
 
 	useEffect(() => {
-		SchemaService.getAllColumn(selectedTable)
-			.then((response) => {
-				setTables(response.data);
-			})
-			.catch((error) => {
-				console.log("Something went wrong", error);
-			});
-	}, [selectedTable]);
+		if (config) {
+			SchemaService.getAllColumn(selectedTable, config)
+				.then((response) => {
+					setColumns(response.data);
+				})
+				.catch((error) => {
+					console.log("Something went wrong", error);
+				});
+		}
+	}, [selectedTable, config]);
 
-	return tables;
+	return columns;
 };
 
 export default useSchemaColumn;
