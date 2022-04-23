@@ -12,8 +12,24 @@ import {
 } from "antd";
 import { ExportOutlined } from "@ant-design/icons";
 import "./detail-api.css";
+import moment from "moment";
+import { APIService } from "../../services/APIService";
+import useAPIHistory from "../../hooks/useAPIHistory";
 
 function DetailAPI() {
+  const history = useAPIHistory();
+  
+  const dataSource = history.map((historyItem, index) => ({
+		key: `${index}`,
+		no: `${index + 1}`,
+		ip: `${historyItem.requestAddress}`,
+		datetime: `${moment
+			.utc(historyItem.requestDate)
+			.local()
+			.format("DD MMMM YYYY, HH:m:s a")}`,
+    status: `${historyItem.requestStatus}`,
+	}));
+
   const columns = [
     {
       title: "No",
@@ -28,41 +44,26 @@ function DetailAPI() {
     {
       title: "Datetime",
       dataIndex: "datetime",
-      key: "project",
+      key: "datetime",
     },
+    
     {
       title: "Status",
       dataIndex: "status",
       key: "status",
-      render: (tags) => (
+      render: (status, index) => (
         <>
-          {tags.map((tag) => {
-            let color = tag.length > 5 ? "#3F8600" : "#CF1322";
-            return (
-              <Tag color={color} key={tag}>
-                {tag.toUpperCase()}
-              </Tag>
-            );
-          })}
+          {status <= 300 
+          ? (
+            <Tag color={"#3F8600"} key={index}>
+            {"SUCCESS"}
+            </Tag>
+            ) : 
+            <Tag color={"#CF1322"} key={index}>
+            {"FAIL"}
+            </Tag>}
         </>
       ),
-    },
-  ];
-
-  const dataSource = [
-    {
-      key: "1",
-      no: "1",
-      ip: "192.168.38.1",
-      datetime: "12-02-2022 21:04:25 ",
-      status: ["success"],
-    },
-    {
-      key: "2",
-      no: "2",
-      ip: "192.168.46.1",
-      datetime: "12-04-2022 21:24:25 ",
-      status: ["fail"],
     },
   ];
 
