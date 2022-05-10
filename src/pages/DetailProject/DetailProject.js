@@ -4,12 +4,13 @@ import moment from "moment";
 import React, { useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
+import { handleURLName } from "../../helpers/Utils";
 import useGroup from "../../hooks/useGroup";
 import { GroupService } from "../../services/GroupService";
 
 function DetailProject() {
 	let data = useLocation();
-	let { idProject } = useParams();
+	let { idProject, projectName } = useParams();
 	const id = parseInt(idProject, 10);
 	const [form] = Form.useForm();
 	const group = useGroup(id);
@@ -20,7 +21,7 @@ function DetailProject() {
 			: data.state.breadcrumb;
 
 	const dataSource = group.map((groupItem, index) => ({
-		key: `${index}`,
+		key: `${groupItem.idGroup}`,
 		no: `${index + 1}`,
 		name: `${groupItem.groupName}`,
 		sum_api: "12",
@@ -42,15 +43,19 @@ function DetailProject() {
 			title: "Name",
 			dataIndex: "name",
 			key: "name",
-			render: (data) => (
+			render: (text, record) => (
 				<>
 					<Link
 						to={{
-							pathname: "/detail-group",
-							state: { breadcrumb: "Group", name: data },
+							pathname: `/project/${idProject}/${projectName}/group/${
+								record.key
+							}/${handleURLName(text)}`,
+							state: {
+								breadcrumb: "Group",
+							},
 						}}
 					>
-						{data}
+						{text}
 					</Link>
 				</>
 			),

@@ -9,29 +9,35 @@ import {
 	Switch,
 } from "antd";
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
+import { handleURLName } from "../../helpers/Utils";
+import useConnection from "../../hooks/useConnection";
 import useSchemaColumn from "../../hooks/useSchemaColumn";
 import useSchemaTable from "../../hooks/useSchemaTable";
-import useConnection from "../../hooks/useConnection";
+import { APIService } from "../../services/APIService";
 import "./create-api.css";
 
 export default function FormAPI() {
+	let { projectName, groupName } = useParams();
 	const connections = useConnection();
+
 	const [connectionSelected, setConnectionSelected] = useState("");
 
-	const config = connectionSelected
-		? connectionConfig(connectionSelected)
+	const connectionConfig = connectionSelected
+		? handleConnectionConfig(connectionSelected)
 		: null;
 
-	const tables = useSchemaTable(config || null);
+	const tables = useSchemaTable(connectionConfig || null);
 
 	const [tableSelected, setTableSelected] = useState("");
-	const columns = useSchemaColumn(tableSelected, config || null);
+	const columns = useSchemaColumn(tableSelected, connectionConfig || null);
 
 	let data = useLocation();
 	const breadcrumb = data.state.breadcrumb;
 	const [form] = Form.useForm();
 	const [requiredMark, setRequiredMarkType] = useState("");
+
+	const [indeterminate] = useState(true);
 
 	const onRequiredTypeChange = ({ requiredMarkValue }) => {
 		setRequiredMarkType(requiredMarkValue);
@@ -55,13 +61,61 @@ export default function FormAPI() {
 		},
 	];
 
-	function connectionConfig(connectionSelected) {
+	const onChangeChecked = (list) => {
+		if (list.length === columnData.length) {
+			form.setFieldsValue({
+				...form.getFieldsValue(),
+				column: ["*"],
+			});
+		} else {
+			form.setFieldsValue({
+				...form.getFieldsValue(),
+				column: list,
+			});
+		}
+	};
+
+	const onCheckAllChange = (e) => {
+		form.setFieldsValue({
+			...form.getFieldsValue(),
+			column: e.target.checked ? ["*"] : [],
+		});
+	};
+
+	const handleChangeEndpoint = (e) => {
+		const { value } = e.target;
+		handleGeneratedEndpoint(value);
+	};
+
+	const handleSubmit = (values) => {
+		console.log(values);
+		APIService.createAPI(values)
+			.then((response) => {
+				window.location.reload();
+			})
+			.catch((error) => {
+				console.log("Something went wrong", error);
+			});
+	};
+
+	function handleConnectionConfig(connectionSelected) {
 		let connection = connections.find(
 			(connectionItem) => connectionItem?.id === connectionSelected
 		);
 
 		return connection;
 	}
+
+	const handleGeneratedEndpoint = (endpoint) => {
+		let generatedEndpoints = `http://${connectionConfig?.host}:${
+			connectionConfig?.port
+		}/api/v1/${projectName}/${groupName}/${handleURLName(endpoint)}`;
+
+		form.setFieldsValue({
+			...form.getFieldsValue(),
+			generatedEndpoint: generatedEndpoints,
+		});
+	};
 
 	return (
 		<>
@@ -82,6 +136,7 @@ export default function FormAPI() {
 					}}
 					onValuesChange={onRequiredTypeChange}
 					requiredMark={requiredMark}
+					onFinish={handleSubmit}
 				>
 					<div
 						className='form-create-api'
@@ -91,29 +146,8 @@ export default function FormAPI() {
 							className='left-side'
 							style={{ minWidth: "600px" }}
 						>
-							<h2>Identity API</h2>
-							<Form.Item label='Description'>
-								<Input />
-							</Form.Item>
-							<Form.Item label='Endpoints'>
-								<Input />
-							</Form.Item>
-							<Form.Item label='Private'>
-								<Switch />
-							</Form.Item>
-							<Form.Item valuePropName='checked'>
-								<Checkbox.Group
-									options={listUserData}
-									className='checkbox-group'
-								/>
-							</Form.Item>
-						</div>
-						<div
-							className='right-side'
-							style={{ minWidth: "600px" }}
-						>
 							<h2>Database</h2>
-							<Form.Item label='Connections'>
+							<Form.Item label='Connections' name='connection'>
 								<Select
 									onChange={(value) => {
 										setConnectionSelected(value);
@@ -131,7 +165,7 @@ export default function FormAPI() {
 							</Form.Item>
 
 							{connectionSelected ? (
-								<Form.Item label='Table'>
+								<Form.Item label='Table' name='table'>
 									<Select
 										onChange={(value) => {
 											setTableSelected(value);
@@ -149,18 +183,46 @@ export default function FormAPI() {
 							{tableSelected ? (
 								<Form.Item
 									label='Column'
-									valuePropName='checked'
+									// valuePropName='checked'
+									name='column'
 								>
-									{" "}
+									<Checkbox
+										indeterminate={indeterminate}
+										onChange={onCheckAllChange}
+									>
+										Check all
+									</Checkbox>{" "}
 									<Checkbox.Group
+										// className='checkbox-group'
 										options={columnData}
-										className='checkbox-group'
+										onChange={onChangeChecked}
 									/>{" "}
 								</Form.Item>
 							) : null}
 							<h2>Limits</h2>
-							<Form.Item label='Max Limit'>
+							<Form.Item label='Max Limit' name='limit'>
 								<Input addonAfter={"per hours"} />
+							</Form.Item>
+						</div>
+						<div
+							className='right-side'
+							style={{ minWidth: "600px" }}
+						>
+							<h2>Identity API</h2>
+							<Form.Item label='Description' name='description'>
+								<Input />
+							</Form.Item>
+							<Form.Item label='Endpoints' name='endpoint'>
+								<Input onChange={handleChangeEndpoint} />
+							</Form.Item>
+							<Form.Item label='Private' name='is_private'>
+								<Switch defaultChecked={false} />
+							</Form.Item>
+							<Form.Item valuePropName='checked'>
+								<Checkbox.Group
+									options={listUserData}
+									className='checkbox-group'
+								/>
 							</Form.Item>
 						</div>
 					</div>
@@ -168,12 +230,13 @@ export default function FormAPI() {
 						<h4>
 							<InfoCircleOutlined /> Preview Generated API
 						</h4>
-						<Input
-							disabled
-							defaultValue={
-								"https://api.management.nbi.com/{user}/{project_name}/{group_name}/(free}"
-							}
-						/>
+						<Form.Item name='generatedEndpoint'>
+							<Input
+								disabled
+								// defaultValue=''
+								// value={generatedEndpoint}
+							/>
+						</Form.Item>
 					</div>
 					<Form.Item style={{ marginTop: "24px" }}>
 						<Button type='primary' htmlType='submit'>

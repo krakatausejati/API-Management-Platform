@@ -14,7 +14,6 @@ const useSchemaTable = (connectionConfig) => {
 					console.log("Something went wrong", error);
 				});
 		}
-		console.log(connectionConfig);
 	}, [connectionConfig]);
 
 	return tables;

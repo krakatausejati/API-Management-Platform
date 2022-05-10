@@ -1,5 +1,6 @@
 import axiosInstance from "../helpers/Axios";
 import { BASE_URL } from "../helpers/Constant";
+import qs from "query-string";
 
 export const AuthService = {
 	login,
@@ -7,10 +8,10 @@ export const AuthService = {
 
 function login(username, password) {
 	const body = {
-		client_id: "api-auth",
+		client_id: "api-management-auth",
 		username,
 		password,
 		grant_type: "password",
 	};
-	return axiosInstance(BASE_URL.KEYCLOAK_AUTH).post("/", body);
+	return axiosInstance(BASE_URL.KEYCLOAK_AUTH).post("", qs.stringify(body));
 }

@@ -1,3 +1,13 @@
 .form-create-api > div {
-  min-width: 600px;
+	min-width: 600px;
+}
+
+.ant-checkbox-wrapper span {
+	color: black;
+}
+
+.ant-checkbox-group {
+	background-color: #fff;
+	display: flex;
+	flex-direction: column;
 }

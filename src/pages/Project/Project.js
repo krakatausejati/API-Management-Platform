@@ -6,6 +6,7 @@ import useProject from "../../hooks/useProject";
 import { useKeycloak } from "@react-keycloak/web";
 import moment from "moment";
 import { ProjectService } from "../../services/ProjectService";
+import { handleURLName } from "../../helpers/Utils.js";
 
 function Project() {
 	const project = useProject();
@@ -39,7 +40,9 @@ function Project() {
 				<>
 					<Link
 						to={{
-							pathname: `/project/${record.key}/group`,
+							pathname: `/project/${record.key}/${handleURLName(
+								text
+							)}/group`,
 							state: { breadcrumb: "Project", name: text },
 						}}
 					>

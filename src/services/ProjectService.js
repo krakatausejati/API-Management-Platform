@@ -16,5 +16,10 @@ function createProject(projectName) {
 		projectOwner: "Project Owner Dummy",
 	};
 
-	return axiosInstance(BASE_URL.PROJECT).post("", dataProject);
+	return axiosInstance(BASE_URL.PROJECT).post("", dataProject, {
+		headers: {
+			"Content-Type": "application/json",
+			"Access-Control-Allow-Origin": "*",
+		},
+	});
 }

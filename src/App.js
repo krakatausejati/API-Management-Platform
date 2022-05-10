@@ -31,56 +31,62 @@ function App() {
 
 	return (
 		<Router>
-			{/* <ReactKeycloakProvider authClient={keycloak}> */}
-			<Switch>
-				<Route path='/' exact>
-					<Login />
-				</Route>
-				<Route path='/login' exact>
-					<Login />
-				</Route>
-				<Route path='/dashboard' exact>
-					{/* <PrivateRoute> */}
-					<DashboardLayout children={<Dashboard />} />
-					{/* </PrivateRoute> */}
-				</Route>
-				<Route path='/form-api' exact>
-					{/* <PrivateRoute> */}
-					<DashboardLayout children={<FormAPI />} />
-					{/* </PrivateRoute> */}
-				</Route>
-				<Route path='/detail' exact>
-					{/* <PrivateRoute> */}
-					<DashboardLayout children={<DetailAPI />} />
-					{/* </PrivateRoute> */}
-				</Route>
-				<Route path='/project' exact>
-					{/* <PrivateRoute> */}
-					<DashboardLayout children={<Project />} />
-					{/* </PrivateRoute> */}
-				</Route>
-				<Route path='/project/:idProject/group' exact>
-					{/* <PrivateRoute> */}
-					<DashboardLayout children={<DetailProject />} />
-					{/* </PrivateRoute> */}
-				</Route>
-				<Route path='/detail-group' exact>
-					{/* <PrivateRoute> */}
-					<DashboardLayout children={<DetailGroup />} />
-					{/* </PrivateRoute> */}
-				</Route>
-				<Route path='/api' exact>
-					{/* <PrivateRoute> */}
-					<DashboardLayout children={<Api />} />
-					{/* </PrivateRoute> */}
-				</Route>
-				<Route path='/connection' exact>
-					{/* <PrivateRoute> */}
-					<DashboardLayout children={<Connection />} />
-					{/* </PrivateRoute> */}
-				</Route>
-			</Switch>
-			{/* </ReactKeycloakProvider> */}
+			<ReactKeycloakProvider authClient={keycloak}>
+				<Switch>
+					<Route path='/' exact>
+						<Login />
+					</Route>
+					<Route path='/login' exact>
+						<Login />
+					</Route>
+					<Route path='/dashboard' exact>
+						{/* <PrivateRoute> */}
+						<DashboardLayout children={<Dashboard />} />
+						{/* </PrivateRoute> */}
+					</Route>
+					<Route path='/detail' exact>
+						{/* <PrivateRoute> */}
+						<DashboardLayout children={<DetailAPI />} />
+						{/* </PrivateRoute> */}
+					</Route>
+					<Route path='/project' exact>
+						{/* <PrivateRoute> */}
+						<DashboardLayout children={<Project />} />
+						{/* </PrivateRoute> */}
+					</Route>
+					<Route path='/project/:idProject/:projectName/group' exact>
+						{/* <PrivateRoute> */}
+						<DashboardLayout children={<DetailProject />} />
+						{/* </PrivateRoute> */}
+					</Route>
+					<Route
+						path='/project/:idProject/:projectName/group/:idGroup/:groupName'
+						exact
+					>
+						{/* <PrivateRoute> */}
+						<DashboardLayout children={<DetailGroup />} />
+						{/* </PrivateRoute> */}
+					</Route>
+					<Route
+						path='/project/:idProject/:projectName/group/:idGroup/:groupName/form-api'
+						exact
+					>
+						{/* <PrivateRoute> */}
+						<DashboardLayout children={<FormAPI />} />
+						{/* </PrivateRoute> */}
+					</Route>
+					<Route path='/api' exact>
+						{/* <PrivateRoute> */}
+						<DashboardLayout children={<Api />} />
+						{/* </PrivateRoute> */}
+					</Route>
+					<Route path='/connection' exact>
+						{/* <PrivateRoute> */}
+						<DashboardLayout children={<Connection />} />
+						{/* </PrivateRoute> */}
+					</Route>
+				</Switch>
+			</ReactKeycloakProvider>
 		</Router>
 	);
 }

@@ -3,6 +3,7 @@ import { Button, Form, Input, Modal, Table } from "antd";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
+// import HeaderDataTable from "../../components/molecules/HeaderDataTable";
 import useConnection from "../../hooks/useConnection";
 import { ConnectionService } from "../../services/ConnectionService";
 
@@ -203,6 +204,15 @@ function Connection() {
 			{/* Modal */}
 
 			<Breadcrumbs breadcrumb='Connection' current={null} />
+			{/* <HeaderDataTable
+				// menu={menu}
+				// onSearch={onSearch}
+				title='List Connection'
+				titleButton='Add Connection'
+				// pathname='/create-api'
+				// breadcrumb='API'
+				onClick={showModal}
+			/> */}
 			<div className='header-datatable'>
 				<h1>List Connections</h1>
 				<div className='add-field'>

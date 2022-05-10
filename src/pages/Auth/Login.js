@@ -26,7 +26,8 @@ function Login() {
 		const { email_username, password } = values;
 
 		AuthService.login(email_username, password).then((response) => {
-			// localStorage.setItem("token", response);
+			localStorage.setItem("access_token", response.data.access_token);
+			localStorage.setItem("refresh_token", response.data.refresh_token);
 			console.log(response);
 		});
 	};
