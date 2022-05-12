@@ -5,7 +5,6 @@ export const BASE_URL = {
 	TABLE: "http://localhost:8080/api/schema/tables",
 	API: "http://localhost:8080/api/apis",
 	AUTH: "http://localhost:8180/auth",
-	HISTORY: "http://localhost:8080/api/projects/history",
 	KEYCLOAK_AUTH:
-		"http://localhost:8180/auth/realms/api-managements/protocol/openid-connect/token",
+		"http://localhost:8180/auth/realms/api-management/protocol/openid-connect/token",
 };

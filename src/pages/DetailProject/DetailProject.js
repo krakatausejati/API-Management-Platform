@@ -1,10 +1,9 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, Form, Input, Modal, Table } from "antd";
-import moment from "moment";
 import React, { useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
-import { handleURLName } from "../../helpers/Utils";
+import { handleDate, handleURLName } from "../../helpers/Utils";
 import useGroup from "../../hooks/useGroup";
 import { GroupService } from "../../services/GroupService";
 
@@ -25,10 +24,7 @@ function DetailProject() {
 		no: `${index + 1}`,
 		name: `${groupItem.groupName}`,
 		sum_api: "12",
-		created_at: `${moment
-			.utc(groupItem.createdAt)
-			.local()
-			.format("DD MMMM YYYY, HH:m:s a")}`,
+		created_at: `${handleDate(groupItem.createdAt)}`,
 		created_by: `${groupItem.createdBy}`,
 		detail: "...",
 	}));

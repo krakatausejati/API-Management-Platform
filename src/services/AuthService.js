@@ -8,7 +8,7 @@ export const AuthService = {
 
 function login(username, password) {
 	const body = {
-		client_id: "api-management-auth",
+		client_id: "api-auth",
 		username,
 		password,
 		grant_type: "password",

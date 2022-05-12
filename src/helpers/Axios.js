@@ -10,17 +10,25 @@ const axiosInstance = (url = "") => {
 		},
 	});
 
+	axiosConfig.interceptors.request.use(
+		(config) => {
+			const token = localStorage.getItem("access_token");
+			if (token) {
+				config.headers["Authorization"] = `Bearer ${token}`;
+			}
+			console.log(config);
+			return config;
+		},
+		(error) => {
+			return Promise.reject(error);
+		}
+	);
+
 	return axiosConfig;
 };
 
-// axios.interceptors.request.use(
-// 	(config) => {
-// 		config.headers.Authorization = `${keycloak.token}`;
-// 		return config;
-// 	},
-// 	(error) => {
-// 		return Promise.reject(error);
-// 	}
-// );
+// export function axiosInterceptors() {
+
+// }
 
 export default axiosInstance;

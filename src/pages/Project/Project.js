@@ -4,9 +4,8 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import useProject from "../../hooks/useProject";
 import { useKeycloak } from "@react-keycloak/web";
-import moment from "moment";
 import { ProjectService } from "../../services/ProjectService";
-import { handleURLName } from "../../helpers/Utils.js";
+import { handleURLName, handleDate } from "../../helpers/Utils.js";
 
 function Project() {
 	const project = useProject();
@@ -18,10 +17,7 @@ function Project() {
 		no: `${index + 1}`,
 		name: `${projectItem.projectName}`,
 		sum_group: "12",
-		created_at: `${moment
-			.utc(projectItem.createdAt)
-			.local()
-			.format("DD MMMM YYYY, HH:m:s a")}`,
+		created_at: `${handleDate(projectItem.createdAt)}`,
 		created_by: `${projectItem.projectOwner}`,
 		detail: "...",
 	}));

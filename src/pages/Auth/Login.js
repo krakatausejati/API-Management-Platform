@@ -2,12 +2,13 @@ import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { useKeycloak } from "@react-keycloak/web";
 import { Button, Form, Input } from "antd";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { AuthService } from "../../services/AuthService";
 import "./login.css";
 
 function Login() {
-	// const { keycloak, initialized } = useKeycloak();
+	const history = useHistory();
+	const { keycloak, initialized } = useKeycloak();
 
 	const [state, setState] = useState({
 		email_username: "",
@@ -25,11 +26,22 @@ function Login() {
 	const handleLogin = (values) => {
 		const { email_username, password } = values;
 
-		AuthService.login(email_username, password).then((response) => {
-			localStorage.setItem("access_token", response.data.access_token);
-			localStorage.setItem("refresh_token", response.data.refresh_token);
-			console.log(response);
-		});
+		AuthService.login(email_username, password)
+			.then((response) => {
+				localStorage.setItem(
+					"access_token",
+					response.data.access_token
+				);
+				localStorage.setItem(
+					"refresh_token",
+					response.data.refresh_token
+				);
+
+				history.push("/dashboard");
+			})
+			.catch((error) => {
+				console.log(error);
+			});
 	};
 
 	return (
@@ -46,63 +58,63 @@ function Login() {
 			<div className='form-login'>
 				<h1>Login.</h1>
 				<p>Please login to your account.</p>
-				{/* {!keycloak.authenticated && ( */}
-				<Form
-					name='normal_login'
-					className='login-form'
-					onSubmit={handleLogin}
-					onFinish={handleLogin}
-				>
-					<Form.Item
-						name='email_username'
-						rules={[
-							{
-								required: true,
-								message: "Please input your Email / Username!",
-							},
-						]}
+				{!keycloak.authenticated && (
+					<Form
+						name='normal_login'
+						className='login-form'
+						onFinish={handleLogin}
 					>
-						<Input
-							prefix={
-								<MailOutlined className='site-form-item-icon' />
-							}
-							placeholder='Email / Username'
-							value={state.email_username}
-							onChange={handleChange}
-						/>
-					</Form.Item>
-					<Form.Item
-						name='password'
-						rules={[
-							{
-								required: true,
-								message: "Please input your Password!",
-							},
-						]}
-					>
-						<Input.Password
-							prefix={
-								<LockOutlined className='site-form-item-icon' />
-							}
-							type='password'
-							placeholder='Password'
-							value={state.password}
-							onChange={handleChange}
-						/>
-					</Form.Item>
-					<Form.Item>
-						<Button
-							type='submit'
-							htmlType='submit'
-							className='login-form-button'
-							// onClick={() => keycloak.login()}
-							// onClick={handleLogin}
+						<Form.Item
+							name='email_username'
+							rules={[
+								{
+									required: true,
+									message:
+										"Please input your Email / Username!",
+								},
+							]}
 						>
-							SIGN IN
-						</Button>
-					</Form.Item>
-				</Form>
-				{/* )} */}
+							<Input
+								prefix={
+									<MailOutlined className='site-form-item-icon' />
+								}
+								placeholder='Email / Username'
+								value={state.email_username}
+								onChange={handleChange}
+							/>
+						</Form.Item>
+						<Form.Item
+							name='password'
+							rules={[
+								{
+									required: true,
+									message: "Please input your Password!",
+								},
+							]}
+						>
+							<Input.Password
+								prefix={
+									<LockOutlined className='site-form-item-icon' />
+								}
+								type='password'
+								placeholder='Password'
+								value={state.password}
+								onChange={handleChange}
+							/>
+						</Form.Item>
+						<Form.Item>
+							<Button
+								type='submit'
+								htmlType='submit'
+								className='login-form-button'
+								// onClick={() => keycloak.login()}
+								// onClick={handleLogin}
+							>
+								SIGN IN
+							</Button>
+						</Form.Item>
+					</Form>
+				)}
 			</div>
 		</section>
 	);
