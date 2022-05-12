@@ -59,7 +59,7 @@ function DetailGroup() {
 			key: "detail",
 			render: (text, record) => (
 				<Space>
-					<Link to={"/detail"}>
+					<Link to={`api/${record.key}/history`}>
 						<Button icon={<EyeOutlined />} type='primary' />
 					</Link>
 					<Link to={"/delete"}>

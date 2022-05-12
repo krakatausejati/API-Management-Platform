@@ -44,11 +44,6 @@ function App() {
 						<DashboardLayout children={<Dashboard />} />
 						{/* </PrivateRoute> */}
 					</Route>
-					<Route path='/detail' exact>
-						{/* <PrivateRoute> */}
-						<DashboardLayout children={<DetailAPI />} />
-						{/* </PrivateRoute> */}
-					</Route>
 					<Route path='/project' exact>
 						{/* <PrivateRoute> */}
 						<DashboardLayout children={<Project />} />
@@ -73,6 +68,11 @@ function App() {
 					>
 						{/* <PrivateRoute> */}
 						<DashboardLayout children={<FormAPI />} />
+						{/* </PrivateRoute> */}
+					</Route>
+					<Route path='/project/:idProject/:projectName/group/:idGroup/:groupName/api/:idApi/history' exact>
+						{/* <PrivateRoute> */}
+						<DashboardLayout children={<DetailAPI />} />
 						{/* </PrivateRoute> */}
 					</Route>
 					<Route path='/api' exact>

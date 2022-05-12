@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { APIService } from "../services/APIService";
 
-const useAPIHistory = () => {
+const useAPIHistory = (idApi) => {
     const [history, setHistory] = useState([]);
 
     useEffect(() => {
-		APIService.getAllHistory()
+		APIService.getAllHistory(idApi)
 			.then((response) => {
 				setHistory(response.data);
 			})

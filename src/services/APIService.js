@@ -7,12 +7,12 @@ export const APIService = {
 	createAPI,
 };
 
-function getAllHistory() {
-	return axiosInstance(BASE_URL.HISTORY).get("");
+function getAllHistory(idApi) {
+	return axiosInstance(`http://localhost:8080/api/${idApi}/history`).get("");
 }
 
 function createAPI(values) {
-	const { generatedEndpoint, table, column, description, limit, is_private } =
+	const { generatedEndpoint, table, column, description, limit, is_private, connection } =
 		values;
 
 	const columns = column.join();
@@ -24,6 +24,7 @@ function createAPI(values) {
 		description,
 		apiLimit: limit,
 		private: is_private,
+		idConnection: connection
 	};
 
 	return axiosInstance(BASE_URL.API).post("", dataAPI, {

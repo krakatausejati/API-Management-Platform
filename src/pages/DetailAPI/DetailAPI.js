@@ -15,12 +15,15 @@ import "./detail-api.css";
 import moment from "moment";
 import { APIService } from "../../services/APIService";
 import useAPIHistory from "../../hooks/useAPIHistory";
+import { useParams } from "react-router-dom";
 
 function DetailAPI() {
-  const history = useAPIHistory();
+  let { idApi  } = useParams();
+	const id = parseInt(idApi, 10);
+  const history = useAPIHistory(idApi);
   
   const dataSource = history.map((historyItem, index) => ({
-		key: `${index}`,
+		key: `${historyItem.idHistory}`,
 		no: `${index + 1}`,
 		ip: `${historyItem.requestAddress}`,
 		datetime: `${moment

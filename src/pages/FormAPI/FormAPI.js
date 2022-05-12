@@ -107,9 +107,7 @@ export default function FormAPI() {
 	}
 
 	const handleGeneratedEndpoint = (endpoint) => {
-		let generatedEndpoints = `http://${connectionConfig?.host}:${
-			connectionConfig?.port
-		}/api/v1/${projectName}/${groupName}/${handleURLName(endpoint)}`;
+		let generatedEndpoints = `http://localhost:8080/generated/api/${projectName}/${groupName}/${handleURLName(endpoint)}`;
 
 		form.setFieldsValue({
 			...form.getFieldsValue(),
