@@ -7,4 +7,6 @@ export const BASE_URL = {
 	AUTH: "http://localhost:8180/auth",
 	KEYCLOAK_AUTH:
 		"http://localhost:8180/auth/realms/api-management/protocol/openid-connect/token",
+	KEYCLOAK_USER:
+		"http://localhost:8180/auth/admin/realms/api-management/users",
 };

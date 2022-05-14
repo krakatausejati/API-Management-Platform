@@ -14,20 +14,28 @@ import { handleURLName } from "../../helpers/Utils";
 import useConnection from "../../hooks/useConnection";
 import useSchemaColumn from "../../hooks/useSchemaColumn";
 import useSchemaTable from "../../hooks/useSchemaTable";
+import useListUser from "../../hooks/useListUser";
 import { APIService } from "../../services/APIService";
 import "./create-api.css";
 
 export default function FormAPI() {
 	let { projectName, groupName } = useParams();
 	const connections = useConnection();
-
+	const users = useListUser();
+	const userData = users.length > 0 ? users.map((userItem) => ({
+		label: `${userItem.username}`,
+		value: userItem.id,
+	})): [];
 	const [connectionSelected, setConnectionSelected] = useState("");
+
 
 	const connectionConfig = connectionSelected
 		? handleConnectionConfig(connectionSelected)
 		: null;
 
 	const tables = useSchemaTable(connectionConfig || null);
+
+	const [isPrivate, setIsPrivate] = useState("");
 
 	const [tableSelected, setTableSelected] = useState("");
 	const columns = useSchemaColumn(tableSelected, connectionConfig || null);
@@ -49,17 +57,6 @@ export default function FormAPI() {
 		label: `${columnItem.columnName} | ${columnItem.columnType}`,
 		value: columnItem.columnName,
 	}));
-
-	const listUserData = [
-		{
-			label: "Shofwan",
-			value: "Shofwan",
-		},
-		{
-			label: "Atau",
-			value: "Atau",
-		},
-	];
 
 	const onChangeChecked = (list) => {
 		if (list.length === columnData.length) {
@@ -113,7 +110,7 @@ export default function FormAPI() {
 			...form.getFieldsValue(),
 			generatedEndpoint: generatedEndpoints,
 		});
-	};
+	};	
 
 	return (
 		<>
@@ -214,14 +211,20 @@ export default function FormAPI() {
 								<Input onChange={handleChangeEndpoint} />
 							</Form.Item>
 							<Form.Item label='Private' name='is_private'>
-								<Switch defaultChecked={false} />
+								<Switch 
+								onChange={(value) => {
+									setIsPrivate(value);
+								}}
+								defaultChecked={false} />
 							</Form.Item>
-							<Form.Item valuePropName='checked'>
+							{isPrivate ? 
+							(<Form.Item name='listUser'>
 								<Checkbox.Group
-									options={listUserData}
+									options={userData}
 									className='checkbox-group'
 								/>
-							</Form.Item>
+							</Form.Item>)
+							: null}
 						</div>
 					</div>
 					<div className='preview-generated-api'>

@@ -45,19 +45,7 @@ function DashboardLayout(props) {
 						<Link to='/api'>API Public</Link>
 					</Menu.Item>
 					<Menu.Item key='5' icon={<LogoutOutlined />}>
-						{/* <Button
-              type='danger'
-              htmlType='submit'
-              className='login-form-button'
-              onClick={() => keycloak.logout()}
-            > */}
-						<span
-							// onClick={() => keycloak.logout()}
-							style={{ color: "#fff" }}
-						>
-							<Link to='/login'>Logout</Link>
-						</span>
-						{/* </Button> */}
+						<Link to='/login'>Logout</Link>
 					</Menu.Item>
 				</Menu>
 			</Sider>
@@ -68,13 +56,10 @@ function DashboardLayout(props) {
 				>
 					<div className='user-profile'>
 						<Avatar
-							size={24}
+							size={30}
 							style={{ backgroundColor: "#87d068" }}
 							icon={<UserOutlined />}
 						/>
-						{/* {!!keycloak.authenticated && (
-                            <h4>{keycloak.tokenParsed.preferred_username}</h4>
-                        )} */}
 					</div>
 				</Header>
 				<Content style={{ margin: "24px 16px 0", overflow: "initial" }}>
