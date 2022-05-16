@@ -22,12 +22,14 @@ export default function FormAPI() {
 	let { projectName, groupName } = useParams();
 	const connections = useConnection();
 	const users = useListUser();
-	const userData = users.length > 0 ? users.map((userItem) => ({
-		label: `${userItem.username}`,
-		value: userItem.id,
-	})): [];
+	const userData =
+		users.length > 0
+			? users.map((userItem) => ({
+					label: `${userItem.username}`,
+					value: userItem.id,
+			  }))
+			: [];
 	const [connectionSelected, setConnectionSelected] = useState("");
-
 
 	const connectionConfig = connectionSelected
 		? handleConnectionConfig(connectionSelected)
@@ -85,7 +87,6 @@ export default function FormAPI() {
 	};
 
 	const handleSubmit = (values) => {
-		console.log(values);
 		APIService.createAPI(values)
 			.then((response) => {
 				window.location.reload();
@@ -104,13 +105,15 @@ export default function FormAPI() {
 	}
 
 	const handleGeneratedEndpoint = (endpoint) => {
-		let generatedEndpoints = `http://localhost:8080/generated/api/${projectName}/${groupName}/${handleURLName(endpoint)}`;
+		let generatedEndpoints = `http://localhost:8080/generated/api/${projectName}/${groupName}/${handleURLName(
+			endpoint
+		)}`;
 
 		form.setFieldsValue({
 			...form.getFieldsValue(),
 			generatedEndpoint: generatedEndpoints,
 		});
-	};	
+	};
 
 	return (
 		<>
@@ -176,11 +179,7 @@ export default function FormAPI() {
 							) : null}
 
 							{tableSelected ? (
-								<Form.Item
-									label='Column'
-									// valuePropName='checked'
-									name='column'
-								>
+								<Form.Item label='Column' name='column'>
 									<Checkbox
 										indeterminate={indeterminate}
 										onChange={onCheckAllChange}
@@ -188,7 +187,6 @@ export default function FormAPI() {
 										Check all
 									</Checkbox>{" "}
 									<Checkbox.Group
-										// className='checkbox-group'
 										options={columnData}
 										onChange={onChangeChecked}
 									/>{" "}
@@ -211,20 +209,21 @@ export default function FormAPI() {
 								<Input onChange={handleChangeEndpoint} />
 							</Form.Item>
 							<Form.Item label='Private' name='is_private'>
-								<Switch 
-								onChange={(value) => {
-									setIsPrivate(value);
-								}}
-								defaultChecked={false} />
-							</Form.Item>
-							{isPrivate ? 
-							(<Form.Item name='listUser'>
-								<Checkbox.Group
-									options={userData}
-									className='checkbox-group'
+								<Switch
+									onChange={(value) => {
+										setIsPrivate(value);
+									}}
+									defaultChecked={false}
 								/>
-							</Form.Item>)
-							: null}
+							</Form.Item>
+							{isPrivate ? (
+								<Form.Item name='listUser'>
+									<Checkbox.Group
+										options={userData}
+										className='checkbox-group'
+									/>
+								</Form.Item>
+							) : null}
 						</div>
 					</div>
 					<div className='preview-generated-api'>
@@ -232,11 +231,7 @@ export default function FormAPI() {
 							<InfoCircleOutlined /> Preview Generated API
 						</h4>
 						<Form.Item name='generatedEndpoint'>
-							<Input
-								disabled
-								// defaultValue=''
-								// value={generatedEndpoint}
-							/>
+							<Input disabled />
 						</Form.Item>
 					</div>
 					<Form.Item style={{ marginTop: "24px" }}>

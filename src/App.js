@@ -15,20 +15,6 @@ import Project from "./pages/Project/Project";
 import Connection from "./pages/Connection/Connection";
 
 function App() {
-	// const { keycloak } = useKeycloak();
-
-	// useEffect(() => {
-	// 	axiosIns.interceptors.request.use(
-	// 		(config) => {
-	// 			config.headers.Authorization = `${keycloak.token}`;
-	// 			return config;
-	// 		},
-	// 		(error) => {
-	// 			return Promise.reject(error);
-	// 		}
-	// 	);
-	// }, []);
-
 	return (
 		<Router>
 			<ReactKeycloakProvider authClient={keycloak}>
@@ -40,50 +26,53 @@ function App() {
 						<Login />
 					</Route>
 					<Route path='/dashboard' exact>
-						{/* <PrivateRoute> */}
-						<DashboardLayout children={<Dashboard />} />
-						{/* </PrivateRoute> */}
+						<PrivateRoute>
+							<DashboardLayout children={<Dashboard />} />
+						</PrivateRoute>
 					</Route>
 					<Route path='/project' exact>
-						{/* <PrivateRoute> */}
-						<DashboardLayout children={<Project />} />
-						{/* </PrivateRoute> */}
+						<PrivateRoute>
+							<DashboardLayout children={<Project />} />
+						</PrivateRoute>
 					</Route>
 					<Route path='/project/:idProject/:projectName/group' exact>
-						{/* <PrivateRoute> */}
-						<DashboardLayout children={<DetailProject />} />
-						{/* </PrivateRoute> */}
+						<PrivateRoute>
+							<DashboardLayout children={<DetailProject />} />
+						</PrivateRoute>
 					</Route>
 					<Route
 						path='/project/:idProject/:projectName/group/:idGroup/:groupName'
 						exact
 					>
-						{/* <PrivateRoute> */}
-						<DashboardLayout children={<DetailGroup />} />
-						{/* </PrivateRoute> */}
+						<PrivateRoute>
+							<DashboardLayout children={<DetailGroup />} />
+						</PrivateRoute>
 					</Route>
 					<Route
 						path='/project/:idProject/:projectName/group/:idGroup/:groupName/form-api'
 						exact
 					>
-						{/* <PrivateRoute> */}
-						<DashboardLayout children={<FormAPI />} />
-						{/* </PrivateRoute> */}
+						<PrivateRoute>
+							<DashboardLayout children={<FormAPI />} />
+						</PrivateRoute>
 					</Route>
-					<Route path='/project/:idProject/:projectName/group/:idGroup/:groupName/api/:idApi/history' exact>
-						{/* <PrivateRoute> */}
-						<DashboardLayout children={<DetailAPI />} />
-						{/* </PrivateRoute> */}
+					<Route
+						path='/project/:idProject/:projectName/group/:idGroup/:groupName/api/:idApi/history'
+						exact
+					>
+						<PrivateRoute>
+							<DashboardLayout children={<DetailAPI />} />
+						</PrivateRoute>
 					</Route>
 					<Route path='/api' exact>
-						{/* <PrivateRoute> */}
-						<DashboardLayout children={<Api />} />
-						{/* </PrivateRoute> */}
+						<PrivateRoute>
+							<DashboardLayout children={<Api />} />
+						</PrivateRoute>
 					</Route>
 					<Route path='/connection' exact>
-						{/* <PrivateRoute> */}
-						<DashboardLayout children={<Connection />} />
-						{/* </PrivateRoute> */}
+						<PrivateRoute>
+							<DashboardLayout children={<Connection />} />
+						</PrivateRoute>
 					</Route>
 				</Switch>
 			</ReactKeycloakProvider>

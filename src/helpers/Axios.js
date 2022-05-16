@@ -5,18 +5,16 @@ const axiosInstance = (url = "") => {
 		baseURL: url,
 		headers: {
 			"Content-Type": "application/x-www-form-urlencoded",
-			// "Access-Control-Allow-Origin": "*",
-			// ...AuthHeader(),
 		},
 	});
 
 	axiosConfig.interceptors.request.use(
 		(config) => {
-			const token = localStorage.getItem("access_token");
-			if (token) {
-				config.headers["Authorization"] = `Bearer ${token}`;
+			const accessToken = localStorage.getItem("access_token");
+			if (accessToken) {
+				config.headers["Authorization"] = `Bearer ${accessToken}`;
 			}
-			
+
 			return config;
 		},
 		(error) => {
@@ -26,9 +24,5 @@ const axiosInstance = (url = "") => {
 
 	return axiosConfig;
 };
-
-// export function axiosInterceptors() {
-
-// }
 
 export default axiosInstance;

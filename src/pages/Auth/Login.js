@@ -1,14 +1,14 @@
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { useKeycloak } from "@react-keycloak/web";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, Modal } from "antd";
 import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { AuthService } from "../../services/AuthService";
 import "./login.css";
 
 function Login() {
 	const history = useHistory();
-	const { keycloak, initialized } = useKeycloak();
+	const { keycloak } = useKeycloak();
 
 	const [state, setState] = useState({
 		email_username: "",
@@ -40,7 +40,10 @@ function Login() {
 				history.push("/dashboard");
 			})
 			.catch((error) => {
-				console.log(error);
+				Modal.error({
+					title: "Login Failed",
+					content: "Username / Email and Password not valid!",
+				});
 			});
 	};
 
@@ -107,8 +110,6 @@ function Login() {
 								type='submit'
 								htmlType='submit'
 								className='login-form-button'
-								// onClick={() => keycloak.login()}
-								// onClick={handleLogin}
 							>
 								SIGN IN
 							</Button>

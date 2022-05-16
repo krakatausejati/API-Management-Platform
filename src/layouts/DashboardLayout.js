@@ -6,15 +6,14 @@ import {
 	SettingOutlined,
 	UserOutlined,
 } from "@ant-design/icons";
-// import { useKeycloak } from "@react-keycloak/web";
 import { Avatar, Layout, Menu } from "antd";
 import { Link } from "react-router-dom";
+import { AuthService } from "../services/AuthService";
 import "./dashboardlayout.css";
 
 const { Header, Content, Footer, Sider } = Layout;
 
 function DashboardLayout(props) {
-	// const { keycloak, initialized } = useKeycloak();
 	const { children } = props;
 	return (
 		<Layout hasSider>
@@ -44,7 +43,13 @@ function DashboardLayout(props) {
 					<Menu.Item key='4' icon={<ApiOutlined />}>
 						<Link to='/api'>API Public</Link>
 					</Menu.Item>
-					<Menu.Item key='5' icon={<LogoutOutlined />}>
+					<Menu.Item
+						key='5'
+						icon={<LogoutOutlined />}
+						onClick={() => {
+							AuthService.logout();
+						}}
+					>
 						<Link to='/login'>Logout</Link>
 					</Menu.Item>
 				</Menu>

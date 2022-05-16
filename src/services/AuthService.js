@@ -4,6 +4,7 @@ import qs from "query-string";
 
 export const AuthService = {
 	login,
+	logout,
 };
 
 function login(username, password) {
@@ -14,4 +15,9 @@ function login(username, password) {
 		grant_type: "password",
 	};
 	return axiosInstance(BASE_URL.KEYCLOAK_AUTH).post("", qs.stringify(body));
+}
+
+function logout() {
+	localStorage.removeItem("access_token");
+	localStorage.removeItem("refresh_token");
 }
