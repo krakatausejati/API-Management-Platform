@@ -13,6 +13,7 @@ import DetailProject from "./pages/DetailProject/DetailProject";
 import FormAPI from "./pages/FormAPI/FormAPI";
 import Project from "./pages/Project/Project";
 import Connection from "./pages/Connection/Connection";
+import DocumentationAPI from "./pages/DocumentationAPI/DocumentationAPI";
 
 function App() {
 	return (
@@ -57,11 +58,19 @@ function App() {
 						</PrivateRoute>
 					</Route>
 					<Route
-						path='/project/:idProject/:projectName/group/:idGroup/:groupName/api/:idApi/history'
+						path='/project/:idProject/:projectName/group/:idGroup/api/:idApi/history'
 						exact
 					>
 						<PrivateRoute>
 							<DashboardLayout children={<DetailAPI />} />
+						</PrivateRoute>
+					</Route>
+					<Route
+						path='/documentation'
+						exact
+					>
+						<PrivateRoute>
+							<DashboardLayout children={<DocumentationAPI />} />
 						</PrivateRoute>
 					</Route>
 					<Route path='/api' exact>

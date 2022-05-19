@@ -14,6 +14,7 @@ import { handleURLName } from "../../helpers/Utils";
 import useConnection from "../../hooks/useConnection";
 import useSchemaColumn from "../../hooks/useSchemaColumn";
 import useSchemaTable from "../../hooks/useSchemaTable";
+import useSchemaView from "../../hooks/useSchemaView";
 import useListUser from "../../hooks/useListUser";
 import { APIService } from "../../services/APIService";
 import "./create-api.css";
@@ -36,6 +37,7 @@ export default function FormAPI() {
 		: null;
 
 	const tables = useSchemaTable(connectionConfig || null);
+	const views = useSchemaView(connectionConfig || null);
 
 	const [isPrivate, setIsPrivate] = useState("");
 
@@ -87,13 +89,15 @@ export default function FormAPI() {
 	};
 
 	const handleSubmit = (values) => {
-		APIService.createAPI(values)
-			.then((response) => {
-				window.location.reload();
-			})
-			.catch((error) => {
-				console.log("Something went wrong", error);
-			});
+		console.log(values);
+
+		// APIService.createAPI(values)
+		// 	.then((response) => {
+		// 		window.location.reload();
+		// 	})
+		// 	.catch((error) => {
+		// 		console.log("Something went wrong", error);
+		// 	});
 	};
 
 	function handleConnectionConfig(connectionSelected) {
@@ -163,7 +167,7 @@ export default function FormAPI() {
 							</Form.Item>
 
 							{connectionSelected ? (
-								<Form.Item label='Table' name='table'>
+								<Form.Item label='Table / View' name='table'>
 									<Select
 										onChange={(value) => {
 											setTableSelected(value);
@@ -171,7 +175,12 @@ export default function FormAPI() {
 									>
 										{tables.map((tables, index) => (
 											<Option value={tables} key={index}>
-												{tables}
+												Table {tables}
+											</Option>
+										))}
+										{views.map((views, index) => (
+											<Option value={views} key={index}>
+												View {views}
 											</Option>
 										))}
 									</Select>

@@ -3,6 +3,7 @@ export const BASE_URL = {
 	CONNECTION: "http://localhost:8080/api/connections",
 	COLUMN: "http://localhost:8080/api/schema/columns",
 	TABLE: "http://localhost:8080/api/schema/tables",
+	VIEWS: "http://localhost:8080/api/schema/views",
 	API: "http://localhost:8080/api/apis",
 	AUTH: "http://localhost:8180/auth",
 	KEYCLOAK_AUTH:

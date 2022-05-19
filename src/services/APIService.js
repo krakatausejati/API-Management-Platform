@@ -5,6 +5,7 @@ export const APIService = {
 	getAllHistory,
 	getAllAPI,
 	createAPI,
+	getAPIDetail,
 };
 
 function getAllHistory(idApi) {
@@ -37,4 +38,8 @@ function createAPI(values) {
 
 function getAllAPI() {
 	return axiosInstance(BASE_URL.API).get("");
+}
+
+function getAPIDetail (idApi) {
+	return axiosInstance(BASE_URL.API).get(`/${idApi}`);
 }

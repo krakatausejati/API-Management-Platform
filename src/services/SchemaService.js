@@ -4,6 +4,7 @@ import { BASE_URL } from "../helpers/Constant";
 export const SchemaService = {
 	getAllTable,
 	getAllColumn,
+	getAllViews,
 };
 
 function getAllTable(connectionConfig) {
@@ -28,6 +29,21 @@ function getAllColumn(tableName, connectionConfig) {
 	return axiosInstance(BASE_URL.COLUMN).get("", {
 		params: {
 			tableName,
+			host,
+			port,
+			databaseName,
+			databaseUsername,
+			databasePassword,
+		},
+	});
+}
+
+function getAllViews(connectionConfig) {
+	const { host, port, databaseName, databaseUsername, databasePassword } =
+		connectionConfig;
+
+	return axiosInstance(BASE_URL.VIEWS).get("", {
+		params: {
 			host,
 			port,
 			databaseName,

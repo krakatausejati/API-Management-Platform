@@ -10,17 +10,19 @@ import {
   Input,
   Tag,
 } from "antd";
-import { ExportOutlined } from "@ant-design/icons";
+import { ExportOutlined, CopyOutlined } from "@ant-design/icons";
 import "./detail-api.css";
 import moment from "moment";
 import { APIService } from "../../services/APIService";
 import useAPIHistory from "../../hooks/useAPIHistory";
+import useAPIDetail from "../../hooks/useAPIDetail";
 import { useParams } from "react-router-dom";
 
 function DetailAPI() {
   let { idApi  } = useParams();
 	const id = parseInt(idApi, 10);
   const history = useAPIHistory(idApi);
+  const apiDetail = useAPIDetail(idApi);
   
   const dataSource = history.map((historyItem, index) => ({
 		key: `${historyItem.idHistory}`,
@@ -31,8 +33,9 @@ function DetailAPI() {
 			.local()
 			.format("DD MMMM YYYY, HH:m:s a")}`,
     status: `${historyItem.requestStatus}`,
+    messages: `${historyItem.messages}`,
+    executionTime : `${historyItem.executionTime}`,
 	}));
-
   const columns = [
     {
       title: "No",
@@ -68,6 +71,21 @@ function DetailAPI() {
         </>
       ),
     },
+    {
+      title: "Status Code",
+      dataIndex: "status",
+      key: "status",
+    },
+    {
+      title: "Message",
+      dataIndex: "messages",
+      key: "messages",
+    },
+    {
+      title: "Execution Time",
+      dataIndex: "executionTime",
+      key: "executionTime",
+    },
   ];
 
   return (
@@ -82,22 +100,29 @@ function DetailAPI() {
         <h2>Detail API</h2>
         <Form layout="vertical">
           <Form.Item label="Endpoints" className="endpoints">
-            <Input
-              disabled
-              defaultValue={
-                "https://api.management.nbi.com/{user}/{project_name}/{group_name}/(free}"
-              }
-            />
+              <Input
+                disabled
+                value={
+                  apiDetail.apiEndpoint
+                }
+              />
+              <Button
+                icon={<CopyOutlined />}
+                type='primary'
+                onClick={() => {navigator.clipboard.writeText(apiDetail.apiEndpoint)}}
+              >
+              Copy Text  
+              </Button>
           </Form.Item>
           <div className="identity-api">
             <Form.Item label="Description">
-              <Input defaultValue={"Get Data"} />
+              <Input disabled value={apiDetail.description} />
             </Form.Item>
             <Form.Item label="Project Name">
-              <Input defaultValue={"Project A"} />
+              <Input disabled defaultValue={"Project A"} />
             </Form.Item>
             <Form.Item label="Group Name">
-              <Input defaultValue={"Neural BI"} />
+              <Input disabled defaultValue={"Neural BI"} />
             </Form.Item>
           </div>
         </Form>
@@ -146,6 +171,12 @@ function DetailAPI() {
             <Button icon={<ExportOutlined />} type="primary" block>
               Export Log
             </Button>
+            
+            <Link to={"/documentation"}>
+						  <Button icon={<CopyOutlined />} type='primary' >
+              API Documentation
+              </Button>
+					  </Link>
           </div>
         </div>
         <Table dataSource={dataSource} columns={columns} />

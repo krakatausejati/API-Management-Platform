@@ -1,0 +1,28 @@
+.identity-api-wrapper {
+  margin-top: 1rem;
+}
+
+.identity-api {
+  display: flex;
+  gap: 2em;
+  margin-top: 1rem;
+}
+
+/* .sub-identity {
+  display: flex;
+  gap: 2em;
+  margin-top: 2rem;
+} */
+
+.summary-api {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1em;
+  text-align: center;
+}
+
+.summary-api > div {
+  /* margin: 0 1rem 0 0; */
+  min-width: 255px;
+  min-height: 180px;
+}
