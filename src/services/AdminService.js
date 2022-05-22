@@ -9,14 +9,14 @@ export const AdminService = {
 
 function adminToken() {
 	const body = {
-		client_id: "api-auth",
-		username: "api_owner",
-		password: "P@ssw0rd",
-		grant_type: "password",
 		// client_id: "api-auth",
-		// username: "apimanagement",
-		// password: "Kota107",
+		// username: "api_owner",
+		// password: "P@ssw0rd",
 		// grant_type: "password",
+		client_id: "api-auth",
+		username: "apimanagement",
+		password: "Kota107",
+		grant_type: "password",
 	};
 	return axiosInstance(BASE_URL.KEYCLOAK_AUTH).post("", qs.stringify(body));
 }

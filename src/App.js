@@ -66,7 +66,7 @@ function App() {
 						</PrivateRoute>
 					</Route>
 					<Route
-						path='/documentation'
+						path='/documentation/:idApi'
 						exact
 					>
 						<PrivateRoute>

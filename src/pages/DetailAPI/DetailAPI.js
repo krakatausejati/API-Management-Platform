@@ -172,7 +172,7 @@ function DetailAPI() {
               Export Log
             </Button>
             
-            <Link to={"/documentation"}>
+            <Link to={`/documentation/${idApi}`}>
 						  <Button icon={<CopyOutlined />} type='primary' >
               API Documentation
               </Button>

@@ -26,3 +26,8 @@
   min-width: 255px;
   min-height: 180px;
 }
+
+.collapse {
+  background-color: black;
+  color: wheat;
+}

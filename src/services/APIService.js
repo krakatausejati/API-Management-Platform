@@ -6,6 +6,7 @@ export const APIService = {
 	getAllAPI,
 	createAPI,
 	getAPIDetail,
+	getAPIDocumentation,
 };
 
 function getAllHistory(idApi) {
@@ -13,7 +14,7 @@ function getAllHistory(idApi) {
 }
 
 function createAPI(values) {
-	const { generatedEndpoint, table, column, description, limit, is_private, connection } =
+	const { generatedEndpoint, table, column, description, limit, is_private, connection, listUser} =
 		values;
 
 	const columns = column.join();
@@ -25,7 +26,8 @@ function createAPI(values) {
 		description,
 		apiLimit: limit,
 		private: is_private,
-		idConnection: connection
+		idConnection: connection,
+		listUser: listUser,
 	};
 
 	return axiosInstance(BASE_URL.API).post("", dataAPI, {
@@ -42,4 +44,8 @@ function getAllAPI() {
 
 function getAPIDetail (idApi) {
 	return axiosInstance(BASE_URL.API).get(`/${idApi}`);
+}
+
+function getAPIDocumentation (idApi) {
+	return axiosInstance(BASE_URL.API_DOC).get(`/${idApi}`);
 }

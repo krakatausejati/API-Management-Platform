@@ -91,13 +91,13 @@ export default function FormAPI() {
 	const handleSubmit = (values) => {
 		console.log(values);
 
-		// APIService.createAPI(values)
-		// 	.then((response) => {
-		// 		window.location.reload();
-		// 	})
-		// 	.catch((error) => {
-		// 		console.log("Something went wrong", error);
-		// 	});
+		APIService.createAPI(values)
+			.then((response) => {
+				window.location.reload();
+			})
+			.catch((error) => {
+				console.log("Something went wrong", error);
+			});
 	};
 
 	function handleConnectionConfig(connectionSelected) {
