@@ -7,28 +7,19 @@ import {
 import { Breadcrumb, Button, Menu, Space, Table } from "antd";
 import { Link } from "react-router-dom";
 import HeaderDataTable from "../../components/molecules/HeaderDataTable";
+import useApiPublic from "../../hooks/useApiPublic";
 
-function Api() {
-	const dataSource = [
-		{
-			key: "1",
-			no: "1",
-			endpoints:
-				"https://api.management.nbi.com/{user}/{project_name}/{group_name}/(free}",
-			project: "Project A",
-			group: "Neural BI",
-			description: "Get Data",
-		},
-		{
-			key: "2",
-			no: "2",
-			endpoints:
-				"https://api.management.nbi.com/{user}/{project_name}/{group_name}/(free}",
-			project: "Project A",
-			group: "Neural BI",
-			description: "Get User",
-		},
-	];
+function ApiPublic() {
+	const apiPublic = useApiPublic();
+	const dataSource = apiPublic.map((apiItem, index) => ({
+		key: `${apiItem.idApi}`,
+		no: `${index + 1}`,
+		endpoints: `${apiItem.apiEndpoint}`,
+		description: `${apiItem.description}`,
+		project: `{Nama Project}`,
+		group: `{Nama Group}`,
+		detail: "...",
+	}));
 
 	const columns = [
 		{
@@ -62,7 +53,7 @@ function Api() {
 			key: "detail",
 			render: (text, record) => (
 				<Space>
-					<Link to={"/detail"}>
+					<Link to={`api/${record.key}/history`}>
 						<Button icon={<EyeOutlined />} type='primary' />
 					</Link>
 					<Link to={"/delete"}>
@@ -108,4 +99,4 @@ function Api() {
 	);
 }
 
-export default Api;
+export default ApiPublic;

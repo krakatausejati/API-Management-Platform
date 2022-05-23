@@ -3,8 +3,8 @@ import { AdminService } from "../services/AdminService";
 
 const useListUser = () => {
 	const [listUserData, setListUserData] = useState("");
-	let users = [];
 	useEffect(() => {
+		let users = [];
 		AdminService.adminToken()
 			.then((response) => {
 				AdminService.getUser(response.data.access_token).then((res) => {
@@ -22,7 +22,7 @@ const useListUser = () => {
 			.catch((error) => {
 				console.log(error);
 			});
-	}, [users]);
+	}, []);
 
 	return listUserData;
 };

@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import PrivateRoute from "./helpers/PrivateRoute";
 import keycloak from "./Keycloak";
 import DashboardLayout from "./layouts/DashboardLayout";
-import Api from "./pages/API/API";
+import ApiPublic from "./pages/APIPublic/APIPublic";
 import Login from "./pages/Auth/Login";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import DetailAPI from "./pages/DetailAPI/DetailAPI";
@@ -65,17 +65,14 @@ function App() {
 							<DashboardLayout children={<DetailAPI />} />
 						</PrivateRoute>
 					</Route>
-					<Route
-						path='/documentation/:idApi'
-						exact
-					>
+					<Route path='/documentation/:idApi' exact>
 						<PrivateRoute>
 							<DashboardLayout children={<DocumentationAPI />} />
 						</PrivateRoute>
 					</Route>
-					<Route path='/api' exact>
+					<Route path='/public-api' exact>
 						<PrivateRoute>
-							<DashboardLayout children={<Api />} />
+							<DashboardLayout children={<ApiPublic />} />
 						</PrivateRoute>
 					</Route>
 					<Route path='/connection' exact>

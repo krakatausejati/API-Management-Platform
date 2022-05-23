@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { ConnectionService } from "../services/ConnectionService";
 
-const useConnection = () => {
+const useConnection = (refresh) => {
 	const [connection, setConnection] = useState([]);
 
 	useEffect(() => {
@@ -12,7 +12,7 @@ const useConnection = () => {
 			.catch((error) => {
 				console.log("Something went wrong", error);
 			});
-	}, []);
+	}, [refresh]);
 
 	return connection;
 };

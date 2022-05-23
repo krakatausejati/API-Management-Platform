@@ -41,7 +41,7 @@ function DashboardLayout(props) {
 						<Link to='/connection'>Connection</Link>
 					</Menu.Item>
 					<Menu.Item key='4' icon={<ApiOutlined />}>
-						<Link to='/api'>API Public</Link>
+						<Link to='/public-api'>API Public</Link>
 					</Menu.Item>
 					<Menu.Item
 						key='5'

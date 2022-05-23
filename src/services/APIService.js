@@ -3,19 +3,33 @@ import { BASE_URL } from "../helpers/Constant";
 
 export const APIService = {
 	getAllHistory,
+	getAPIHistory,
 	getAllAPI,
+	getAPIPublic,
 	createAPI,
 	getAPIDetail,
 	getAPIDocumentation,
 };
 
-function getAllHistory(idApi) {
+function getAllHistory() {
+	return axiosInstance(`http://localhost:8080/api/history`).get("");
+}
+
+function getAPIHistory(idApi) {
 	return axiosInstance(`http://localhost:8080/api/${idApi}/history`).get("");
 }
 
 function createAPI(values) {
-	const { generatedEndpoint, table, column, description, limit, is_private, connection, listUser} =
-		values;
+	const {
+		generatedEndpoint,
+		table,
+		column,
+		description,
+		limit,
+		is_private,
+		connection,
+		listUser,
+	} = values;
 
 	const columns = column.join();
 
@@ -42,10 +56,14 @@ function getAllAPI() {
 	return axiosInstance(BASE_URL.API).get("");
 }
 
-function getAPIDetail (idApi) {
+function getAPIPublic() {
+	return axiosInstance(BASE_URL.API).get("/public");
+}
+
+function getAPIDetail(idApi) {
 	return axiosInstance(BASE_URL.API).get(`/${idApi}`);
 }
 
-function getAPIDocumentation (idApi) {
+function getAPIDocumentation(idApi) {
 	return axiosInstance(BASE_URL.API_DOC).get(`/${idApi}`);
 }

@@ -28,3 +28,24 @@ export const handleDate = (date) => {
 
 	return resDate;
 };
+
+export const parseJwt = (token) => {
+	const base64Url = token.split(".")[1];
+	const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+	const jsonPayload = decodeURIComponent(
+		atob(base64)
+			.split("")
+			.map(function (c) {
+				return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+			})
+			.join("")
+	);
+
+	return JSON.parse(jsonPayload);
+};
+
+export const getExecutionTime = (time, type = "MIN") => {
+	let res = type === "MAX" ? Math.max(...time) : Math.min(...time);
+	if (!isFinite(res)) res = 0;
+	return res;
+};

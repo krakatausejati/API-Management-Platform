@@ -1,20 +1,20 @@
 import { useState, useEffect } from "react";
 import { APIService } from "../services/APIService";
 
-const useAPIHistory = (idApi) => {
-	const [history, setHistory] = useState([]);
+const useAllHistory = () => {
+	const [allHistory, setAllHistory] = useState([]);
 
 	useEffect(() => {
-		APIService.getAPIHistory(idApi)
+		APIService.getAllHistory()
 			.then((response) => {
-				setHistory(response.data);
+				setAllHistory(response.data);
 			})
 			.catch((error) => {
 				console.log("Something went wrong", error);
 			});
-	}, [idApi]);
+	}, []);
 
-	return history;
+	return allHistory;
 };
 
-export default useAPIHistory;
+export default useAllHistory;

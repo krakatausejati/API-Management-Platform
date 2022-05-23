@@ -1,5 +1,6 @@
 import axiosInstance from "../helpers/Axios";
 import { BASE_URL } from "../helpers/Constant";
+import { parseJwt } from "../helpers/Utils";
 
 export const GroupService = {
 	getAllGroup,
@@ -12,14 +13,22 @@ function getAllGroup(idProject) {
 }
 
 function createGroup(groupName, idProject) {
+	const accessToken = localStorage.getItem("access_token");
+	const { preferred_username } = parseJwt(accessToken);
+
 	let dataGroup = {
 		groupName,
-		createdBy: "owner",
+		createdBy: preferred_username,
 	};
 
 	return axiosInstance(BASE_URL.PROJECT).post(
 		`/${idProject}/groups`,
-		dataGroup
+		dataGroup,
+		{
+			headers: {
+				"Content-Type": "application/json",
+			},
+		}
 	);
 }
 

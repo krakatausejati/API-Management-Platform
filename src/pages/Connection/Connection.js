@@ -1,5 +1,10 @@
-import { PlusOutlined } from "@ant-design/icons";
-import { Button, Form, Input, Modal, Table } from "antd";
+import {
+	PlusOutlined,
+	EyeOutlined,
+	DeleteOutlined,
+	ExclamationCircleOutlined,
+} from "@ant-design/icons";
+import { Button, Form, Input, Modal, Space, Table } from "antd";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
@@ -8,9 +13,11 @@ import useConnection from "../../hooks/useConnection";
 import { ConnectionService } from "../../services/ConnectionService";
 
 function Connection() {
-	const connection = useConnection();
+	const [refresh, setRefresh] = useState(new Date().getTime());
+	const connection = useConnection(refresh);
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [form] = Form.useForm();
+	const { confirm } = Modal;
 
 	const dataSource = connection.map((connectionItem, index) => ({
 		key: `${connectionItem.id}`,
@@ -64,6 +71,20 @@ function Connection() {
 			title: "",
 			dataIndex: "detail",
 			key: "detail",
+			render: (text, record) => (
+				<Space>
+					<Button
+						icon={<EyeOutlined />}
+						type='primary'
+						onClick={showModal}
+					/>
+					<Button
+						icon={<DeleteOutlined />}
+						onClick={() => showDeleteConfirm(record.key)}
+						danger
+					/>
+				</Space>
+			),
 		},
 	];
 
@@ -85,6 +106,31 @@ function Connection() {
 
 	const handleCancel = () => {
 		setIsModalVisible(false);
+	};
+
+	const showDeleteConfirm = (idConnection) => {
+		confirm({
+			title: "Are you sure delete this connection?",
+			icon: <ExclamationCircleOutlined />,
+			content: "This connection will deleted permanently",
+			okText: "Yes",
+			okType: "danger",
+			cancelText: "No",
+
+			onOk() {
+				ConnectionService.deleteConnection(idConnection)
+					.then(() => {
+						setRefresh(new Date().getTime());
+					})
+					.catch((error) => {
+						console.log("Something went wrong", error);
+					});
+			},
+
+			onCancel() {
+				console.log("Cancel");
+			},
+		});
 	};
 
 	return (

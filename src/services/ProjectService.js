@@ -1,5 +1,6 @@
 import axiosInstance from "../helpers/Axios";
 import { BASE_URL } from "../helpers/Constant";
+import { parseJwt } from "../helpers/Utils";
 
 export const ProjectService = {
 	getAllProject,
@@ -11,9 +12,12 @@ function getAllProject() {
 }
 
 function createProject(projectName) {
+	const accessToken = localStorage.getItem("access_token");
+	const { preferred_username } = parseJwt(accessToken);
+
 	let dataProject = {
 		projectName,
-		projectOwner: "Project Owner Dummy",
+		projectOwner: preferred_username,
 	};
 
 	return axiosInstance(BASE_URL.PROJECT).post("", dataProject, {
