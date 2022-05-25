@@ -17,6 +17,7 @@ import useAPIHistory from "../../hooks/useAPIHistory";
 import useAPIDetail from "../../hooks/useAPIDetail";
 import { useParams } from "react-router-dom";
 import { getExecutionTime } from "../../helpers/Utils";
+import {CSVLink} from "react-csv"
 
 function DetailAPI() {
 	let { idApi } = useParams();
@@ -184,9 +185,15 @@ function DetailAPI() {
 						className='right'
 						style={{ display: "flex", justifyContent: "flex-end" }}
 					>
-						<Button icon={<ExportOutlined />} type='primary' block>
-							Export Log
-						</Button>
+						<CSVLink
+              filename={"API_Usage_Log.csv"}
+              data={dataSource}
+              className="btn btn-primary"
+            >
+              <Button icon={<ExportOutlined />} type="primary" block>
+                Export Log
+              </Button>
+            </CSVLink> 
 
 						<Link to={`/documentation/${idApi}`}>
 							<Button icon={<CopyOutlined />} type='primary'>
