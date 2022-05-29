@@ -10,8 +10,8 @@ export const AdminService = {
 function adminToken() {
 	const body = {
 		client_id: "api-auth",
-		username: "api_owner",
-		password: "P@ssw0rd",
+		username: "admin",
+		password: "KoTA107",
 		grant_type: "password",
 		// client_id: "api-auth",
 		// username: "apimanagement",

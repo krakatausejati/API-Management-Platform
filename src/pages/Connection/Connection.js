@@ -1,12 +1,11 @@
 import {
-	PlusOutlined,
-	EyeOutlined,
 	DeleteOutlined,
 	ExclamationCircleOutlined,
+	EyeOutlined,
+	PlusOutlined,
 } from "@ant-design/icons";
 import { Button, Form, Input, Modal, Space, Table } from "antd";
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
 // import HeaderDataTable from "../../components/molecules/HeaderDataTable";
 import useConnection from "../../hooks/useConnection";
@@ -18,6 +17,25 @@ function Connection() {
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [form] = Form.useForm();
 	const { confirm } = Modal;
+
+	const [connectionDetail, setConnectionDetail] = useState([]);
+	const [edit, setEdit] = useState(false);
+
+	useEffect(() => {
+		if (!connectionDetail) {
+			return null;
+		} else {
+			form.setFieldsValue({
+				idConnection: connectionDetail.id,
+				connectionName: connectionDetail.connectionName,
+				host: connectionDetail.host,
+				port: connectionDetail.port,
+				databaseName: connectionDetail.databaseName,
+				databaseUsername: connectionDetail.databaseUsername,
+				databasePassword: connectionDetail.databasePassword,
+			});
+		}
+	}, [connectionDetail, form]);
 
 	const dataSource = connection.map((connectionItem, index) => ({
 		key: `${connectionItem.id}`,
@@ -39,18 +57,6 @@ function Connection() {
 			title: "Name",
 			dataIndex: "name",
 			key: "name",
-			render: (data) => (
-				<>
-					<Link
-						to={{
-							pathname: "/detail-group",
-							state: { breadcrumb: "Group", name: data },
-						}}
-					>
-						{data}
-					</Link>
-				</>
-			),
 		},
 		{
 			title: "Host",
@@ -76,7 +82,7 @@ function Connection() {
 					<Button
 						icon={<EyeOutlined />}
 						type='primary'
-						onClick={showModal}
+						onClick={() => showModal(record.key)}
 					/>
 					<Button
 						icon={<DeleteOutlined />}
@@ -88,18 +94,42 @@ function Connection() {
 		},
 	];
 
-	const showModal = () => {
+	const showModal = (idConnection) => {
+		if (idConnection) {
+			ConnectionService.editConnection(idConnection)
+				.then((response) => {
+					setConnectionDetail(response.data.payload);
+					setEdit(true);
+				})
+				.catch((error) => {
+					console.log("Something went wrong", error);
+				});
+		} else {
+			form.resetFields();
+		}
+		setEdit(false);
 		setIsModalVisible(true);
 	};
 
 	const handleOk = (values) => {
-		ConnectionService.createConnection(values)
-			.then((response) => {
-				window.location.reload();
-			})
-			.catch((error) => {
-				console.log("Something went wrong", error);
-			});
+		if (!edit) {
+			console.log("create");
+			ConnectionService.createConnection(values)
+				.then((response) => {
+					setRefresh(new Date().getTime());
+				})
+				.catch((error) => {
+					console.log("Something went wrong", error);
+				});
+		} else {
+			ConnectionService.updateConnection(values)
+				.then((response) => {
+					setRefresh(new Date().getTime());
+				})
+				.catch((error) => {
+					console.log("Something went wrong", error);
+				});
+		}
 
 		setIsModalVisible(false);
 	};
@@ -137,7 +167,7 @@ function Connection() {
 		<>
 			{/* Modal */}
 			<Modal
-				title='Add New Connection'
+				title={edit ? "Edit Connection" : "Add New Connection"}
 				visible={isModalVisible}
 				onOk={() => {
 					form.validateFields()
@@ -150,7 +180,7 @@ function Connection() {
 						});
 				}}
 				onCancel={handleCancel}
-				okText='Add Connection'
+				okText='Save'
 				cancelText='Cancel'
 			>
 				<Form layout='vertical' form={form}>
@@ -159,6 +189,13 @@ function Connection() {
 						style={{ display: "flex", gap: "5rem" }}
 					>
 						<div className='left-side'>
+							<Form.Item
+								// label='Connection Name'
+								name='idConnection'
+								style={{ display: "none" }}
+							>
+								<Input />
+							</Form.Item>
 							<Form.Item
 								label='Connection Name'
 								name='connectionName'
@@ -249,7 +286,7 @@ function Connection() {
 			</Modal>
 			{/* Modal */}
 
-			<Breadcrumbs breadcrumb='Connection' current={null} />
+			<Breadcrumbs breadcrumb={["Connection"]} />
 			{/* <HeaderDataTable
 				// menu={menu}
 				// onSearch={onSearch}
@@ -266,9 +303,9 @@ function Connection() {
 						icon={<PlusOutlined />}
 						type='primary'
 						block
-						onClick={showModal}
+						onClick={() => showModal(null)}
 					>
-						Add Connection
+						Create Connection
 					</Button>
 				</div>
 			</div>

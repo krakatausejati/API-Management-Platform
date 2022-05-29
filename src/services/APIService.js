@@ -9,6 +9,7 @@ export const APIService = {
 	createAPI,
 	getAPIDetail,
 	getAPIDocumentation,
+	getAPICount,
 };
 
 function getAllHistory() {
@@ -52,18 +53,28 @@ function createAPI(values) {
 	});
 }
 
-function getAllAPI() {
-	return axiosInstance(BASE_URL.API).get("");
+function getAllAPI(idProject, idGroup) {
+	return axiosInstance(BASE_URL.PROJECT).get(
+		`/${idProject}/groups/${idGroup}/apis`
+	);
 }
 
 function getAPIPublic() {
 	return axiosInstance(BASE_URL.API).get("/public");
 }
 
-function getAPIDetail(idApi) {
-	return axiosInstance(BASE_URL.API).get(`/${idApi}`);
+function getAPIDetail(idProject, idGroup, idApi) {
+	return axiosInstance(BASE_URL.PROJECT).get(
+		`/${idProject}/groups/${idGroup}/apis/${idApi}`
+	);
 }
 
 function getAPIDocumentation(idApi) {
 	return axiosInstance(BASE_URL.API_DOC).get(`/${idApi}`);
+}
+
+function getAPICount(idProject, idGroup) {
+	return axiosInstance(BASE_URL.PROJECT).get(
+		`/${idProject}/groups/${idGroup}/apis/count`
+	);
 }

@@ -5,12 +5,14 @@ import {
 	SortAscendingOutlined,
 } from "@ant-design/icons";
 import { Breadcrumb, Button, Menu, Space, Table } from "antd";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import HeaderDataTable from "../../components/molecules/HeaderDataTable";
 import useApiPublic from "../../hooks/useApiPublic";
 
 function ApiPublic() {
-	const apiPublic = useApiPublic();
+	const [refresh, setRefresh] = useState(new Date().getTime());
+	const apiPublic = useApiPublic(refresh);
 	const dataSource = apiPublic.map((apiItem, index) => ({
 		key: `${apiItem.idApi}`,
 		no: `${index + 1}`,

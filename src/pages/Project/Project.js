@@ -1,22 +1,23 @@
-import React, { useState } from "react";
-import { Table, Breadcrumb, Button, Input, Modal, Form } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
+import { Button, Form, Input, Modal, Table } from "antd";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
+import { handleDate, handleURLName } from "../../helpers/Utils.js";
 import useProject from "../../hooks/useProject";
-import { useKeycloak } from "@react-keycloak/web";
 import { ProjectService } from "../../services/ProjectService";
-import { handleURLName, handleDate } from "../../helpers/Utils.js";
 
 function Project() {
-	const project = useProject();
+	const [refresh, setRefresh] = useState(new Date().getTime());
+	const [searchName, setSearchName] = useState("");
+	const project = useProject(refresh, searchName);
 	const [form] = Form.useForm();
 	const [isModalVisible, setIsModalVisible] = useState(false);
-
 	const dataProject = project.map((projectItem, index) => ({
 		key: `${projectItem.idProject}`,
 		no: `${index + 1}`,
 		name: `${projectItem.projectName}`,
-		sum_group: "12",
+		sum_group: `${projectItem.group.length}`,
 		created_at: `${handleDate(projectItem.createdAt)}`,
 		created_by: `${projectItem.projectOwner}`,
 		detail: "...",
@@ -72,7 +73,9 @@ function Project() {
 	const dataSource = dataProject ? dataProject : "Empty Project";
 
 	const { Search } = Input;
-	const onSearch = (value) => console.log(value);
+	const onSearch = (value) => {
+		setSearchName(value);
+	};
 
 	const showModal = () => {
 		setIsModalVisible(true);
@@ -82,8 +85,8 @@ function Project() {
 		const { projectName } = values;
 
 		ProjectService.createProject(projectName)
-			.then((response) => {
-				window.location.reload();
+			.then(() => {
+				setRefresh(new Date().getTime());
 			})
 			.catch((error) => {
 				console.log("Something went wrong", error);
@@ -134,11 +137,7 @@ function Project() {
 			</Modal>
 			{/* Modal */}
 
-			<div className='breadcrumb'>
-				<Breadcrumb>
-					<Breadcrumb.Item>Project</Breadcrumb.Item>
-				</Breadcrumb>
-			</div>
+			<Breadcrumbs breadcrumb={["Project"]} />
 			<div className='header-datatable'>
 				<h1>Your Project's</h1>
 				<div className='right'>

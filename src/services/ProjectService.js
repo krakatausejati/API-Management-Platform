@@ -7,8 +7,12 @@ export const ProjectService = {
 	createProject,
 };
 
-function getAllProject() {
-	return axiosInstance(BASE_URL.PROJECT).get("");
+function getAllProject(name) {
+	return axiosInstance(BASE_URL.PROJECT).get("", {
+		params: {
+			name,
+		},
+	});
 }
 
 function createProject(projectName) {

@@ -36,14 +36,27 @@ function Login() {
 					"refresh_token",
 					response.data.refresh_token
 				);
+				localStorage.setItem(
+					"accessTokenExpire",
+					response.data.expires_in * 1000 + new Date().getTime()
+				);
 
 				history.push("/dashboard");
 			})
 			.catch((error) => {
-				Modal.error({
-					title: "Login Failed",
-					content: "Username / Email and Password not valid!",
-				});
+				if (error.response) {
+					if (error.response.status === 401) {
+						Modal.error({
+							title: "Login Failed",
+							content: `${error.response.statusText}: Invalid email or password mismatch!`,
+						});
+					}
+				} else {
+					Modal.error({
+						title: "Login Failed",
+						content: `Error: connection refused`,
+					});
+				}
 			});
 	};
 

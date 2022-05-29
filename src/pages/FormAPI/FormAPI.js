@@ -9,7 +9,7 @@ import {
 	Switch,
 } from "antd";
 import React, { useState } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useParams, useHistory } from "react-router-dom";
 import { handleURLName } from "../../helpers/Utils";
 import useConnection from "../../hooks/useConnection";
 import useSchemaColumn from "../../hooks/useSchemaColumn";
@@ -20,7 +20,8 @@ import { APIService } from "../../services/APIService";
 import "./create-api.css";
 
 export default function FormAPI() {
-	let { projectName, groupName } = useParams();
+	let { idProject, projectName, idGroup, groupName } = useParams();
+	const history = useHistory();
 	const connections = useConnection();
 	const users = useListUser();
 	const userData =
@@ -49,7 +50,9 @@ export default function FormAPI() {
 	const [form] = Form.useForm();
 	const [requiredMark, setRequiredMarkType] = useState("");
 
-	const [indeterminate] = useState(true);
+	const [indeterminate, setIndeterminate] = useState(false);
+	const [checked, setChecked] = useState([]);
+	const [checkAll, setCheckAll] = useState(false);
 
 	const onRequiredTypeChange = ({ requiredMarkValue }) => {
 		setRequiredMarkType(requiredMarkValue);
@@ -63,6 +66,7 @@ export default function FormAPI() {
 	}));
 
 	const onChangeChecked = (list) => {
+		setChecked(list);
 		if (list.length === columnData.length) {
 			form.setFieldsValue({
 				...form.getFieldsValue(),
@@ -74,6 +78,10 @@ export default function FormAPI() {
 				column: list,
 			});
 		}
+		setCheckAll(list.length === columnData.length);
+		setIndeterminate(
+			list.length > 0 && list.length < columnData.length ? true : false
+		);
 	};
 
 	const onCheckAllChange = (e) => {
@@ -81,6 +89,11 @@ export default function FormAPI() {
 			...form.getFieldsValue(),
 			column: e.target.checked ? ["*"] : [],
 		});
+		setChecked(
+			e.target.checked ? columnData.map((column) => column.value) : []
+		);
+		setCheckAll(e.target.checked);
+		setIndeterminate(false);
 	};
 
 	const handleChangeEndpoint = (e) => {
@@ -92,8 +105,10 @@ export default function FormAPI() {
 		console.log(values);
 
 		APIService.createAPI(values)
-			.then((response) => {
-				window.location.reload();
+			.then(() => {
+				history.push(
+					`project/${idProject}/${projectName}/group/${idGroup}/${groupName}`
+				);
 			})
 			.catch((error) => {
 				console.log("Something went wrong", error);
@@ -190,13 +205,17 @@ export default function FormAPI() {
 							{tableSelected ? (
 								<Form.Item label='Column' name='column'>
 									<Checkbox
-										indeterminate={indeterminate}
+										indeterminate={
+											!checkAll ? indeterminate : false
+										}
 										onChange={onCheckAllChange}
+										checked={checkAll}
 									>
 										Check all
 									</Checkbox>{" "}
 									<Checkbox.Group
 										options={columnData}
+										value={checked}
 										onChange={onChangeChecked}
 									/>{" "}
 								</Form.Item>

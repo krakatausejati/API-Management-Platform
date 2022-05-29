@@ -1,7 +1,8 @@
-import { Line } from "@ant-design/charts";
-import { DeleteOutlined, EyeOutlined } from "@ant-design/icons";
-import { Breadcrumb, Button, Card, Space, Statistic, Table } from "antd";
+import { EyeOutlined } from "@ant-design/icons";
+import { Button, Space, Table } from "antd";
 import { Link } from "react-router-dom";
+import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
+import { Statistics } from "../../components/molecules/Statistics";
 import useAllHistory from "../../hooks/useAllHistory";
 import useApiPublic from "../../hooks/useApiPublic";
 import "./dashboard.css";
@@ -61,9 +62,6 @@ function Dashboard() {
 					<Link to={`api/${record.key}/history`}>
 						<Button icon={<EyeOutlined />} type='primary' />
 					</Link>
-					<Link to={"/delete"}>
-						<Button icon={<DeleteOutlined />} danger />
-					</Link>
 				</Space>
 			),
 		},
@@ -79,63 +77,16 @@ function Dashboard() {
 		{ day: "sunday", value: 7 },
 	];
 
-	const config = {
-		data,
-		width: 300,
-		height: 200,
-		autoFit: false,
-		xField: "day",
-		yField: "value",
-		point: {
-			size: 5,
-			shape: "diamond",
-		},
-		label: {
-			style: {
-				fill: "#aaa",
-			},
-		},
-	};
-
-	let chart;
-
 	return (
 		<>
-			<Breadcrumb>
-				<Breadcrumb.Item>Dashboard</Breadcrumb.Item>
-			</Breadcrumb>
-			<div className='summary-total'>
-				<div className='sum-request'>
-					<Card>
-						<Line
-							{...config}
-							onReady={(chartInstance) => (chart = chartInstance)}
-						/>
-					</Card>
-				</div>
-				<div className='sum-success'>
-					<Card>
-						<Statistic
-							title='Total of Success'
-							value={totalSuccess}
-							valueStyle={{ color: "#3f8600" }}
-						/>
-						<p>requests</p>
-					</Card>
-				</div>
-				<div className='sum-fail'>
-					<Card>
-						<Statistic
-							title='Total of Fail'
-							value={totalFail}
-							valueStyle={{ color: "#cf1322" }}
-						/>
-						<p>requests</p>
-					</Card>
-				</div>
-			</div>
+			<Breadcrumbs breadcrumb={["Dashboard"]} />
+			<Statistics
+				totalSuccess={totalSuccess}
+				totalFail={totalFail}
+				data={data}
+			/>
 			<div className='header-datatable'>
-				<h1>Your API's</h1>
+				<h1>Top 10's API</h1>
 			</div>
 			<div className='datatable datatable-api'>
 				<Table dataSource={dataSource} columns={columns} />

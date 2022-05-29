@@ -5,29 +5,22 @@ import { Link, useLocation, useParams } from "react-router-dom";
 import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
 import { handleDate, handleURLName } from "../../helpers/Utils";
 import useGroup from "../../hooks/useGroup";
+import { APIService } from "../../services/APIService";
 import { GroupService } from "../../services/GroupService";
 
-function DetailProject() {
+function ListGroup() {
 	let data = useLocation();
 	let { idProject, projectName } = useParams();
 	const id = parseInt(idProject, 10);
 	const [form] = Form.useForm();
 	const group = useGroup(id);
 
+	const [isModalVisible, setIsModalVisible] = useState(false);
+
 	const breadcrumb =
 		typeof data.state.breadcrumb === "undefined"
 			? "nothing"
 			: data.state.breadcrumb;
-
-	const dataSource = group.map((groupItem, index) => ({
-		key: `${groupItem.idGroup}`,
-		no: `${index + 1}`,
-		name: `${groupItem.groupName}`,
-		sum_api: "12",
-		created_at: `${handleDate(groupItem.createdAt)}`,
-		created_by: `${groupItem.createdBy}`,
-		detail: "...",
-	}));
 
 	const columns = [
 		{
@@ -41,13 +34,19 @@ function DetailProject() {
 			key: "name",
 			render: (text, record) => (
 				<>
+					{console.log(record)}
 					<Link
 						to={{
 							pathname: `/project/${idProject}/${projectName}/group/${
 								record.key
 							}/${handleURLName(text)}`,
 							state: {
-								breadcrumb: "Group",
+								breadcrumb: [
+									"Project",
+									record.projectName,
+									"Group",
+									record.name,
+								],
 							},
 						}}
 					>
@@ -78,7 +77,38 @@ function DetailProject() {
 		},
 	];
 
-	const [isModalVisible, setIsModalVisible] = useState(false);
+	const dataSource = group.map((groupItem, index) => ({
+		key: `${groupItem.idGroup}`,
+		no: `${index + 1}`,
+		name: `${groupItem.groupName}`,
+		sum_api: APIService.getAPICount(idProject, groupItem.idGroup).then(
+			(response) => response.data
+		),
+		created_at: `${handleDate(groupItem.createdAt)}`,
+		created_by: `${groupItem.createdBy}`,
+		detail: "...",
+	}));
+
+	// const handleSumApiCount = async () => {
+	// 	const dataSources = group.map((groupItem, index) => ({
+	// 		key: `${groupItem.idGroup}`,
+	// 		no: `${index + 1}`,
+	// 		name: `${groupItem.groupName}`,
+	// 		sum_api: APIService.getAPICount(idProject, groupItem.idGroup).then(
+	// 			(response) => response.data
+	// 		),
+	// 		created_at: `${handleDate(groupItem.createdAt)}`,
+	// 		created_by: `${groupItem.createdBy}`,
+	// 		detail: "...",
+	// 	}));
+
+	// 	return await Promise.all(dataSources);
+	// };
+	// const dataSource = handleSumApiCount().then((res) => console.log(res));
+	// console.log(
+	// 	"🚀 ~ file: ListGroup.js ~ line 96 ~ ListGroup ~ dataSource",
+	// 	dataSource
+	// );
 
 	const showModal = () => {
 		setIsModalVisible(true);
@@ -139,7 +169,7 @@ function DetailProject() {
 			{/* Modal */}
 
 			{/*  */}
-			<Breadcrumbs breadcrumb={breadcrumb} current={data.state.name} />
+			<Breadcrumbs breadcrumb={[breadcrumb, data.state.name]} />
 			<div className='header-datatable'>
 				<h1>List Group of {data.state.name}</h1>
 				<div className='add-field'>
@@ -160,4 +190,4 @@ function DetailProject() {
 	);
 }
 
-export default DetailProject;
+export default ListGroup;

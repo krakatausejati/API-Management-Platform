@@ -2,17 +2,26 @@ import { Breadcrumb } from "antd";
 import { Link } from "react-router-dom";
 
 export const Breadcrumbs = (props) => {
-    const { breadcrumb, current } = props;
-    return (
-        <div className='breadcrumb'>
-            <Breadcrumb>
-                <Breadcrumb.Item>
-                    <Link to={`/${breadcrumb.toLowerCase()}`}>
-                        {breadcrumb}
-                    </Link>
-                </Breadcrumb.Item>
-                <Breadcrumb.Item>{current}</Breadcrumb.Item>
-            </Breadcrumb>
-        </div>
-    );
+	const { breadcrumb } = props;
+	return (
+		<div className='breadcrumb'>
+			<Breadcrumb>
+				{breadcrumb.map((item, i, array) => {
+					if (i + 1 === array.length) {
+						return (
+							<Breadcrumb.Item key={i}>{item}</Breadcrumb.Item>
+						);
+					} else {
+						return (
+							<Breadcrumb.Item key={i}>
+								<Link to={`/${item.toLowerCase()}`}>
+									{item}
+								</Link>
+							</Breadcrumb.Item>
+						);
+					}
+				})}
+			</Breadcrumb>
+		</div>
+	);
 };

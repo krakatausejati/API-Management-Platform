@@ -1,21 +1,25 @@
-import { Breadcrumb, Button, Space, Table, Dropdown, Menu, Input } from "antd";
-import { Link, useLocation } from "react-router-dom";
 import {
+	CalendarOutlined,
+	CaretDownOutlined,
 	DeleteOutlined,
 	EyeOutlined,
 	PlusOutlined,
-	CaretDownOutlined,
 	SortAscendingOutlined,
-	CalendarOutlined,
 } from "@ant-design/icons";
-import { useParams } from "react-router-dom";
+import { Button, Dropdown, Input, Menu, Space, Table } from "antd";
+import { Link, useLocation, useParams } from "react-router-dom";
+import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
 import useApi from "../../hooks/useApi";
 
-function DetailGroup() {
+function ListAPI() {
 	let data = useLocation();
-	const api = useApi();
 	let { idProject, projectName, idGroup, groupName } = useParams();
+	const api = useApi(idProject, idGroup);
 	const breadcrumb = data.state.breadcrumb;
+	console.log(
+		"🚀 ~ file: ListAPI.js ~ line 20 ~ ListAPI ~ breadcrumb",
+		breadcrumb
+	);
 
 	const dataSource = api.map((apiItem, index) => ({
 		key: `${apiItem.idApi}`,
@@ -87,16 +91,7 @@ function DetailGroup() {
 
 	return (
 		<>
-			<div className='breadcrumb'>
-				<Breadcrumb>
-					<Breadcrumb.Item>
-						<Link to={`/${breadcrumb.toLowerCase()}`}>
-							{breadcrumb}
-						</Link>
-					</Breadcrumb.Item>
-					<Breadcrumb.Item>{data.state.name}</Breadcrumb.Item>
-				</Breadcrumb>
-			</div>
+			<Breadcrumbs breadcrumb={breadcrumb} />
 			<div className='header-datatable'>
 				<h1>List API of {data.state.name}</h1>
 				<div className='right'>
@@ -138,4 +133,4 @@ function DetailGroup() {
 	);
 }
 
-export default DetailGroup;
+export default ListAPI;

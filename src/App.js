@@ -8,8 +8,8 @@ import ApiPublic from "./pages/APIPublic/APIPublic";
 import Login from "./pages/Auth/Login";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import DetailAPI from "./pages/DetailAPI/DetailAPI";
-import DetailGroup from "./pages/DetailGroup/DetailGroup";
-import DetailProject from "./pages/DetailProject/DetailProject";
+import ListAPI from "./pages/ListAPI/ListAPI";
+import ListGroup from "./pages/ListGroup/ListGroup";
 import FormAPI from "./pages/FormAPI/FormAPI";
 import Project from "./pages/Project/Project";
 import Connection from "./pages/Connection/Connection";
@@ -38,7 +38,7 @@ function App() {
 					</Route>
 					<Route path='/project/:idProject/:projectName/group' exact>
 						<PrivateRoute>
-							<DashboardLayout children={<DetailProject />} />
+							<DashboardLayout children={<ListGroup />} />
 						</PrivateRoute>
 					</Route>
 					<Route
@@ -46,7 +46,7 @@ function App() {
 						exact
 					>
 						<PrivateRoute>
-							<DashboardLayout children={<DetailGroup />} />
+							<DashboardLayout children={<ListAPI />} />
 						</PrivateRoute>
 					</Route>
 					<Route

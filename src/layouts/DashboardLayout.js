@@ -5,30 +5,29 @@ import {
 	LogoutOutlined,
 	SettingOutlined,
 	UserOutlined,
+	MenuUnfoldOutlined,
+	MenuFoldOutlined,
 } from "@ant-design/icons";
 import { Avatar, Layout, Menu } from "antd";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthService } from "../services/AuthService";
+import { parseJwt } from "../helpers/Utils";
 import "./dashboardlayout.css";
 
 const { Header, Content, Footer, Sider } = Layout;
 
 function DashboardLayout(props) {
 	const { children } = props;
+	const accessToken = localStorage.getItem("access_token");
+	const { preferred_username } = parseJwt(accessToken);
+	const [collapsed, setCollapsed] = useState(false);
+
 	return (
-		<Layout hasSider>
-			<Sider
-				style={{
-					overflow: "auto",
-					height: "100vh",
-					position: "fixed",
-					left: 0,
-					top: 0,
-					bottom: 0,
-				}}
-			>
+		<Layout>
+			<Sider trigger={null} collapsible collapsed={collapsed}>
 				<div className='logo'>
-					<h1>API Management</h1>
+					{!collapsed ? <h1>API Management</h1> : <h1>API</h1>}
 				</div>
 				<Menu theme='dark' mode='inline' defaultSelectedKeys={["1"]}>
 					<Menu.Item key='1' icon={<AppstoreOutlined />}>
@@ -54,26 +53,40 @@ function DashboardLayout(props) {
 					</Menu.Item>
 				</Menu>
 			</Sider>
-			<Layout className='site-layout' style={{ marginLeft: 200 }}>
+			<Layout className='site-layout'>
 				<Header
 					className='site-layout-background'
-					style={{ padding: 0 }}
+					style={{
+						padding: 0,
+						justifyContent: "space-between",
+					}}
 				>
+					{React.createElement(
+						collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
+						{
+							className: "trigger",
+							onClick: () => setCollapsed(!collapsed),
+						}
+					)}
 					<div className='user-profile'>
 						<Avatar
 							size={30}
 							style={{ backgroundColor: "#87d068" }}
 							icon={<UserOutlined />}
 						/>
+						<p>{preferred_username}</p>
 					</div>
 				</Header>
-				<Content style={{ margin: "24px 16px 0", overflow: "initial" }}>
-					<div
-						className='site-layout-background'
-						style={{ padding: "12px 24px" }}
-					>
-						{children}
-					</div>
+				<Content
+					className='site-layout-background'
+					style={{
+						margin: "24px 16px",
+						padding: 24,
+						minHeight: "100vh",
+						flexDirection: "column",
+					}}
+				>
+					{children}
 				</Content>
 				<Footer style={{ textAlign: "center" }}>
 					API Management Platform ©2022 Created by KoTA 107

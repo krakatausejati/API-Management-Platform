@@ -5,6 +5,8 @@ export const ConnectionService = {
 	getAllConnection,
 	createConnection,
 	deleteConnection,
+	editConnection,
+	updateConnection,
 };
 
 function getAllConnection() {
@@ -35,4 +37,38 @@ function createConnection(values) {
 
 function deleteConnection(idConnection) {
 	return axiosInstance(BASE_URL.CONNECTION).delete(`/${idConnection}`);
+}
+
+function editConnection(idConnection) {
+	return axiosInstance(BASE_URL.CONNECTION).get(`/${idConnection}`);
+}
+
+function updateConnection(values) {
+	const {
+		idConnection,
+		connectionName,
+		host,
+		port,
+		databaseName,
+		databaseUsername,
+		databasePassword,
+	} = values;
+
+	let connectionData = {
+		connectionName,
+		host,
+		port,
+		databaseName,
+		databaseUsername,
+		databasePassword,
+	};
+	return axiosInstance(BASE_URL.CONNECTION).put(
+		`/${idConnection}`,
+		JSON.stringify(connectionData),
+		{
+			headers: {
+				"Content-Type": "application/json",
+			},
+		}
+	);
 }
