@@ -7,10 +7,10 @@ export const ProjectService = {
 	createProject,
 };
 
-function getAllProject(name) {
+function getAllProject(keyword) {
 	return axiosInstance(BASE_URL.PROJECT).get("", {
 		params: {
-			name,
+			keyword,
 		},
 	});
 }

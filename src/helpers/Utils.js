@@ -6,6 +6,11 @@ export const handleURLName = (url) => {
 	return res;
 };
 
+export const getEndpoint = (url) => {
+	let urlEndpoint = url.split("/");
+	return urlEndpoint[urlEndpoint.length - 1];
+};
+
 export const handleDate = (date) => {
 	let resDate = "";
 	const formatedDate = new Date(date);
@@ -48,4 +53,9 @@ export const getExecutionTime = (time, type = "MIN") => {
 	let res = type === "MAX" ? Math.max(...time) : Math.min(...time);
 	if (!isFinite(res)) res = 0;
 	return res;
+};
+
+export const defineRole = () => {
+	const { resource_access } = parseJwt(localStorage.getItem("access_token"));
+	return resource_access["api-auth"].roles;
 };

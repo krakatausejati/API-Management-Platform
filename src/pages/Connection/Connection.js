@@ -7,6 +7,8 @@ import {
 import { Button, Form, Input, Modal, Space, Table } from "antd";
 import React, { useEffect, useState } from "react";
 import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
+import { Roles } from "../../helpers/Constant";
+import { defineRole } from "../../helpers/Utils";
 // import HeaderDataTable from "../../components/molecules/HeaderDataTable";
 import useConnection from "../../hooks/useConnection";
 import { ConnectionService } from "../../services/ConnectionService";
@@ -20,6 +22,8 @@ function Connection() {
 
 	const [connectionDetail, setConnectionDetail] = useState([]);
 	const [edit, setEdit] = useState(false);
+
+	const userRole = defineRole();
 
 	useEffect(() => {
 		if (!connectionDetail) {
@@ -79,16 +83,20 @@ function Connection() {
 			key: "detail",
 			render: (text, record) => (
 				<Space>
-					<Button
-						icon={<EyeOutlined />}
-						type='primary'
-						onClick={() => showModal(record.key)}
-					/>
-					<Button
-						icon={<DeleteOutlined />}
-						onClick={() => showDeleteConfirm(record.key)}
-						danger
-					/>
+					{userRole.includes(Roles.DEVELOPER) ? (
+						<>
+							<Button
+								icon={<EyeOutlined />}
+								type='primary'
+								onClick={() => showModal(record.key)}
+							/>
+							<Button
+								icon={<DeleteOutlined />}
+								onClick={() => showDeleteConfirm(record.key)}
+								danger
+							/>
+						</>
+					) : null}
 				</Space>
 			),
 		},
@@ -298,16 +306,18 @@ function Connection() {
 			/> */}
 			<div className='header-datatable'>
 				<h1>List Connections</h1>
-				<div className='add-field'>
-					<Button
-						icon={<PlusOutlined />}
-						type='primary'
-						block
-						onClick={() => showModal(null)}
-					>
-						Create Connection
-					</Button>
-				</div>
+				{userRole.includes(Roles.DEVELOPER) ? (
+					<div className='add-field'>
+						<Button
+							icon={<PlusOutlined />}
+							type='primary'
+							block
+							onClick={() => showModal(null)}
+						>
+							Create Connection
+						</Button>
+					</div>
+				) : null}
 			</div>
 			<div className='datatable datatable-group'>
 				<Table dataSource={dataSource} columns={columns} />

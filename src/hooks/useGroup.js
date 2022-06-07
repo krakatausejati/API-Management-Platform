@@ -1,18 +1,18 @@
 import { useState, useEffect } from "react";
 import { GroupService } from "../services/GroupService";
 
-const useGroup = (idProject) => {
+const useGroup = (idProject, refresh, keyword) => {
 	const [group, setGroup] = useState([]);
 
 	useEffect(() => {
-		GroupService.getAllGroup(idProject)
+		GroupService.getAllGroup(idProject, keyword)
 			.then((response) => {
 				setGroup(response.data.payload);
 			})
 			.catch((error) => {
 				console.log("Something went wrong", error);
 			});
-	}, [idProject]);
+	}, [refresh, keyword]);
 
 	return group;
 };

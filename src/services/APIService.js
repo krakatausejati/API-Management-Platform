@@ -30,6 +30,7 @@ function createAPI(values) {
 		is_private,
 		connection,
 		listUser,
+		idGroup,
 	} = values;
 
 	const columns = column.join();
@@ -43,6 +44,7 @@ function createAPI(values) {
 		private: is_private,
 		idConnection: connection,
 		listUser: listUser,
+		idGroup,
 	};
 
 	return axiosInstance(BASE_URL.API).post("", dataAPI, {
@@ -63,10 +65,8 @@ function getAPIPublic() {
 	return axiosInstance(BASE_URL.API).get("/public");
 }
 
-function getAPIDetail(idProject, idGroup, idApi) {
-	return axiosInstance(BASE_URL.PROJECT).get(
-		`/${idProject}/groups/${idGroup}/apis/${idApi}`
-	);
+function getAPIDetail(idApi) {
+	return axiosInstance(BASE_URL.API).get(`/${idApi}`);
 }
 
 function getAPIDocumentation(idApi) {

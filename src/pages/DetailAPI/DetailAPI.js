@@ -1,28 +1,21 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import {
-	Breadcrumb,
-	Table,
-	Card,
-	Statistic,
-	Button,
-	Form,
-	Input,
-	Tag,
-} from "antd";
-import { ExportOutlined, CopyOutlined } from "@ant-design/icons";
-import "./detail-api.css";
+import { CopyOutlined, ExportOutlined } from "@ant-design/icons";
+import { Button, Card, Form, Input, Statistic, Table, Tag } from "antd";
 import moment from "moment";
-import useAPIHistory from "../../hooks/useAPIHistory";
-import useAPIDetail from "../../hooks/useAPIDetail";
-import { useParams } from "react-router-dom";
+import React from "react";
+import { CSVLink } from "react-csv";
+import { Link, useParams, useLocation } from "react-router-dom";
+import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
 import { getExecutionTime } from "../../helpers/Utils";
-import {CSVLink} from "react-csv"
+import useAPIDetail from "../../hooks/useAPIDetail";
+import useAPIHistory from "../../hooks/useAPIHistory";
+import "./detail-api.css";
 
 function DetailAPI() {
 	let { idApi } = useParams();
 	const history = useAPIHistory(idApi);
 	const apiDetail = useAPIDetail(idApi);
+	let data = useLocation();
+	const breadcrumb = data.state.breadcrumb;
 
 	const dataSource = history.map((historyItem, index) => ({
 		key: `${historyItem.idHistory}`,
@@ -99,12 +92,7 @@ function DetailAPI() {
 
 	return (
 		<>
-			<Breadcrumb>
-				<Breadcrumb.Item>
-					<Link to={"/dashboard"}>Dashboard</Link>
-				</Breadcrumb.Item>
-				<Breadcrumb.Item>API - {"{name API}"}</Breadcrumb.Item>
-			</Breadcrumb>
+			<Breadcrumbs breadcrumb={breadcrumb} />
 			<div className='identity-api-wrapper'>
 				<h2>Detail API</h2>
 				<Form layout='vertical'>
@@ -186,14 +174,18 @@ function DetailAPI() {
 						style={{ display: "flex", justifyContent: "flex-end" }}
 					>
 						<CSVLink
-              filename={"API_Usage_Log.csv"}
-              data={dataSource}
-              className="btn btn-primary"
-            >
-              <Button icon={<ExportOutlined />} type="primary" block>
-                Export Log
-              </Button>
-            </CSVLink> 
+							filename={"API_Usage_Log.csv"}
+							data={dataSource}
+							className='btn btn-primary'
+						>
+							<Button
+								icon={<ExportOutlined />}
+								type='primary'
+								block
+							>
+								Export Log
+							</Button>
+						</CSVLink>
 
 						<Link to={`/documentation/${idApi}`}>
 							<Button icon={<CopyOutlined />} type='primary'>

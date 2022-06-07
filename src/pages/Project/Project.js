@@ -3,14 +3,15 @@ import { Button, Form, Input, Modal, Table } from "antd";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
-import { handleDate, handleURLName } from "../../helpers/Utils.js";
+import { Roles } from "../../helpers/Constant";
+import { defineRole, handleDate, handleURLName } from "../../helpers/Utils.js";
 import useProject from "../../hooks/useProject";
 import { ProjectService } from "../../services/ProjectService";
 
 function Project() {
 	const [refresh, setRefresh] = useState(new Date().getTime());
-	const [searchName, setSearchName] = useState("");
-	const project = useProject(refresh, searchName);
+	const [keyword, setKeyword] = useState("");
+	const project = useProject(refresh, keyword);
 	const [form] = Form.useForm();
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const dataProject = project.map((projectItem, index) => ({
@@ -22,6 +23,8 @@ function Project() {
 		created_by: `${projectItem.projectOwner}`,
 		detail: "...",
 	}));
+
+	const userRole = defineRole();
 
 	const columns = [
 		{
@@ -74,7 +77,7 @@ function Project() {
 
 	const { Search } = Input;
 	const onSearch = (value) => {
-		setSearchName(value);
+		setKeyword(value);
 	};
 
 	const showModal = () => {
@@ -147,16 +150,18 @@ function Project() {
 							onSearch={onSearch}
 						/>
 					</div>
-					<div className='add-field'>
-						<Button
-							icon={<PlusOutlined />}
-							type='primary'
-							block
-							onClick={showModal}
-						>
-							Create Project
-						</Button>
-					</div>
+					{userRole.includes(Roles.PROJECT_OWNER) ? (
+						<div className='add-field'>
+							<Button
+								icon={<PlusOutlined />}
+								type='primary'
+								block
+								onClick={showModal}
+							>
+								Create Project
+							</Button>
+						</div>
+					) : null}
 				</div>
 			</div>
 			<div className='datatable datatable-api'>

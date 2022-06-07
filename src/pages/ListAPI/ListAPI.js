@@ -10,16 +10,13 @@ import { Button, Dropdown, Input, Menu, Space, Table } from "antd";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
 import useApi from "../../hooks/useApi";
+import { getEndpoint } from "../../helpers/Utils";
 
 function ListAPI() {
 	let data = useLocation();
 	let { idProject, projectName, idGroup, groupName } = useParams();
 	const api = useApi(idProject, idGroup);
 	const breadcrumb = data.state.breadcrumb;
-	console.log(
-		"🚀 ~ file: ListAPI.js ~ line 20 ~ ListAPI ~ breadcrumb",
-		breadcrumb
-	);
 
 	const dataSource = api.map((apiItem, index) => ({
 		key: `${apiItem.idApi}`,
@@ -63,7 +60,17 @@ function ListAPI() {
 			key: "detail",
 			render: (text, record) => (
 				<Space>
-					<Link to={`api/${record.key}/history`}>
+					<Link
+						to={{
+							pathname: `api/${record.key}/history`,
+							state: {
+								breadcrumb: [
+									...breadcrumb,
+									`API - ${getEndpoint(record.endpoints)}`,
+								],
+							},
+						}}
+					>
 						<Button icon={<EyeOutlined />} type='primary' />
 					</Link>
 					<Link to={"/delete"}>
@@ -93,7 +100,7 @@ function ListAPI() {
 		<>
 			<Breadcrumbs breadcrumb={breadcrumb} />
 			<div className='header-datatable'>
-				<h1>List API of {data.state.name}</h1>
+				<h1>List API of {breadcrumb[breadcrumb.length - 1]}</h1>
 				<div className='right'>
 					<div className='search-field'>
 						<Search
@@ -112,7 +119,9 @@ function ListAPI() {
 						<Link
 							to={{
 								pathname: `/project/${idProject}/${projectName}/group/${idGroup}/${groupName}/form-api`,
-								state: { breadcrumb },
+								state: {
+									breadcrumb: [...breadcrumb, "Create API"],
+								},
 							}}
 						>
 							<Button

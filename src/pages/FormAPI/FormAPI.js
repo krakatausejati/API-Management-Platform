@@ -1,21 +1,14 @@
 import { InfoCircleOutlined } from "@ant-design/icons";
-import {
-	Breadcrumb,
-	Button,
-	Checkbox,
-	Form,
-	Input,
-	Select,
-	Switch,
-} from "antd";
+import { Button, Checkbox, Form, Input, Select, Switch } from "antd";
 import React, { useState } from "react";
-import { Link, useLocation, useParams, useHistory } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
+import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
 import { handleURLName } from "../../helpers/Utils";
 import useConnection from "../../hooks/useConnection";
+import useListUser from "../../hooks/useListUser";
 import useSchemaColumn from "../../hooks/useSchemaColumn";
 import useSchemaTable from "../../hooks/useSchemaTable";
 import useSchemaView from "../../hooks/useSchemaView";
-import useListUser from "../../hooks/useListUser";
 import { APIService } from "../../services/APIService";
 import "./create-api.css";
 
@@ -102,13 +95,17 @@ export default function FormAPI() {
 	};
 
 	const handleSubmit = (values) => {
-		console.log(values);
+		values.idGroup = idGroup;
+		console.log(
+			"🚀 ~ file: FormAPI.js ~ line 98 ~ handleSubmit ~ values",
+			values
+		);
 
 		APIService.createAPI(values)
 			.then(() => {
-				history.push(
-					`project/${idProject}/${projectName}/group/${idGroup}/${groupName}`
-				);
+				// history.replace(
+				// 	`project/${idProject}/${projectName}/group/${idGroup}/${groupName}`
+				// );
 			})
 			.catch((error) => {
 				console.log("Something went wrong", error);
@@ -136,14 +133,7 @@ export default function FormAPI() {
 
 	return (
 		<>
-			<Breadcrumb>
-				<Breadcrumb.Item>
-					<Link to={`/${breadcrumb.toLowerCase()}`}>
-						{breadcrumb}
-					</Link>
-				</Breadcrumb.Item>
-				<Breadcrumb.Item>Create API</Breadcrumb.Item>
-			</Breadcrumb>
+			<Breadcrumbs breadcrumb={breadcrumb} />
 			<div className='create-api' style={{ marginTop: "16px" }}>
 				<Form
 					form={form}
@@ -236,12 +226,15 @@ export default function FormAPI() {
 							<Form.Item label='Endpoints' name='endpoint'>
 								<Input onChange={handleChangeEndpoint} />
 							</Form.Item>
-							<Form.Item label='Private' name='is_private'>
+							<Form.Item
+								label='Private'
+								name='is_private'
+								initialValue={false}
+							>
 								<Switch
 									onChange={(value) => {
 										setIsPrivate(value);
 									}}
-									defaultChecked={false}
 								/>
 							</Form.Item>
 							{isPrivate ? (

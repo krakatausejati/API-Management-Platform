@@ -3,7 +3,7 @@ import {
 	AppstoreOutlined,
 	DatabaseOutlined,
 	LogoutOutlined,
-	SettingOutlined,
+	ProjectOutlined,
 	UserOutlined,
 	MenuUnfoldOutlined,
 	MenuFoldOutlined,
@@ -33,7 +33,7 @@ function DashboardLayout(props) {
 					<Menu.Item key='1' icon={<AppstoreOutlined />}>
 						<Link to='/dashboard'>Dashboard</Link>
 					</Menu.Item>
-					<Menu.Item key='2' icon={<SettingOutlined />}>
+					<Menu.Item key='2' icon={<ProjectOutlined />}>
 						<Link to='/project'>Project</Link>
 					</Menu.Item>
 					<Menu.Item key='3' icon={<DatabaseOutlined />}>

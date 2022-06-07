@@ -12,3 +12,10 @@ export const BASE_URL = {
 	KEYCLOAK_USER:
 		"http://localhost:8180/auth/admin/realms/api-management/users",
 };
+
+
+export const Roles = {
+	PROJECT_OWNER: "project_owner",
+	DEVELOPER: "developer",
+	CLIENT: "client",
+}

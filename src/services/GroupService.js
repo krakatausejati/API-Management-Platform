@@ -8,8 +8,12 @@ export const GroupService = {
 	deleteGroup,
 };
 
-function getAllGroup(idProject) {
-	return axiosInstance(BASE_URL.PROJECT).get(`/${idProject}/groups`);
+function getAllGroup(idProject, keyword) {
+	return axiosInstance(BASE_URL.PROJECT).get(`/${idProject}/groups`, {
+		params: {
+			keyword,
+		},
+	});
 }
 
 function createGroup(groupName, idProject) {

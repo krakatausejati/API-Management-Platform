@@ -1,18 +1,10 @@
-import { CaretDownOutlined } from "@ant-design/icons";
-import { Button, Dropdown, Input } from "antd";
+import { Input } from "antd";
 import React from "react";
 import AddField from "../atoms/AddField";
 
 export default function HeaderDataTable(props) {
-	const {
-		menu,
-		onSearch,
-		title,
-		titleButton,
-		pathname,
-		breadcrumb,
-		onClick,
-	} = props;
+	const { onSearch, title, titleButton, pathname, breadcrumb, onClick } =
+		props;
 
 	const { Search } = Input;
 
@@ -22,13 +14,6 @@ export default function HeaderDataTable(props) {
 			<div className='right'>
 				<div className='search-field'>
 					<Search placeholder="search API's" onSearch={onSearch} />
-				</div>
-				<div className='sort-field'>
-					<Dropdown overlay={menu}>
-						<Button block>
-							sort by <CaretDownOutlined />
-						</Button>
-					</Dropdown>
 				</div>
 				<AddField
 					title={titleButton}

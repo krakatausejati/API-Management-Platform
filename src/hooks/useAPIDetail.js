@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import { APIService } from "../services/APIService";
 
 const useAPIDetail = (idApi) => {
-    const [apiDetail, setApiDetail] = useState([]);
+	const [apiDetail, setApiDetail] = useState([]);
 
-    useEffect(() => {
+	useEffect(() => {
 		APIService.getAPIDetail(idApi)
 			.then((response) => {
 				setApiDetail(response.data.payload);

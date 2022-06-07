@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 export const Breadcrumbs = (props) => {
 	const { breadcrumb } = props;
+	const [project, projectName, group, groupName] = breadcrumb;
 	return (
 		<div className='breadcrumb'>
 			<Breadcrumb>
