@@ -60,6 +60,7 @@ function Login() {
 			});
 	};
 
+	if (localStorage.getItem("access_token")) history.push("/dashboard");
 	return (
 		<section className='login'>
 			<div className='hero-login'>
