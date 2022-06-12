@@ -1,18 +1,17 @@
 import {
 	CalendarOutlined,
-	DeleteOutlined,
 	EyeOutlined,
 	SortAscendingOutlined,
+	CopyOutlined,
 } from "@ant-design/icons";
-import { Breadcrumb, Button, Menu, Space, Table } from "antd";
-import { useState } from "react";
+import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
+import { Button, Menu, Space, Table } from "antd";
 import { Link } from "react-router-dom";
 import HeaderDataTable from "../../components/molecules/HeaderDataTable";
 import useApiPublic from "../../hooks/useApiPublic";
 
 function ApiPublic() {
-	const [refresh, setRefresh] = useState(new Date().getTime());
-	const apiPublic = useApiPublic(refresh);
+	const apiPublic = useApiPublic();
 	const dataSource = apiPublic.map((apiItem, index) => ({
 		key: `${apiItem.idApi}`,
 		no: `${index + 1}`,
@@ -33,6 +32,23 @@ function ApiPublic() {
 			title: "Endpoints",
 			dataIndex: "endpoints",
 			key: "endpoints",
+		},
+		{
+			title: "",
+			dataIndex: "copy",
+			key: "copy",
+			render: (text, record) => (
+				<Space>
+					{text}
+					<Button
+						icon={<CopyOutlined />}
+						type='default'
+						onClick={() => {
+							navigator.clipboard.writeText(record.endpoints);
+						}}
+					/>
+				</Space>
+			),
 		},
 		{
 			title: "Project Name",
@@ -58,9 +74,6 @@ function ApiPublic() {
 					<Link to={`api/${record.key}/history`}>
 						<Button icon={<EyeOutlined />} type='primary' />
 					</Link>
-					<Link to={"/delete"}>
-						<Button icon={<DeleteOutlined />} danger />
-					</Link>
 				</Space>
 			),
 		},
@@ -81,11 +94,7 @@ function ApiPublic() {
 
 	return (
 		<>
-			<div className='breadcrumb'>
-				<Breadcrumb>
-					<Breadcrumb.Item>API</Breadcrumb.Item>
-				</Breadcrumb>
-			</div>
+			<Breadcrumbs breadcrumb={["API Public"]} />
 			<HeaderDataTable
 				menu={menu}
 				onSearch={onSearch}

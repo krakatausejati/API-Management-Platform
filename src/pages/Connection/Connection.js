@@ -77,30 +77,31 @@ function Connection() {
 			dataIndex: "databaseName",
 			key: "databaseName",
 		},
-		{
-			title: "",
-			dataIndex: "detail",
-			key: "detail",
-			render: (text, record) => (
-				<Space>
-					{userRole.includes(Roles.DEVELOPER) ? (
-						<>
-							<Button
-								icon={<EyeOutlined />}
-								type='primary'
-								onClick={() => showModal(record.key)}
-							/>
-							<Button
-								icon={<DeleteOutlined />}
-								onClick={() => showDeleteConfirm(record.key)}
-								danger
-							/>
-						</>
-					) : null}
-				</Space>
-			),
-		},
 	];
+
+	const columnAction = {
+		title: "",
+		dataIndex: "detail",
+		key: "detail",
+		render: (text, record) => (
+			<Space>
+				<>
+					<Button
+						icon={<EyeOutlined />}
+						type='primary'
+						onClick={() => showModal(record.key)}
+					/>
+					<Button
+						icon={<DeleteOutlined />}
+						onClick={() => showDeleteConfirm(record.key)}
+						danger
+					/>
+				</>
+			</Space>
+		),
+	};
+
+	if (userRole.includes(Roles.DEVELOPER)) columns.push(columnAction);
 
 	const showModal = (idConnection) => {
 		if (idConnection) {
@@ -148,7 +149,7 @@ function Connection() {
 
 	const showDeleteConfirm = (idConnection) => {
 		confirm({
-			title: "Are you sure delete this connection?",
+			title: "Are you sure want to delete this connection?",
 			icon: <ExclamationCircleOutlined />,
 			content: "This connection will deleted permanently",
 			okText: "Yes",

@@ -32,7 +32,15 @@ function createConnection(values) {
 		databasePassword,
 	};
 
-	return axiosInstance(BASE_URL.CONNECTION).post("", connectionData);
+	return axiosInstance(BASE_URL.CONNECTION).post(
+		"",
+		JSON.stringify(connectionData),
+		{
+			headers: {
+				"Content-Type": "application/json",
+			},
+		}
+	);
 }
 
 function deleteConnection(idConnection) {

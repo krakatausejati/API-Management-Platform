@@ -3,18 +3,14 @@ import { Button, Space, Table } from "antd";
 import { Link } from "react-router-dom";
 import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
 import { Statistics } from "../../components/molecules/Statistics";
-import useAllHistory from "../../hooks/useAllHistory";
+import useSummaryRequest from "../../hooks/useSummaryRequest";
 import useApiPublic from "../../hooks/useApiPublic";
 import "./dashboard.css";
 
 function Dashboard() {
-	const allHistory = useAllHistory();
-	const totalSuccess = allHistory.filter(
-		(item) => item.requestStatus === 200
-	).length;
-	const totalFail = allHistory.filter(
-		(item) => item.requestStatus !== 200
-	).length;
+	const summaryRequest = useSummaryRequest();
+	const totalSuccess = summaryRequest.sumSuccess;
+	const totalFail = summaryRequest.sumFailed;
 
 	const apiPublic = useApiPublic();
 	const dataSource = apiPublic.map((apiItem, index) => ({
@@ -68,13 +64,13 @@ function Dashboard() {
 	];
 
 	const data = [
-		{ day: "monday", value: 3 },
-		{ day: "tuesday", value: 4 },
-		{ day: "wednesday", value: 3.5 },
-		{ day: "thursday", value: 5 },
-		{ day: "friday", value: 4.9 },
-		{ day: "saturday", value: 6 },
-		{ day: "sunday", value: 7 },
+		{ day: "monday", value: [3, 3] },
+		{ day: "tuesday", value: [4, 1] },
+		{ day: "wednesday", value: [3.5, 4] },
+		{ day: "thursday", value: [5, 5] },
+		{ day: "friday", value: [4.9, 2] },
+		{ day: "saturday", value: [6, 2] },
+		{ day: "sunday", value: [7, 4] },
 	];
 
 	return (

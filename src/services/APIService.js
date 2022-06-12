@@ -7,13 +7,19 @@ export const APIService = {
 	getAllAPI,
 	getAPIPublic,
 	createAPI,
+	deleteAPI,
 	getAPIDetail,
 	getAPIDocumentation,
 	getAPICount,
+	getSummaryRequest,
 };
 
 function getAllHistory() {
 	return axiosInstance(`http://localhost:8080/api/history`).get("");
+}
+
+function getSummaryRequest() {
+	return axiosInstance(`http://localhost:8080/api/sum-history`).get("");
 }
 
 function getAPIHistory(idApi) {
@@ -55,9 +61,18 @@ function createAPI(values) {
 	});
 }
 
-function getAllAPI(idProject, idGroup) {
+function deleteAPI(idProject, idGroup) {
+	return axiosInstance(BASE_URL.API).delete(`/${idProject}`);
+}
+
+function getAllAPI(idProject, idGroup, keyword) {
 	return axiosInstance(BASE_URL.PROJECT).get(
-		`/${idProject}/groups/${idGroup}/apis`
+		`/${idProject}/groups/${idGroup}/apis`,
+		{
+			params: {
+				keyword,
+			},
+		}
 	);
 }
 

@@ -1,6 +1,6 @@
 import axiosInstance from "../helpers/Axios";
 import { BASE_URL } from "../helpers/Constant";
-import { parseJwt } from "../helpers/Utils";
+import { defineRole, parseJwt } from "../helpers/Utils";
 
 export const GroupService = {
 	getAllGroup,
@@ -16,13 +16,16 @@ function getAllGroup(idProject, keyword) {
 	});
 }
 
-function createGroup(groupName, idProject) {
+function createGroup({ groupName, description }, idProject) {
 	const accessToken = localStorage.getItem("access_token");
 	const { preferred_username } = parseJwt(accessToken);
+	const [role] = defineRole();
 
 	let dataGroup = {
 		groupName,
 		createdBy: preferred_username,
+		description,
+		role,
 	};
 
 	return axiosInstance(BASE_URL.PROJECT).post(
@@ -37,7 +40,18 @@ function createGroup(groupName, idProject) {
 }
 
 function deleteGroup(idProject, idGroup) {
+	const [role] = defineRole();
+
 	return axiosInstance(BASE_URL.PROJECT).delete(
-		`/${idProject}/groups/${idGroup}`
+		`/${idProject}/groups/${idGroup}`,
+		{
+			headers: {
+				"Content-Type": "application/json",
+				"Access-Control-Allow-Origin": "*",
+			},
+			data: {
+				role,
+			},
+		}
 	);
 }

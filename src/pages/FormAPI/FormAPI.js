@@ -103,9 +103,7 @@ export default function FormAPI() {
 
 		APIService.createAPI(values)
 			.then(() => {
-				// history.replace(
-				// 	`project/${idProject}/${projectName}/group/${idGroup}/${groupName}`
-				// );
+				history.goBack();
 			})
 			.catch((error) => {
 				console.log("Something went wrong", error);
@@ -121,7 +119,7 @@ export default function FormAPI() {
 	}
 
 	const handleGeneratedEndpoint = (endpoint) => {
-		let generatedEndpoints = `http://localhost:8080/generated/api/${projectName}/${groupName}/${handleURLName(
+		let generatedEndpoints = `/generated/api/${projectName}/${groupName}/${handleURLName(
 			endpoint
 		)}`;
 
@@ -232,6 +230,7 @@ export default function FormAPI() {
 								initialValue={false}
 							>
 								<Switch
+									defaultChecked={false}
 									onChange={(value) => {
 										setIsPrivate(value);
 									}}

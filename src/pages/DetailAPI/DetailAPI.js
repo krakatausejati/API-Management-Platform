@@ -136,7 +136,7 @@ function DetailAPI() {
 							title='Longest Duration'
 							value={getExecutionTime(executionTime, "MAX")}
 						/>
-						<p>seconds</p>
+						<p>miliseconds</p>
 					</Card>
 				</div>
 				<div className='longest-duration'>
@@ -145,7 +145,7 @@ function DetailAPI() {
 							title='Quickest Duration'
 							value={getExecutionTime(executionTime)}
 						/>
-						<p>seconds</p>
+						<p>miliseconds</p>
 					</Card>
 				</div>
 				<div className='sum-result'>

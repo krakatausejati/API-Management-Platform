@@ -1,22 +1,25 @@
 import {
-	CalendarOutlined,
-	CaretDownOutlined,
 	DeleteOutlined,
 	EyeOutlined,
 	PlusOutlined,
-	SortAscendingOutlined,
+	ExclamationCircleOutlined,
 } from "@ant-design/icons";
-import { Button, Dropdown, Input, Menu, Space, Table } from "antd";
+import { Button, Input, Space, Table, Modal } from "antd";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
-import useApi from "../../hooks/useApi";
 import { getEndpoint } from "../../helpers/Utils";
+import useApi from "../../hooks/useApi";
+import React, { useState } from "react";
+import { APIService } from "../../services/APIService";
 
 function ListAPI() {
 	let data = useLocation();
 	let { idProject, projectName, idGroup, groupName } = useParams();
-	const api = useApi(idProject, idGroup);
 	const breadcrumb = data.state.breadcrumb;
+	const { confirm } = Modal;
+	const [keyword, setKeyword] = useState("");
+	const [refresh, setRefresh] = useState("");
+	const api = useApi(idProject, idGroup, keyword, refresh);
 
 	const dataSource = api.map((apiItem, index) => ({
 		key: `${apiItem.idApi}`,
@@ -73,9 +76,11 @@ function ListAPI() {
 					>
 						<Button icon={<EyeOutlined />} type='primary' />
 					</Link>
-					<Link to={"/delete"}>
-						<Button icon={<DeleteOutlined />} danger />
-					</Link>
+					<Button
+						icon={<DeleteOutlined />}
+						onClick={() => showDeleteConfirm(record.key)}
+						danger
+					/>
 				</Space>
 			),
 		},
@@ -83,18 +88,32 @@ function ListAPI() {
 
 	const { Search } = Input;
 
-	const onSearch = (value) => console.log(value);
+	const onSearch = (value) => setKeyword(value);
 
-	const menu = (
-		<Menu>
-			<Menu.Item key='1' icon={<SortAscendingOutlined />}>
-				Ascending
-			</Menu.Item>
-			<Menu.Item key='2' icon={<CalendarOutlined />}>
-				Created at
-			</Menu.Item>
-		</Menu>
-	);
+	const showDeleteConfirm = (idAPI) => {
+		confirm({
+			title: "Are you sure want to delete this API?",
+			icon: <ExclamationCircleOutlined />,
+			content: `This API will deleted permanently`,
+			okText: "Yes",
+			okType: "danger",
+			cancelText: "No",
+
+			onOk() {
+				APIService.deleteAPI(idAPI)
+					.then(() => {
+						setRefresh(new Date().getTime());
+					})
+					.catch((error) => {
+						console.log("Something went wrong", error);
+					});
+			},
+
+			onCancel() {
+				console.log("Cancel");
+			},
+		});
+	};
 
 	return (
 		<>
@@ -107,13 +126,6 @@ function ListAPI() {
 							placeholder="search API's"
 							onSearch={onSearch}
 						/>
-					</div>
-					<div className='sort-field'>
-						<Dropdown overlay={menu}>
-							<Button block>
-								sort by <CaretDownOutlined />
-							</Button>
-						</Dropdown>
 					</div>
 					<div className='add-field'>
 						<Link

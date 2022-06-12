@@ -1,5 +1,9 @@
-import { PlusOutlined } from "@ant-design/icons";
-import { Button, Form, Input, Modal, Table } from "antd";
+import {
+	PlusOutlined,
+	DeleteOutlined,
+	ExclamationCircleOutlined,
+} from "@ant-design/icons";
+import { Button, Form, Input, Modal, Space, Table } from "antd";
 import Search from "antd/lib/input/Search";
 import React, { useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
@@ -14,6 +18,7 @@ function ListGroup() {
 	let { idProject, projectName } = useParams();
 	const id = parseInt(idProject, 10);
 	const [form] = Form.useForm();
+	const { confirm } = Modal;
 
 	const [keyword, setKeyword] = useState("");
 	const [refresh, setRefresh] = useState("");
@@ -25,6 +30,17 @@ function ListGroup() {
 	const [isModalVisible, setIsModalVisible] = useState(false);
 
 	const breadcrumb = [data.state.breadcrumb, data.state.name];
+
+	const dataSource = group.map((groupItem, index) => ({
+		key: `${groupItem.idGroup}`,
+		no: `${index + 1}`,
+		name: `${groupItem.groupName}`,
+		description: `${groupItem.description}`,
+		sum_api: `${groupItem.api.length}`,
+		created_at: `${handleDate(groupItem.createdAt)}`,
+		created_by: `${groupItem.createdBy}`,
+		detail: "...",
+	}));
 
 	const columns = [
 		{
@@ -58,6 +74,11 @@ function ListGroup() {
 			),
 		},
 		{
+			title: "Description",
+			dataIndex: "description",
+			key: "description",
+		},
+		{
 			title: "Total of API",
 			dataIndex: "sum_api",
 			key: "sum_api",
@@ -72,30 +93,35 @@ function ListGroup() {
 			dataIndex: "created_by",
 			key: "created_by",
 		},
-		{
-			title: "",
-			dataIndex: "detail",
-			key: "detail",
-		},
 	];
 
-	const dataSource = group.map((groupItem, index) => ({
-		key: `${groupItem.idGroup}`,
-		no: `${index + 1}`,
-		name: `${groupItem.groupName}`,
-		sum_api: `${groupItem.api.length}`,
-		created_at: `${handleDate(groupItem.createdAt)}`,
-		created_by: `${groupItem.createdBy}`,
-		detail: "...",
-	}));
+	const columnAction = {
+		title: "",
+		dataIndex: "detail",
+		key: "detail",
+		render: (text, record) => (
+			<Space>
+				<>
+					<Button
+						icon={<DeleteOutlined />}
+						onClick={() =>
+							showDeleteConfirm(record.key, record.sum_api)
+						}
+						danger
+					/>
+				</>
+			</Space>
+		),
+	};
+
+	if (userRole.includes(Roles.PROJECT_OWNER)) columns.push(columnAction);
 
 	const showModal = () => {
 		setIsModalVisible(true);
 	};
 
 	const handleOk = (values) => {
-		const { groupName } = values;
-		GroupService.createGroup(groupName, id)
+		GroupService.createGroup(values, id)
 			.then((response) => {
 				setRefresh(new Date().getTime());
 			})
@@ -110,8 +136,32 @@ function ListGroup() {
 	};
 
 	const onSearch = (value) => {
-		console.log(value);
 		setKeyword(value);
+	};
+
+	const showDeleteConfirm = (idGroup, sumAPI) => {
+		confirm({
+			title: "Are you sure want to delete this group?",
+			icon: <ExclamationCircleOutlined />,
+			content: `This group have ${sumAPI} API and will deleted permanently`,
+			okText: "Yes",
+			okType: "danger",
+			cancelText: "No",
+
+			onOk() {
+				GroupService.deleteGroup(idProject, idGroup)
+					.then(() => {
+						setRefresh(new Date().getTime());
+					})
+					.catch((error) => {
+						console.log("Something went wrong", error);
+					});
+			},
+
+			onCancel() {
+				console.log("Cancel");
+			},
+		});
 	};
 
 	return (
@@ -148,6 +198,19 @@ function ListGroup() {
 					>
 						<Input />
 					</Form.Item>
+					<Form.Item
+						label='Description'
+						name='description'
+						style={{ width: "100%" }}
+						rules={[
+							{
+								required: true,
+								message: "Please input the description!",
+							},
+						]}
+					>
+						<Input />
+					</Form.Item>
 				</Form>
 			</Modal>
 			{/* Modal */}
@@ -171,7 +234,7 @@ function ListGroup() {
 								block
 								onClick={showModal}
 							>
-								Create Group
+								Add Group
 							</Button>
 						</div>
 					) : null}
