@@ -6,6 +6,7 @@ import { Statistics } from "../../components/molecules/Statistics";
 import useSummaryRequest from "../../hooks/useSummaryRequest";
 import useApiPublic from "../../hooks/useApiPublic";
 import "./dashboard.css";
+import { getEndpoint } from "../../helpers/Utils";
 
 function Dashboard() {
 	const summaryRequest = useSummaryRequest();
@@ -55,7 +56,16 @@ function Dashboard() {
 			key: "detail",
 			render: (text, record) => (
 				<Space>
-					<Link to={`api/${record.key}/history`}>
+					<Link
+						to={{
+							pathname: `api/${record.key}/history`,
+							state: {
+								breadcrumb: [
+									`API - ${getEndpoint(record.endpoints)}`,
+								],
+							},
+						}}
+					>
 						<Button icon={<EyeOutlined />} type='primary' />
 					</Link>
 				</Space>
