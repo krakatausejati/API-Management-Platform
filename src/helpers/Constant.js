@@ -5,6 +5,7 @@ export const BASE_URL = {
 	TABLE: "http://localhost:8080/api/schema/tables",
 	VIEWS: "http://localhost:8080/api/schema/views",
 	API: "http://localhost:8080/api/apis",
+	MOST_USED_API: "http://localhost:8080/api/most-used-api",
 	API_DOC: "http://localhost:8080/api/preview",
 	AUTH: "http://localhost:8180/auth",
 	KEYCLOAK_AUTH:
@@ -13,9 +14,8 @@ export const BASE_URL = {
 		"http://localhost:8180/auth/admin/realms/api-management/users",
 };
 
-
 export const Roles = {
 	PROJECT_OWNER: "project_owner",
 	DEVELOPER: "developer",
 	CLIENT: "client",
-}
+};

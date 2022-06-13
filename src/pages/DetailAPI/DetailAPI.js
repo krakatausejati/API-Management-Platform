@@ -97,18 +97,23 @@ function DetailAPI() {
 				<h2>Detail API</h2>
 				<Form layout='vertical'>
 					<Form.Item label='Endpoints' className='endpoints'>
-						<Input disabled value={apiDetail.apiEndpoint} />
-						<Button
-							icon={<CopyOutlined />}
-							type='primary'
-							onClick={() => {
-								navigator.clipboard.writeText(
-									apiDetail.apiEndpoint
-								);
-							}}
+						<div
+							className='endpoint'
+							style={{ display: "flex", gap: "2em" }}
 						>
-							Copy Text
-						</Button>
+							<Input disabled value={apiDetail.apiEndpoint} />
+							<Button
+								icon={<CopyOutlined />}
+								type='primary'
+								onClick={() => {
+									navigator.clipboard.writeText(
+										apiDetail.apiEndpoint
+									);
+								}}
+							>
+								Copy Endpoint
+							</Button>
+						</div>
 					</Form.Item>
 					<div className='identity-api'>
 						<Form.Item label='Description'>
@@ -171,7 +176,11 @@ function DetailAPI() {
 					<h1 style={{ margin: 0 }}>Recent Access</h1>
 					<div
 						className='right'
-						style={{ display: "flex", justifyContent: "flex-end" }}
+						style={{
+							display: "flex",
+							justifyContent: "flex-end",
+							gap: "2em",
+						}}
 					>
 						<CSVLink
 							filename={"API_Usage_Log.csv"}

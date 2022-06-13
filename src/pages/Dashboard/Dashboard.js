@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
 import { Statistics } from "../../components/molecules/Statistics";
 import useSummaryRequest from "../../hooks/useSummaryRequest";
-import useApiPublic from "../../hooks/useApiPublic";
+import useMostUsedAPI from "../../hooks/useMostUsedAPI";
 import "./dashboard.css";
 
 function Dashboard() {
@@ -12,15 +12,13 @@ function Dashboard() {
 	const totalSuccess = summaryRequest.sumSuccess;
 	const totalFail = summaryRequest.sumFailed;
 
-	const apiPublic = useApiPublic();
-	const dataSource = apiPublic.map((apiItem, index) => ({
+	const mostUsedAPI = useMostUsedAPI();
+	const dataSource = mostUsedAPI.map((apiItem, index) => ({
 		key: `${apiItem.idApi}`,
 		no: `${index + 1}`,
 		endpoints: `${apiItem.apiEndpoint}`,
 		description: `${apiItem.description}`,
-		project: `{Nama Project}`,
-		group: `{Nama Group}`,
-		detail: "...",
+		sumRequest: `${apiItem.sumRequest}`,
 	}));
 
 	const columns = [
@@ -35,14 +33,9 @@ function Dashboard() {
 			key: "endpoints",
 		},
 		{
-			title: "Project Name",
-			dataIndex: "project",
-			key: "project",
-		},
-		{
-			title: "Group Name",
-			dataIndex: "group",
-			key: "group",
+			title: "Total Request",
+			dataIndex: "sumRequest",
+			key: "sumRequest",
 		},
 		{
 			title: "Description",

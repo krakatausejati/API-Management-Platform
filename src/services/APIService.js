@@ -6,6 +6,7 @@ export const APIService = {
 	getAPIHistory,
 	getAllAPI,
 	getAPIPublic,
+	getMostUsedAPI,
 	createAPI,
 	deleteAPI,
 	getAPIDetail,
@@ -92,4 +93,8 @@ function getAPICount(idProject, idGroup) {
 	return axiosInstance(BASE_URL.PROJECT).get(
 		`/${idProject}/groups/${idGroup}/apis/count`
 	);
+}
+
+function getMostUsedAPI() {
+	return axiosInstance(BASE_URL.MOST_USED_API).get();
 }
