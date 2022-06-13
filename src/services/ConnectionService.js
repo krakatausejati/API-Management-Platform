@@ -9,8 +9,12 @@ export const ConnectionService = {
 	updateConnection,
 };
 
-function getAllConnection() {
-	return axiosInstance(BASE_URL.CONNECTION).get("");
+function getAllConnection(keyword) {
+	return axiosInstance(BASE_URL.CONNECTION).get("", {
+		params: {
+			keyword,
+		},
+	});
 }
 
 function createConnection(values) {

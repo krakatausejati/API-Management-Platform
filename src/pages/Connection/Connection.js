@@ -15,7 +15,8 @@ import { ConnectionService } from "../../services/ConnectionService";
 
 function Connection() {
 	const [refresh, setRefresh] = useState(new Date().getTime());
-	const connection = useConnection(refresh);
+	const [keyword, setKeyword] = useState("");
+	const connection = useConnection(refresh, keyword);
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [form] = Form.useForm();
 	const { confirm } = Modal;
@@ -172,6 +173,10 @@ function Connection() {
 		});
 	};
 
+	const { Search } = Input;
+
+	const onSearch = (value) => setKeyword(value);
+
 	return (
 		<>
 			{/* Modal */}
@@ -307,18 +312,26 @@ function Connection() {
 			/> */}
 			<div className='header-datatable'>
 				<h1>List Connections</h1>
-				{userRole.includes(Roles.DEVELOPER) ? (
-					<div className='add-field'>
-						<Button
-							icon={<PlusOutlined />}
-							type='primary'
-							block
-							onClick={() => showModal(null)}
-						>
-							Create Connection
-						</Button>
+				<div className='right'>
+					<div className='search-field'>
+						<Search
+							placeholder="search Connection's"
+							onSearch={onSearch}
+						/>
 					</div>
-				) : null}
+					{userRole.includes(Roles.DEVELOPER) ? (
+						<div className='add-field'>
+							<Button
+								icon={<PlusOutlined />}
+								type='primary'
+								block
+								onClick={() => showModal(null)}
+							>
+								Create Connection
+							</Button>
+						</div>
+					) : null}
+				</div>
 			</div>
 			<div className='datatable datatable-group'>
 				<Table dataSource={dataSource} columns={columns} />
