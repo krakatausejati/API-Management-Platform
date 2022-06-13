@@ -1,15 +1,12 @@
 export default
 {
-    "conditions": {
-      "field1": "value",
-      "field2": {
-        "value": "aku",
-        "value": "yuk"
-      }
-    },
-    "sortfields": "id_connection",
-    "sortBy": "ASC",
-    "limit": 10,
-    "skip": 0,
-    "output": "JSON"
+  "conditions": {
+    "field_name": "value"
+  },
+  "sort": {
+    "field_name": "ASC/DESC"
+  },
+  "limit": 100,
+  "skip": 0,
+  "output": "JSON"
 }

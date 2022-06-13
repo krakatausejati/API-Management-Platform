@@ -5,10 +5,10 @@ import {
 	CopyOutlined,
 } from "@ant-design/icons";
 import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
-import { Button, Menu, Space, Table } from "antd";
+import { Button, Menu, Input, Space, Table } from "antd";
 import { Link } from "react-router-dom";
-import HeaderDataTable from "../../components/molecules/HeaderDataTable";
 import useApiPublic from "../../hooks/useApiPublic";
+import { getEndpoint } from "../../helpers/Utils";
 
 function ApiPublic() {
 	const apiPublic = useApiPublic();
@@ -71,7 +71,16 @@ function ApiPublic() {
 			key: "detail",
 			render: (text, record) => (
 				<Space>
-					<Link to={`api/${record.key}/history`}>
+					<Link
+						to={{
+							pathname: `api/${record.key}/history`,
+							state: {
+								breadcrumb: [
+									`API - ${getEndpoint(record.endpoints)}`,
+								],
+							},
+						}}
+					>
 						<Button icon={<EyeOutlined />} type='primary' />
 					</Link>
 				</Space>
@@ -79,6 +88,7 @@ function ApiPublic() {
 		},
 	];
 
+	const { Search } = Input;
 	const onSearch = (value) => console.log(value);
 
 	const menu = (
@@ -95,14 +105,17 @@ function ApiPublic() {
 	return (
 		<>
 			<Breadcrumbs breadcrumb={["API Public"]} />
-			<HeaderDataTable
-				menu={menu}
-				onSearch={onSearch}
-				title="Your API's"
-				titleButton='Create API'
-				pathname='/create-api'
-				breadcrumb='API'
-			/>
+			<div className='header-datatable'>
+				<h1>APIs Public</h1>
+				<div className='right'>
+					<div className='search-field'>
+						<Search
+							placeholder="search API"
+							onSearch={onSearch}
+						/>
+					</div>
+				</div>
+			</div>
 			<div className='datatable datatable-api'>
 				<Table dataSource={dataSource} columns={columns} />
 			</div>

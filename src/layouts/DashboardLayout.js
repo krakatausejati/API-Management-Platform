@@ -12,7 +12,7 @@ import { Avatar, Layout, Menu } from "antd";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthService } from "../services/AuthService";
-import { parseJwt } from "../helpers/Utils";
+import { defineRole, parseJwt } from "../helpers/Utils";
 import "./dashboardlayout.css";
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -22,6 +22,7 @@ function DashboardLayout(props) {
 	const accessToken = localStorage.getItem("access_token");
 	const { preferred_username } = parseJwt(accessToken);
 	const [collapsed, setCollapsed] = useState(false);
+	const [role] = defineRole();
 
 	return (
 		<Layout>
@@ -74,7 +75,7 @@ function DashboardLayout(props) {
 							style={{ backgroundColor: "#87d068" }}
 							icon={<UserOutlined />}
 						/>
-						<p>{preferred_username}</p>
+						<p>{preferred_username} ({role})</p>
 					</div>
 				</Header>
 				<Content

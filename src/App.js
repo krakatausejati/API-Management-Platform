@@ -65,6 +65,14 @@ function App() {
 							<DashboardLayout children={<DetailAPI />} />
 						</PrivateRoute>
 					</Route>
+					<Route
+						path='/api/:idApi/history'
+						exact
+					>
+						<PrivateRoute>
+							<DashboardLayout children={<DetailAPI />} />
+						</PrivateRoute>
+					</Route>
 					<Route path='/documentation/:idApi' exact>
 						<PrivateRoute>
 							<DashboardLayout children={<DocumentationAPI />} />

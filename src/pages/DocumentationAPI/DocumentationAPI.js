@@ -115,15 +115,15 @@ function DocumentationAPI() {
         <h2>This is the documentation page for using the API endpoints {apiDetail.description}.</h2>
       </div>    
         <Collapse accordion>
-          <Panel header= "GET" key="1">
+          <Panel header= "Request Method POST" key="1">
             <Collapse defaultActiveKey="1">
               <Panel header= "Parameter" key="1">
                   <ReactJson 
                   name = "request body example"
                   theme = "monokai"
-                  displayDataTypes = {true}
-                  onEdit = {true}
-                  onAdd = {true}
+                  displayDataTypes = {false}
+                  onEdit = {false}
+                  onAdd = {false}
                   src={exampleJson} />
                 <h3>Request</h3>
                   <Table 
