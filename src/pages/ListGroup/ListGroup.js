@@ -9,7 +9,12 @@ import React, { useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
 import { Roles } from "../../helpers/Constant";
-import { defineRole, handleDate, handleURLName } from "../../helpers/Utils";
+import {
+	defineRole,
+	handleDate,
+	handleURLName,
+	showErrorMessage,
+} from "../../helpers/Utils";
 import useGroup from "../../hooks/useGroup";
 import { GroupService } from "../../services/GroupService";
 
@@ -124,11 +129,16 @@ function ListGroup() {
 		GroupService.createGroup(values, id)
 			.then((response) => {
 				setRefresh(new Date().getTime());
+				setIsModalVisible(false);
 			})
 			.catch((error) => {
-				console.log("Something went wrong", error);
+				const [errorMessage] = error.messages;
+				showErrorMessage(
+					Modal,
+					<ExclamationCircleOutlined />,
+					errorMessage
+				);
 			});
-		setIsModalVisible(false);
 	};
 
 	const handleCancel = () => {
@@ -144,7 +154,7 @@ function ListGroup() {
 			title: "Are you sure want to delete this group?",
 			icon: <ExclamationCircleOutlined />,
 			content: `This group have ${sumAPI} API and will deleted permanently`,
-			okText: "Yes",
+			okText: "Ok",
 			okType: "danger",
 			cancelText: "No",
 
@@ -163,6 +173,19 @@ function ListGroup() {
 			},
 		});
 	};
+
+	// const showErrorMessage = (errorMessage) => {
+	// 	Modal.error({
+	// 		title: "Error",
+	// 		icon: <ExclamationCircleOutlined />,
+	// 		content: `${errorMessage}`,
+	// 		okText: "Ok",
+	// 		okType: "secondary",
+	// 		cancelText: "No",
+
+	// 		onOk() {},
+	// 	});
+	// };
 
 	return (
 		<>

@@ -8,7 +8,12 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
 import { Roles } from "../../helpers/Constant";
-import { defineRole, handleDate, handleURLName } from "../../helpers/Utils.js";
+import {
+	defineRole,
+	handleDate,
+	handleURLName,
+	showErrorMessage,
+} from "../../helpers/Utils.js";
 import useProject from "../../hooks/useProject";
 import { ProjectService } from "../../services/ProjectService";
 
@@ -113,12 +118,16 @@ function Project() {
 		ProjectService.createProject(values)
 			.then(() => {
 				setRefresh(new Date().getTime());
+				setIsModalVisible(false);
 			})
 			.catch((error) => {
-				console.log("Something went wrong", error);
+				const [errorMessage] = error.messages;
+				showErrorMessage(
+					Modal,
+					<ExclamationCircleOutlined />,
+					errorMessage
+				);
 			});
-
-		setIsModalVisible(false);
 	};
 
 	const handleCancel = () => {

@@ -42,6 +42,16 @@ const axiosInstance = (url = "") => {
 			return Promise.reject(error);
 		}
 	);
+
+	axiosConfig.interceptors.response.use(
+		(res) => {
+			return res;
+		},
+		(error) => {
+			return Promise.reject(error.response.data);
+		}
+	);
+
 	return axiosConfig;
 };
 
