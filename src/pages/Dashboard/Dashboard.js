@@ -88,7 +88,11 @@ function Dashboard() {
 				<h1>Top 10's API</h1>
 			</div>
 			<div className='datatable datatable-api'>
-				<Table dataSource={dataSource} columns={columns} />
+				<Table
+					dataSource={dataSource}
+					columns={columns}
+					pagination={false}
+				/>
 			</div>
 		</>
 	);

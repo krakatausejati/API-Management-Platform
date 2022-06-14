@@ -1,5 +1,7 @@
 import axiosInstance from "../helpers/Axios";
 import { BASE_URL } from "../helpers/Constant";
+import qs from "query-string";
+import { defineRole } from "../helpers/Utils";
 
 export const ConnectionService = {
 	getAllConnection,
@@ -7,6 +9,7 @@ export const ConnectionService = {
 	deleteConnection,
 	editConnection,
 	updateConnection,
+	testConnection,
 };
 
 function getAllConnection(keyword) {
@@ -15,6 +18,24 @@ function getAllConnection(keyword) {
 			keyword,
 		},
 	});
+}
+
+function testConnection(values) {
+	const { host, port, databaseName, databaseUsername, databasePassword } =
+		values;
+
+	let connectionData = {
+		host,
+		port,
+		databaseName,
+		databaseUsername,
+		databasePassword,
+	};
+
+	return axiosInstance(BASE_URL.CONNECTION_TEST).post(
+		"",
+		qs.stringify(connectionData)
+	);
 }
 
 function createConnection(values) {
@@ -27,6 +48,8 @@ function createConnection(values) {
 		databasePassword,
 	} = values;
 
+	const [role] = defineRole();
+
 	let connectionData = {
 		connectionName,
 		host,
@@ -34,6 +57,7 @@ function createConnection(values) {
 		databaseName,
 		databaseUsername,
 		databasePassword,
+		role,
 	};
 
 	return axiosInstance(BASE_URL.CONNECTION).post(
@@ -48,11 +72,21 @@ function createConnection(values) {
 }
 
 function deleteConnection(idConnection) {
-	return axiosInstance(BASE_URL.CONNECTION).delete(`/${idConnection}`);
+	const [role] = defineRole();
+	return axiosInstance(BASE_URL.CONNECTION).delete(`/${idConnection}`, {
+		headers: {
+			"Content-Type": "application/json",
+			"Access-Control-Allow-Origin": "*",
+		},
+		data: {
+			role,
+		},
+	});
 }
 
 function editConnection(idConnection) {
-	return axiosInstance(BASE_URL.CONNECTION).get(`/${idConnection}`);
+	const [role] = defineRole();
+	return axiosInstance(BASE_URL.CONNECTION).get(`/${idConnection}`, role);
 }
 
 function updateConnection(values) {

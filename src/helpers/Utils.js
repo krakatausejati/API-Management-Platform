@@ -60,11 +60,27 @@ export const defineRole = () => {
 	return resource_access["api-auth"].roles;
 };
 
-export const showErrorMessage = (modal, icon, errorMessage) => {
+export const getUserId = () => {
+	const { sid } = parseJwt(localStorage.getItem("access_token"));
+	return sid;
+};
+
+export const showErrorMessage = (modal, errorMessage) => {
 	modal.error({
 		title: "Error",
-		icon: icon,
 		content: `${errorMessage}`,
+		okText: "Ok",
+		okType: "secondary",
+		cancelText: "No",
+
+		onOk() {},
+	});
+};
+
+export const showSuccessMessage = (modal, successMessage) => {
+	modal.success({
+		title: "Success",
+		content: `${successMessage}`,
 		okText: "Ok",
 		okType: "secondary",
 		cancelText: "No",

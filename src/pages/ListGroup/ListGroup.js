@@ -174,19 +174,6 @@ function ListGroup() {
 		});
 	};
 
-	// const showErrorMessage = (errorMessage) => {
-	// 	Modal.error({
-	// 		title: "Error",
-	// 		icon: <ExclamationCircleOutlined />,
-	// 		content: `${errorMessage}`,
-	// 		okText: "Ok",
-	// 		okType: "secondary",
-	// 		cancelText: "No",
-
-	// 		onOk() {},
-	// 	});
-	// };
-
 	return (
 		<>
 			{/* Modal */}

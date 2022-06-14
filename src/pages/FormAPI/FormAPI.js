@@ -3,7 +3,7 @@ import { Button, Checkbox, Form, Input, Select, Switch } from "antd";
 import React, { useState } from "react";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
-import { handleURLName } from "../../helpers/Utils";
+import { getUserId, handleURLName } from "../../helpers/Utils";
 import useConnection from "../../hooks/useConnection";
 import useListUser from "../../hooks/useListUser";
 import useSchemaColumn from "../../hooks/useSchemaColumn";
@@ -17,6 +17,7 @@ export default function FormAPI() {
 	const history = useHistory();
 	const connections = useConnection();
 	const users = useListUser();
+	const apiOwnerId = getUserId();
 	const userData =
 		users.length > 0
 			? users.map((userItem) => ({
@@ -96,6 +97,7 @@ export default function FormAPI() {
 
 	const handleSubmit = (values) => {
 		values.idGroup = idGroup;
+		values.apiOwner = apiOwnerId;
 		console.log(
 			"🚀 ~ file: FormAPI.js ~ line 98 ~ handleSubmit ~ values",
 			values

@@ -12,7 +12,7 @@ const useGroup = (idProject, refresh, keyword) => {
 			.catch((error) => {
 				console.log("Something went wrong", error);
 			});
-	}, [refresh, keyword]);
+	}, [idProject, refresh, keyword]);
 
 	return group;
 };

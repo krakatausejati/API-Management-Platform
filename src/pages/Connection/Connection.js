@@ -5,10 +5,14 @@ import {
 	PlusOutlined,
 } from "@ant-design/icons";
 import { Button, Form, Input, Modal, Space, Table } from "antd";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
 import { Roles } from "../../helpers/Constant";
-import { defineRole } from "../../helpers/Utils";
+import {
+	defineRole,
+	showErrorMessage,
+	showSuccessMessage,
+} from "../../helpers/Utils";
 // import HeaderDataTable from "../../components/molecules/HeaderDataTable";
 import useConnection from "../../hooks/useConnection";
 import { ConnectionService } from "../../services/ConnectionService";
@@ -16,6 +20,7 @@ import { ConnectionService } from "../../services/ConnectionService";
 function Connection() {
 	const [refresh, setRefresh] = useState(new Date().getTime());
 	const [keyword, setKeyword] = useState("");
+	const [test, setTest] = useState(false);
 	const connection = useConnection(refresh, keyword);
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [form] = Form.useForm();
@@ -127,6 +132,7 @@ function Connection() {
 			ConnectionService.createConnection(values)
 				.then((response) => {
 					setRefresh(new Date().getTime());
+					setTest(false);
 				})
 				.catch((error) => {
 					console.log("Something went wrong", error);
@@ -144,7 +150,28 @@ function Connection() {
 		setIsModalVisible(false);
 	};
 
+	const handleTest = (values) => {
+		console.log(
+			"🚀 ~ file: Connection.js ~ line 148 ~ handleTest ~ values",
+			values
+		);
+		ConnectionService.testConnection(values)
+			.then((res) => {
+				const [successMessage] = res.data.messages;
+				setTest(true);
+				showSuccessMessage(Modal, successMessage);
+			})
+			.catch((error) => {
+				if (error.messages) {
+					const [errorMessage] = error.messages;
+					showErrorMessage(Modal, errorMessage);
+				}
+				setTest(false);
+			});
+	};
+
 	const handleCancel = () => {
+		setTest(false);
 		setIsModalVisible(false);
 	};
 
@@ -167,9 +194,7 @@ function Connection() {
 					});
 			},
 
-			onCancel() {
-				console.log("Cancel");
-			},
+			onCancel() {},
 		});
 	};
 
@@ -196,6 +221,44 @@ function Connection() {
 				onCancel={handleCancel}
 				okText='Save'
 				cancelText='Cancel'
+				footer={[
+					<Button
+						key='1'
+						type='secondary'
+						onClick={() => {
+							form.validateFields()
+								.then((values) => {
+									// form.resetFields();
+									handleTest(values);
+								})
+								.catch((info) => {
+									console.log("Validate Failed:", info);
+								});
+						}}
+					>
+						Test Connection
+					</Button>,
+					<Button key='2' type='secondary' onClick={handleCancel}>
+						Cancel
+					</Button>,
+					<Button
+						key='3'
+						type='primary'
+						onClick={() => {
+							form.validateFields()
+								.then((values) => {
+									form.resetFields();
+									handleOk(values);
+								})
+								.catch((info) => {
+									console.log("Validate Failed:", info);
+								});
+						}}
+						disabled={!test}
+					>
+						Submit
+					</Button>,
+				]}
 			>
 				<Form layout='vertical' form={form}>
 					<div

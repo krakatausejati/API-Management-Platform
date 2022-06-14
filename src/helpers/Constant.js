@@ -1,6 +1,7 @@
 export const BASE_URL = {
 	PROJECT: "http://localhost:8080/api/projects",
 	CONNECTION: "http://localhost:8080/api/connections",
+	CONNECTION_TEST: "http://localhost:8080/api/connections/test",
 	COLUMN: "http://localhost:8080/api/schema/columns",
 	TABLE: "http://localhost:8080/api/schema/tables",
 	VIEWS: "http://localhost:8080/api/schema/views",
