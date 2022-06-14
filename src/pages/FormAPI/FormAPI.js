@@ -152,7 +152,17 @@ export default function FormAPI() {
 							style={{ minWidth: "600px" }}
 						>
 							<h2>Database</h2>
-							<Form.Item label='Connections' name='connection'>
+							<Form.Item
+								label='Connections'
+								name='connection'
+								rules={[
+									{
+										required: true,
+										message:
+											"Please chooose the connection first!",
+									},
+								]}
+							>
 								<Select
 									onChange={(value) => {
 										setConnectionSelected(value);
@@ -170,7 +180,17 @@ export default function FormAPI() {
 							</Form.Item>
 
 							{connectionSelected ? (
-								<Form.Item label='Table / View' name='table'>
+								<Form.Item
+									label='Table / View'
+									name='table'
+									rules={[
+										{
+											required: true,
+											message:
+												"Please choose the table or view!",
+										},
+									]}
+								>
 									<Select
 										onChange={(value) => {
 											setTableSelected(value);
@@ -191,7 +211,17 @@ export default function FormAPI() {
 							) : null}
 
 							{tableSelected ? (
-								<Form.Item label='Column' name='column'>
+								<Form.Item
+									label='Column'
+									name='column'
+									rules={[
+										{
+											required: true,
+											message:
+												"Please choose the column!",
+										},
+									]}
+								>
 									<Checkbox
 										indeterminate={
 											!checkAll ? indeterminate : false
@@ -209,7 +239,18 @@ export default function FormAPI() {
 								</Form.Item>
 							) : null}
 							<h2>Limits</h2>
-							<Form.Item label='Max Limit' name='limit'>
+							<Form.Item
+								label='Max Limit'
+								name='limit'
+								rules={[
+									{
+										required: true,
+										message:
+											"Limit required, input number instead!",
+										pattern: new RegExp(/^[0-9]+$/),
+									},
+								]}
+							>
 								<Input addonAfter={"per hours"} />
 							</Form.Item>
 						</div>
@@ -218,10 +259,29 @@ export default function FormAPI() {
 							style={{ minWidth: "600px" }}
 						>
 							<h2>Identity API</h2>
-							<Form.Item label='Description' name='description'>
+							<Form.Item
+								label='Description'
+								name='description'
+								rules={[
+									{
+										required: true,
+										message:
+											"Please input the description!",
+									},
+								]}
+							>
 								<Input />
 							</Form.Item>
-							<Form.Item label='Endpoints' name='endpoint'>
+							<Form.Item
+								label='Endpoints'
+								name='endpoint'
+								rules={[
+									{
+										required: true,
+										message: "Please input the endpoint!",
+									},
+								]}
+							>
 								<Input onChange={handleChangeEndpoint} />
 							</Form.Item>
 							<Form.Item
