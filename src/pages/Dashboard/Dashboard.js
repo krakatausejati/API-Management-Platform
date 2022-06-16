@@ -67,13 +67,13 @@ function Dashboard() {
 	];
 
 	const data = [
-		{ day: "monday", value: [3, 3] },
-		{ day: "tuesday", value: [4, 1] },
-		{ day: "wednesday", value: [3.5, 4] },
-		{ day: "thursday", value: [5, 5] },
-		{ day: "friday", value: [4.9, 2] },
-		{ day: "saturday", value: [6, 2] },
-		{ day: "sunday", value: [7, 4] },
+		{ day: "monday", value: [10, 2] },
+		{ day: "tuesday", value: [totalSuccess, totalFail] },
+		{ day: "wednesday", value: [0, 0] },
+		{ day: "thursday", value: [0, 0] },
+		{ day: "friday", value: [0, 0] },
+		{ day: "saturday", value: [0, 0] },
+		{ day: "sunday", value: [0, 0] },
 	];
 
 	return (

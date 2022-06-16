@@ -17,8 +17,8 @@ function ApiPublic() {
 		no: `${index + 1}`,
 		endpoints: `${apiItem.apiEndpoint}`,
 		description: `${apiItem.description}`,
-		project: `{Nama Project}`,
-		group: `{Nama Group}`,
+		project: `Nama Project`,
+		group: `Nama Group`,
 		detail: "...",
 	}));
 
@@ -50,16 +50,16 @@ function ApiPublic() {
 				</Space>
 			),
 		},
-		{
-			title: "Project Name",
-			dataIndex: "project",
-			key: "project",
-		},
-		{
-			title: "Group Name",
-			dataIndex: "group",
-			key: "group",
-		},
+		// {
+		// 	title: "Project Name",
+		// 	dataIndex: "project",
+		// 	key: "project",
+		// },
+		// {
+		// 	title: "Group Name",
+		// 	dataIndex: "group",
+		// 	key: "group",
+		// },
 		{
 			title: "Description",
 			dataIndex: "description",
