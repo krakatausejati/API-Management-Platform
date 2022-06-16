@@ -92,11 +92,11 @@ function Connection() {
 		render: (text, record) => (
 			<Space>
 				<>
-					<Button
+					{/* <Button
 						icon={<EyeOutlined />}
 						type='primary'
 						onClick={() => showModal(record.key)}
-					/>
+					/> */}
 					<Button
 						icon={<DeleteOutlined />}
 						onClick={() => showDeleteConfirm(record.key)}
@@ -113,8 +113,8 @@ function Connection() {
 		if (idConnection) {
 			ConnectionService.editConnection(idConnection)
 				.then((response) => {
-					setConnectionDetail(response.data.payload);
 					setEdit(true);
+					setConnectionDetail(response.data.payload);
 				})
 				.catch((error) => {
 					console.log("Something went wrong", error);

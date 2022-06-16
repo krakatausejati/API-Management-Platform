@@ -8,6 +8,7 @@ import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
 import { getExecutionTime } from "../../helpers/Utils";
 import useAPIDetail from "../../hooks/useAPIDetail";
 import useAPIHistory from "../../hooks/useAPIHistory";
+import useSummaryRequest from "../../hooks/useSummaryRequest";
 import "./detail-api.css";
 
 function DetailAPI() {
@@ -15,7 +16,10 @@ function DetailAPI() {
 	const history = useAPIHistory(idApi);
 	const apiDetail = useAPIDetail(idApi);
 	let data = useLocation();
+	const summaryRequest = useSummaryRequest();
 	const breadcrumb = data.state.breadcrumb;
+	const sumSuccess = history.filter((item) => item.requestStatus === 200).length;
+	const sumFailed  = history.filter((item) => item.requestStatus !== 200).length;
 
 	const dataSource = history.map((historyItem, index) => ({
 		key: `${historyItem.idHistory}`,
@@ -33,10 +37,6 @@ function DetailAPI() {
 	const executionTime = dataSource
 		.map((item) => item.executionTime)
 		.map(Number);
-
-	const summaryResult =
-		history.filter((item) => item.requestStatus === 200).length -
-		history.filter((item) => item.requestStatus !== 200).length;
 
 	const columns = [
 		{
@@ -84,7 +84,7 @@ function DetailAPI() {
 			key: "messages",
 		},
 		{
-			title: "Execution Time",
+			title: "Execution Time (ms)",
 			dataIndex: "executionTime",
 			key: "executionTime",
 		},
@@ -157,9 +157,9 @@ function DetailAPI() {
 					<Card>
 						<Statistic
 							title='Summary Result'
-							value={summaryResult}
+							value={history.length}
 						/>
-						<p>requests</p>
+						<p>{sumSuccess} success | {sumFailed} failed</p>
 					</Card>
 				</div>
 			</div>

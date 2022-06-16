@@ -86,7 +86,11 @@ function deleteConnection(idConnection) {
 
 function editConnection(idConnection) {
 	const [role] = defineRole();
-	return axiosInstance(BASE_URL.CONNECTION).get(`/${idConnection}`, role);
+	console.log(role)
+	const connectionData = {
+		role
+	}
+	return axiosInstance(BASE_URL.CONNECTION).get(`/${idConnection}`, connectionData);
 }
 
 function updateConnection(values) {
