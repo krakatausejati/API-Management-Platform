@@ -13,7 +13,7 @@ import { APIService } from "../../services/APIService";
 import "./create-api.css";
 
 export default function FormAPI() {
-	let { idProject, projectName, idGroup, groupName } = useParams();
+	let { projectName, idGroup, groupName } = useParams();
 	const history = useHistory();
 	const connections = useConnection();
 	const users = useListUser();
@@ -27,17 +27,16 @@ export default function FormAPI() {
 			: [];
 	const [connectionSelected, setConnectionSelected] = useState("");
 
-	const connectionConfig = connectionSelected
-		? handleConnectionConfig(connectionSelected)
-		: null;
+	const connectionConfig =
+		connectionSelected && handleConnectionConfig(connectionSelected);
 
-	const tables = useSchemaTable(connectionConfig || null);
-	const views = useSchemaView(connectionConfig || null);
+	const tables = useSchemaTable(connectionConfig ?? null);
+	const views = useSchemaView(connectionConfig ?? null);
 
 	const [isPrivate, setIsPrivate] = useState("");
 
 	const [tableSelected, setTableSelected] = useState("");
-	const columns = useSchemaColumn(tableSelected, connectionConfig || null);
+	const columns = useSchemaColumn(tableSelected, connectionConfig ?? null);
 
 	let data = useLocation();
 	const breadcrumb = data.state.breadcrumb;
@@ -181,7 +180,7 @@ export default function FormAPI() {
 								</Select>
 							</Form.Item>
 
-							{connectionSelected ? (
+							{connectionSelected && (
 								<Form.Item
 									label='Table / View'
 									name='table'
@@ -210,9 +209,9 @@ export default function FormAPI() {
 										))}
 									</Select>
 								</Form.Item>
-							) : null}
+							)}
 
-							{tableSelected ? (
+							{tableSelected && (
 								<Form.Item
 									label='Column'
 									name='column'
@@ -239,7 +238,7 @@ export default function FormAPI() {
 										onChange={onChangeChecked}
 									/>{" "}
 								</Form.Item>
-							) : null}
+							)}
 							<h2>Limits</h2>
 							<Form.Item
 								label='Max Limit'
@@ -298,14 +297,14 @@ export default function FormAPI() {
 									}}
 								/>
 							</Form.Item>
-							{isPrivate ? (
+							{isPrivate && (
 								<Form.Item name='listUser'>
 									<Checkbox.Group
 										options={userData}
 										className='checkbox-group'
 									/>
 								</Form.Item>
-							) : null}
+							)}
 						</div>
 					</div>
 					<div className='preview-generated-api'>

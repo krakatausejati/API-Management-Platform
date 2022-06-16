@@ -7,6 +7,7 @@ export const BASE_URL = {
 	VIEWS: "http://localhost:8080/api/schema/views",
 	API: "http://localhost:8080/api/apis",
 	MOST_USED_API: "http://localhost:8080/api/most-used-api",
+	LAST_WEEK_USAGE: "http://localhost:8080/api/lastweek",
 	API_DOC: "http://localhost:8080/api/preview",
 	AUTH: "http://localhost:8180/auth",
 	KEYCLOAK_AUTH:

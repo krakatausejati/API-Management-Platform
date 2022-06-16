@@ -7,6 +7,7 @@ export const APIService = {
 	getAllAPI,
 	getAPIPublic,
 	getMostUsedAPI,
+	getLastWeekUsage,
 	createAPI,
 	deleteAPI,
 	getAPIDetail,
@@ -38,6 +39,7 @@ function createAPI(values) {
 		connection,
 		listUser,
 		idGroup,
+		apiOwner,
 	} = values;
 
 	const columns = column.join();
@@ -52,6 +54,7 @@ function createAPI(values) {
 		idConnection: connection,
 		listUser: listUser,
 		idGroup,
+		apiOwner,
 	};
 
 	return axiosInstance(BASE_URL.API).post("", dataAPI, {
@@ -97,4 +100,8 @@ function getAPICount(idProject, idGroup) {
 
 function getMostUsedAPI() {
 	return axiosInstance(BASE_URL.MOST_USED_API).get();
+}
+
+function getLastWeekUsage() {
+	return axiosInstance(BASE_URL.LAST_WEEK_USAGE).get();
 }

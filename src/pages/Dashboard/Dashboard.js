@@ -4,15 +4,15 @@ import { Link } from "react-router-dom";
 import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
 import { Statistics } from "../../components/molecules/Statistics";
 import useSummaryRequest from "../../hooks/useSummaryRequest";
+import useLastWeekUsage from "../../hooks/useLastWeekUsage";
 import useMostUsedAPI from "../../hooks/useMostUsedAPI";
 import "./dashboard.css";
 import { getEndpoint } from "../../helpers/Utils";
 
 function Dashboard() {
 	const summaryRequest = useSummaryRequest();
-	const totalSuccess = summaryRequest.sumSuccess;
-	const totalFail = summaryRequest.sumFailed;
-
+	const { sumSuccess, sumFailed } = summaryRequest;
+	const lastWeekUsage = useLastWeekUsage();
 	const mostUsedAPI = useMostUsedAPI();
 	const dataSource = mostUsedAPI.map((apiItem, index) => ({
 		key: `${apiItem.idApi}`,
@@ -66,23 +66,14 @@ function Dashboard() {
 		},
 	];
 
-	const data = [
-		{ day: "monday", value: [10, 2] },
-		{ day: "tuesday", value: [totalSuccess, totalFail] },
-		{ day: "wednesday", value: [0, 0] },
-		{ day: "thursday", value: [0, 0] },
-		{ day: "friday", value: [0, 0] },
-		{ day: "saturday", value: [0, 0] },
-		{ day: "sunday", value: [0, 0] },
-	];
-
 	return (
 		<>
 			<Breadcrumbs breadcrumb={["Dashboard"]} />
 			<Statistics
-				totalSuccess={totalSuccess}
-				totalFail={totalFail}
-				data={data}
+				totalSuccess={sumSuccess}
+				totalFail={sumFailed}
+				data={lastWeekUsage}
+				maxValue={Math.max(lastWeekUsage)}
 			/>
 			<div className='header-datatable'>
 				<h1>Top 10's API</h1>
