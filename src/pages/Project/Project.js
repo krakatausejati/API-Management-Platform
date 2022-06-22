@@ -13,6 +13,7 @@ import {
 	handleDate,
 	handleURLName,
 	showErrorMessage,
+	getUsername,
 } from "../../helpers/Utils.js";
 import useProject from "../../hooks/useProject";
 import { ProjectService } from "../../services/ProjectService";
@@ -36,6 +37,7 @@ function Project() {
 	}));
 
 	const userRole = defineRole();
+	const username = getUsername();
 
 	const columns = [
 		{
@@ -91,6 +93,7 @@ function Project() {
 		render: (text, record) => (
 			<Space>
 				<>
+				{username === record.created_by &&
 					<Button
 						icon={<DeleteOutlined />}
 						onClick={() =>
@@ -98,6 +101,7 @@ function Project() {
 						}
 						danger
 					/>
+				}
 				</>
 			</Space>
 		),

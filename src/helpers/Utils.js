@@ -61,8 +61,13 @@ export const defineRole = () => {
 };
 
 export const getUserId = () => {
-	const { sid } = parseJwt(localStorage.getItem("access_token"));
-	return sid;
+	const { sub } = parseJwt(localStorage.getItem("access_token"));
+	return sub;
+};
+
+export const getUsername = () => {
+	const { preferred_username } = parseJwt(localStorage.getItem("access_token"));
+	return preferred_username;
 };
 
 export const showErrorMessage = (modal, errorMessage) => {

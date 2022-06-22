@@ -7,7 +7,7 @@ import {
 import { Button, Input, Space, Table, Modal } from "antd";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
-import { getEndpoint } from "../../helpers/Utils";
+import { getEndpoint, getUsername } from "../../helpers/Utils";
 import useApi from "../../hooks/useApi";
 import React, { useState } from "react";
 import { APIService } from "../../services/APIService";
@@ -20,6 +20,7 @@ function ListAPI() {
 	const [keyword, setKeyword] = useState("");
 	const [refresh, setRefresh] = useState("");
 	const api = useApi(idProject, idGroup, keyword, refresh);
+	const username = getUsername();
 
 	const dataSource = api.map((apiItem, index) => ({
 		key: `${apiItem.idApi}`,
@@ -28,6 +29,7 @@ function ListAPI() {
 		description: `${apiItem.description}`,
 		project: `${projectName}`,
 		group: `${groupName}`,
+		apiOwner: `${apiItem.apiOwner}`,
 		detail: "...",
 	}));
 
@@ -53,6 +55,11 @@ function ListAPI() {
 			key: "group",
 		},
 		{
+			title: "API Owner",
+			dataIndex: "apiOwner",
+			key: "apiOwner",
+		},
+		{
 			title: "Description",
 			dataIndex: "description",
 			key: "description",
@@ -76,11 +83,13 @@ function ListAPI() {
 					>
 						<Button icon={<EyeOutlined />} type='primary' />
 					</Link>
+					{username === record.apiOwner &&
 					<Button
 						icon={<DeleteOutlined />}
 						onClick={() => showDeleteConfirm(record.key)}
 						danger
 					/>
+					}
 				</Space>
 			),
 		},
