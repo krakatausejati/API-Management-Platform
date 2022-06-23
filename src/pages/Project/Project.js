@@ -3,7 +3,7 @@ import {
 	DeleteOutlined,
 	ExclamationCircleOutlined,
 } from "@ant-design/icons";
-import { Button, Form, Input, Modal, Space, Table } from "antd";
+import { Button, Form, Input, Modal, Select, Space, Table } from "antd";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
@@ -15,13 +15,15 @@ import {
 	showErrorMessage,
 	getUsername,
 } from "../../helpers/Utils.js";
+import useListUser from "../../hooks/useListUser";
 import useProject from "../../hooks/useProject";
 import { ProjectService } from "../../services/ProjectService";
 
 function Project() {
 	const [refresh, setRefresh] = useState(new Date().getTime());
 	const [keyword, setKeyword] = useState("");
-	const {project, loading} = useProject(refresh, keyword);
+	const username = getUsername();
+	const { project, loading } = useProject(refresh, keyword, username);
 	const [form] = Form.useForm();
 	const { confirm } = Modal;
 	const [isModalVisible, setIsModalVisible] = useState(false);
@@ -37,7 +39,9 @@ function Project() {
 	}));
 
 	const userRole = defineRole();
-	const username = getUsername();
+	const users = useListUser() ?? [];
+
+	const usersData = users.length > 0 ? users : [];
 
 	const columns = [
 		{
@@ -93,15 +97,15 @@ function Project() {
 		render: (text, record) => (
 			<Space>
 				<>
-				{username === record.created_by &&
-					<Button
-						icon={<DeleteOutlined />}
-						onClick={() =>
-							showDeleteConfirm(record.key, record.sum_group)
-						}
-						danger
-					/>
-				}
+					{username === record.created_by && (
+						<Button
+							icon={<DeleteOutlined />}
+							onClick={() =>
+								showDeleteConfirm(record.key, record.sum_group)
+							}
+							danger
+						/>
+					)}
 				</>
 			</Space>
 		),
@@ -110,6 +114,13 @@ function Project() {
 	if (userRole.includes(Roles.PROJECT_OWNER)) columns.push(columnAction);
 
 	const { Search } = Input;
+	const { Option } = Select;
+
+	const [assignedMembers, setAssignedMembers] = useState([]);
+	const filteredUsers = usersData.filter(
+		(item) => !assignedMembers.includes(item.username)
+	);
+
 	const onSearch = (value) => {
 		setKeyword(value);
 	};
@@ -119,6 +130,10 @@ function Project() {
 	};
 
 	const handleOk = (values) => {
+		console.log(
+			"🚀 ~ file: Project.js ~ line 128 ~ handleOk ~ values",
+			values
+		);
 		ProjectService.createProject(values)
 			.then(() => {
 				setRefresh(new Date().getTime());
@@ -126,6 +141,7 @@ function Project() {
 			})
 			.catch((error) => {
 				const [errorMessage] = error.messages;
+
 				showErrorMessage(
 					Modal,
 					<ExclamationCircleOutlined />,
@@ -135,6 +151,7 @@ function Project() {
 	};
 
 	const handleCancel = () => {
+		form.resetFields();
 		setIsModalVisible(false);
 	};
 
@@ -209,6 +226,35 @@ function Project() {
 					>
 						<Input />
 					</Form.Item>
+					<Form.Item
+						label='List Member'
+						name='listMember'
+						style={{ width: "100%" }}
+						rules={[
+							{
+								required: true,
+								message:
+									"Please assign the member for the project!",
+							},
+						]}
+					>
+						<Select
+							mode='multiple'
+							placeholder='Assign Team member'
+							value={assignedMembers}
+							onChange={setAssignedMembers}
+							style={{ width: "100%" }}
+						>
+							{filteredUsers.map((userItem) => (
+								<Option
+									value={userItem.username}
+									key={userItem.id}
+								>
+									{userItem.username}
+								</Option>
+							))}
+						</Select>
+					</Form.Item>
 				</Form>
 			</Modal>
 
@@ -241,7 +287,11 @@ function Project() {
 				</div>
 			</div>
 			<div className='datatable datatable-api'>
-				<Table dataSource={dataSource} columns={columns} loading={loading}/>
+				<Table
+					dataSource={dataSource}
+					columns={columns}
+					loading={loading}
+				/>
 			</div>
 		</>
 	);

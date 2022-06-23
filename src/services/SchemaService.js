@@ -8,8 +8,14 @@ export const SchemaService = {
 };
 
 function getAllTable(connectionConfig) {
-	const { host, port, databaseName, databaseUsername, databasePassword } =
-		connectionConfig;
+	const {
+		host,
+		port,
+		databaseName,
+		databaseUsername,
+		databasePassword,
+		connectionType,
+	} = connectionConfig;
 
 	return axiosInstance(BASE_URL.TABLE).get("", {
 		params: {
@@ -18,13 +24,20 @@ function getAllTable(connectionConfig) {
 			databaseName,
 			databaseUsername,
 			databasePassword,
+			connectionType,
 		},
 	});
 }
 
 function getAllColumn(tableName, connectionConfig) {
-	const { host, port, databaseName, databaseUsername, databasePassword } =
-		connectionConfig;
+	const {
+		host,
+		port,
+		databaseName,
+		databaseUsername,
+		databasePassword,
+		connectionType,
+	} = connectionConfig;
 
 	return axiosInstance(BASE_URL.COLUMN).get("", {
 		params: {
@@ -34,13 +47,20 @@ function getAllColumn(tableName, connectionConfig) {
 			databaseName,
 			databaseUsername,
 			databasePassword,
+			connectionType,
 		},
 	});
 }
 
 function getAllViews(connectionConfig) {
-	const { host, port, databaseName, databaseUsername, databasePassword } =
-		connectionConfig;
+	const {
+		host,
+		port,
+		databaseName,
+		databaseUsername,
+		databasePassword,
+		connectionType,
+	} = connectionConfig;
 
 	return axiosInstance(BASE_URL.VIEWS).get("", {
 		params: {
@@ -49,6 +69,7 @@ function getAllViews(connectionConfig) {
 			databaseName,
 			databaseUsername,
 			databasePassword,
+			connectionType,
 		},
 	});
 }

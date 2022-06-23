@@ -22,6 +22,7 @@ function Dashboard() {
 		endpoints: `${apiItem.apiEndpoint}`,
 		description: `${apiItem.description}`,
 		sumRequest: `${apiItem.sumRequest}`,
+		isPrivate: `${apiItem.isPrivate}`,
 	}));
 
 	const columns = [
@@ -46,27 +47,37 @@ function Dashboard() {
 			key: "description",
 		},
 		{
+			title: "Is Private",
+			dataIndex: "isPrivate",
+			key: "isPrivate",
+			hidden: true,
+		},
+		{
 			title: "",
 			dataIndex: "detail",
 			key: "detail",
 			render: (text, record) => (
 				<Space>
-					<Link
-						to={{
-							pathname: `api/${record.key}/history`,
-							state: {
-								breadcrumb: [
-									`API - ${getEndpoint(record.endpoints)}`,
-								],
-							},
-						}}
-					>
-						<Button icon={<EyeOutlined />} type='primary' />
-					</Link>
+					{record.isPrivate === "false" && (
+						<Link
+							to={{
+								pathname: `api/${record.key}/history`,
+								state: {
+									breadcrumb: [
+										`API - ${getEndpoint(
+											record.endpoints
+										)}`,
+									],
+								},
+							}}
+						>
+							<Button icon={<EyeOutlined />} type='primary' />
+						</Link>
+					)}
 				</Space>
 			),
 		},
-	];
+	].filter((item) => !item.hidden);
 
 	return (
 		<>

@@ -33,9 +33,8 @@ const axiosInstance = (url = "") => {
 			return res;
 		},
 		(error) => {
+			if (error.response.data) return Promise.reject(error.response.data);
 			console.log(error);
-			if(error.response.data) return Promise.reject(error.response.data);
-			return Promise.reject(error);
 		}
 	);
 

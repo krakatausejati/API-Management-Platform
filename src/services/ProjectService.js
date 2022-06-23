@@ -1,33 +1,41 @@
 import axiosInstance from "../helpers/Axios";
 import { BASE_URL } from "../helpers/Constant";
-import { parseJwt, defineRole } from "../helpers/Utils";
+import { defineRole, getUsername } from "../helpers/Utils";
 
 export const ProjectService = {
 	getAllProject,
 	createProject,
 	deleteProject,
+	getListMemberProject,
 };
 
-function getAllProject(keyword) {
+function getAllProject(keyword, user) {
 	return axiosInstance(BASE_URL.PROJECT).get("", {
 		params: {
 			keyword,
+			user,
 		},
 	});
 }
+function getListMemberProject(idProject) {
+	return axiosInstance(BASE_URL.PROJECT).get(`/${idProject}/members`, {});
+}
 
-function createProject({ projectName, description }) {
-	const accessToken = localStorage.getItem("access_token");
-	const { preferred_username } = parseJwt(accessToken);
+function createProject({ projectName, description, listMember }) {
+	const projectOwner = getUsername();
 	const [role] = defineRole();
 
 	let dataProject = {
 		projectName,
-		projectOwner: preferred_username,
+		projectOwner,
+		listMember,
 		description,
 		role,
 	};
-
+	console.log(
+		"🚀 ~ file: ProjectService.js ~ line 24 ~ createProject ~ dataProject",
+		dataProject
+	);
 	return axiosInstance(BASE_URL.PROJECT).post("", dataProject, {
 		headers: {
 			"Content-Type": "application/json",

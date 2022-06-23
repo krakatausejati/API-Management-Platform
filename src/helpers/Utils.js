@@ -72,9 +72,10 @@ export const getUsername = () => {
 	return preferred_username;
 };
 
-export const showErrorMessage = (modal, errorMessage) => {
+export const showErrorMessage = (modal, icon = null, errorMessage) => {
 	modal.error({
 		title: "Error",
+		icon: icon,
 		content: `${errorMessage}`,
 		okText: "Ok",
 		okType: "secondary",
@@ -84,9 +85,10 @@ export const showErrorMessage = (modal, errorMessage) => {
 	});
 };
 
-export const showSuccessMessage = (modal, successMessage) => {
+export const showSuccessMessage = (modal, icon = null, successMessage) => {
 	modal.success({
 		title: "Success",
+		icon: icon,
 		content: `${successMessage}`,
 		okText: "Ok",
 		okType: "secondary",
