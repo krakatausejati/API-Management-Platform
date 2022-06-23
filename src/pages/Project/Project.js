@@ -20,7 +20,7 @@ import { ProjectService } from "../../services/ProjectService";
 function Project() {
 	const [refresh, setRefresh] = useState(new Date().getTime());
 	const [keyword, setKeyword] = useState("");
-	const project = useProject(refresh, keyword);
+	const {project, loading} = useProject(refresh, keyword);
 	const [form] = Form.useForm();
 	const { confirm } = Modal;
 	const [isModalVisible, setIsModalVisible] = useState(false);
@@ -237,7 +237,7 @@ function Project() {
 				</div>
 			</div>
 			<div className='datatable datatable-api'>
-				<Table dataSource={dataSource} columns={columns} />
+				<Table dataSource={dataSource} columns={columns} loading={loading}/>
 			</div>
 		</>
 	);

@@ -28,7 +28,7 @@ function ListGroup() {
 	const [keyword, setKeyword] = useState("");
 	const [refresh, setRefresh] = useState("");
 
-	const group = useGroup(id, refresh, keyword);
+	const { group, loading } = useGroup(id, refresh, keyword);
 
 	const userRole = defineRole();
 
@@ -251,7 +251,11 @@ function ListGroup() {
 				</div>
 			</div>
 			<div className='datatable datatable-group'>
-				<Table dataSource={dataSource} columns={columns} />
+				<Table
+					dataSource={dataSource}
+					columns={columns}
+					loading={loading}
+				/>
 			</div>
 		</>
 	);

@@ -22,7 +22,7 @@ function adminToken() {
 }
 
 function getUser(token) {
-	return axiosInstance(BASE_URL.KEYCLOAK_USER).get("", "", {
+	return axiosInstance(BASE_URL.KEYCLOAK_USER).get("", {
 		headers: {
 			Authorization: "Bearer " + token,
 		},

@@ -14,7 +14,6 @@ function Dashboard() {
 	const summaryRequest = useSummaryRequest();
 	const { sumSuccess, sumFailed } = summaryRequest;
 	const lastWeekUsage = useLastWeekUsage();
-	console.log(lastWeekUsage);
 	const { mostUsedAPI, loading } = useMostUsedAPI();
 	const mostCreatedApi = useMostCreatedApi();
 	const dataSource = mostUsedAPI.map((apiItem, index) => ({

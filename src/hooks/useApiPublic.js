@@ -1,20 +1,23 @@
 import { useState, useEffect } from "react";
 import { APIService } from "../services/APIService";
 
-const useApiPublic = (refresh) => {
+const useApiPublic = (refresh, keyword) => {
 	const [apiPublic, setApiPublic] = useState([]);
+	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
-		APIService.getAPIPublic()
+		setLoading(true);
+		APIService.getAPIPublic(keyword)
 			.then((response) => {
 				setApiPublic(response.data);
 			})
 			.catch((error) => {
 				console.log("Something went wrong", error);
-			});
-	}, [refresh]);
+			})
+			.finally(() => setLoading(false));
+	}, [refresh, keyword]);
 
-	return apiPublic;
+	return { apiPublic, loading };
 };
 
 export default useApiPublic;

@@ -9,11 +9,13 @@ export const APIService = {
 	getMostUsedAPI,
 	getLastWeekUsage,
 	createAPI,
+	updateAPI,
 	deleteAPI,
 	getAPIDetail,
 	getAPIDocumentation,
 	getAPICount,
 	getSummaryRequest,
+	getMostCreatedAPI,
 };
 
 function getAllHistory() {
@@ -65,6 +67,49 @@ function createAPI(values) {
 	});
 }
 
+function updateAPI(values) {
+	const {
+		idApi,
+		generatedEndpoint,
+		table,
+		column,
+		description,
+		limit,
+		is_private,
+		connection,
+		listUser,
+		idGroup,
+		apiOwner,
+	} = values;
+	console.log(
+		"🚀 ~ file: APIService.js ~ line 83 ~ updateAPI ~ values",
+		values
+	);
+
+	const columns = column.join();
+
+	let dataAPI = {
+		idApi,
+		apiEndpoint: generatedEndpoint,
+		dbTable: table,
+		selectedColumn: columns,
+		description,
+		apiLimit: limit,
+		private: is_private,
+		idConnection: connection,
+		listUser: listUser,
+		idGroup,
+		apiOwner,
+	};
+
+	return axiosInstance(BASE_URL.API).put(`/${idApi}`, dataAPI, {
+		headers: {
+			"Content-Type": "application/json",
+			"Access-Control-Allow-Origin": "*",
+		},
+	});
+}
+
 function deleteAPI(idProject, idGroup) {
 	return axiosInstance(BASE_URL.API).delete(`/${idProject}`);
 }
@@ -80,8 +125,12 @@ function getAllAPI(idProject, idGroup, keyword) {
 	);
 }
 
-function getAPIPublic() {
-	return axiosInstance(BASE_URL.API).get("/public");
+function getAPIPublic(keyword) {
+	return axiosInstance(BASE_URL.API).get("/public", {
+		params: {
+			keyword,
+		},
+	});
 }
 
 function getAPIDetail(idApi) {
@@ -90,6 +139,10 @@ function getAPIDetail(idApi) {
 
 function getAPIDocumentation(idApi) {
 	return axiosInstance(BASE_URL.API_DOC).get(`/${idApi}`);
+}
+
+function getMostCreatedAPI() {
+	return axiosInstance(BASE_URL.MOST_CREATED_API).get();
 }
 
 function getAPICount(idProject, idGroup) {

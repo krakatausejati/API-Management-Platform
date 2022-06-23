@@ -7,8 +7,6 @@ export const ConnectionService = {
 	getAllConnection,
 	createConnection,
 	deleteConnection,
-	editConnection,
-	updateConnection,
 	testConnection,
 };
 
@@ -21,13 +19,20 @@ function getAllConnection(keyword) {
 }
 
 function testConnection(values) {
-	const { host, port, databaseName, databaseUsername, databasePassword } =
-		values;
+	const {
+		host,
+		port,
+		databaseName,
+		connectionType,
+		databaseUsername,
+		databasePassword,
+	} = values;
 
 	let connectionData = {
 		host,
 		port,
 		databaseName,
+		connectionType,
 		databaseUsername,
 		databasePassword,
 	};
@@ -46,12 +51,14 @@ function createConnection(values) {
 		databaseName,
 		databaseUsername,
 		databasePassword,
+		connectionType,
 	} = values;
 
 	const [role] = defineRole();
 
 	let connectionData = {
 		connectionName,
+		connectionType,
 		host,
 		port,
 		databaseName,
@@ -82,43 +89,4 @@ function deleteConnection(idConnection) {
 			role,
 		},
 	});
-}
-
-function editConnection(idConnection) {
-	const [role] = defineRole();
-	console.log(role)
-	const connectionData = {
-		role
-	}
-	return axiosInstance(BASE_URL.CONNECTION).get(`/${idConnection}`, connectionData);
-}
-
-function updateConnection(values) {
-	const {
-		idConnection,
-		connectionName,
-		host,
-		port,
-		databaseName,
-		databaseUsername,
-		databasePassword,
-	} = values;
-
-	let connectionData = {
-		connectionName,
-		host,
-		port,
-		databaseName,
-		databaseUsername,
-		databasePassword,
-	};
-	return axiosInstance(BASE_URL.CONNECTION).put(
-		`/${idConnection}`,
-		JSON.stringify(connectionData),
-		{
-			headers: {
-				"Content-Type": "application/json",
-			},
-		}
-	);
 }

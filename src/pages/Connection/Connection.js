@@ -1,11 +1,11 @@
 import {
 	DeleteOutlined,
 	ExclamationCircleOutlined,
-	EyeOutlined,
 	PlusOutlined,
 } from "@ant-design/icons";
-import { Button, Form, Input, Modal, Space, Table } from "antd";
-import { useEffect, useState } from "react";
+import { Button, Form, Input, Modal, Select, Space, Table } from "antd";
+import { Option } from "antd/lib/mentions";
+import { useState } from "react";
 import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
 import { Roles } from "../../helpers/Constant";
 import {
@@ -21,31 +21,12 @@ function Connection() {
 	const [refresh, setRefresh] = useState(new Date().getTime());
 	const [keyword, setKeyword] = useState("");
 	const [test, setTest] = useState(false);
-	const connection = useConnection(refresh, keyword);
+	const { connection, loading } = useConnection(refresh, keyword);
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [form] = Form.useForm();
 	const { confirm } = Modal;
 
-	const [connectionDetail, setConnectionDetail] = useState([]);
-	const [edit, setEdit] = useState(false);
-
 	const userRole = defineRole();
-
-	useEffect(() => {
-		if (!connectionDetail) {
-			return null;
-		} else {
-			form.setFieldsValue({
-				idConnection: connectionDetail.id,
-				connectionName: connectionDetail.connectionName,
-				host: connectionDetail.host,
-				port: connectionDetail.port,
-				databaseName: connectionDetail.databaseName,
-				databaseUsername: connectionDetail.databaseUsername,
-				databasePassword: connectionDetail.databasePassword,
-			});
-		}
-	}, [connectionDetail, form]);
 
 	const dataSource = connection.map((connectionItem, index) => ({
 		key: `${connectionItem.id}`,
@@ -92,11 +73,6 @@ function Connection() {
 		render: (text, record) => (
 			<Space>
 				<>
-					{/* <Button
-						icon={<EyeOutlined />}
-						type='primary'
-						onClick={() => showModal(record.key)}
-					/> */}
 					<Button
 						icon={<DeleteOutlined />}
 						onClick={() => showDeleteConfirm(record.key)}
@@ -109,44 +85,14 @@ function Connection() {
 
 	if (userRole.includes(Roles.DEVELOPER)) columns.push(columnAction);
 
-	const showModal = (idConnection) => {
-		if (idConnection) {
-			ConnectionService.editConnection(idConnection)
-				.then((response) => {
-					setEdit(true);
-					setConnectionDetail(response.data.payload);
-				})
-				.catch((error) => {
-					console.log("Something went wrong", error);
-				});
-		} else {
-			form.resetFields();
-		}
-		setEdit(false);
-		setIsModalVisible(true);
-	};
-
 	const handleOk = (values) => {
-		if (!edit) {
-			console.log("create");
-			ConnectionService.createConnection(values)
-				.then((response) => {
-					setRefresh(new Date().getTime());
-					setTest(false);
-				})
-				.catch((error) => {
-					console.log("Something went wrong", error);
-				});
-		} else {
-			ConnectionService.updateConnection(values)
-				.then((response) => {
-					setRefresh(new Date().getTime());
-				})
-				.catch((error) => {
-					console.log("Something went wrong", error);
-				});
-		}
-
+		ConnectionService.createConnection(values)
+			.then(() => {
+				setRefresh(new Date().getTime());
+			})
+			.catch((error) => {
+				console.log("Something went wrong", error);
+			});
 		setIsModalVisible(false);
 	};
 
@@ -171,6 +117,7 @@ function Connection() {
 	};
 
 	const handleCancel = () => {
+		form.resetFields();
 		setTest(false);
 		setIsModalVisible(false);
 	};
@@ -206,7 +153,7 @@ function Connection() {
 		<>
 			{/* Modal */}
 			<Modal
-				title={edit ? "Edit Connection" : "Add New Connection"}
+				title={"Add New Connection"}
 				visible={isModalVisible}
 				onOk={() => {
 					form.validateFields()
@@ -228,7 +175,6 @@ function Connection() {
 						onClick={() => {
 							form.validateFields()
 								.then((values) => {
-									// form.resetFields();
 									handleTest(values);
 								})
 								.catch((info) => {
@@ -267,11 +213,25 @@ function Connection() {
 					>
 						<div className='left-side'>
 							<Form.Item
-								// label='Connection Name'
-								name='idConnection'
-								style={{ display: "none" }}
+								label='Connection Type'
+								name='connectionType'
+								style={{ width: "100%" }}
+								rules={[
+									{
+										required: true,
+										message:
+											"Please input the connection type!",
+									},
+								]}
 							>
-								<Input />
+								<Select>
+									<Option value='mysql' key={1}>
+										MySQL
+									</Option>
+									<Option value='postgresql' key={2}>
+										PostgreSQL
+									</Option>
+								</Select>
 							</Form.Item>
 							<Form.Item
 								label='Connection Name'
@@ -347,13 +307,7 @@ function Connection() {
 								label='Database Password'
 								name='databasePassword'
 								style={{ width: "100%" }}
-								rules={[
-									{
-										required: true,
-										message:
-											"Please input the database password!",
-									},
-								]}
+								initialValue={null}
 							>
 								<Input />
 							</Form.Item>
@@ -388,7 +342,7 @@ function Connection() {
 								icon={<PlusOutlined />}
 								type='primary'
 								block
-								onClick={() => showModal(null)}
+								onClick={() => setIsModalVisible(true)}
 							>
 								Create Connection
 							</Button>
@@ -397,7 +351,11 @@ function Connection() {
 				</div>
 			</div>
 			<div className='datatable datatable-group'>
-				<Table dataSource={dataSource} columns={columns} />
+				<Table
+					dataSource={dataSource}
+					columns={columns}
+					loading={loading}
+				/>
 			</div>
 		</>
 	);

@@ -1,17 +1,14 @@
-import {
-	CalendarOutlined,
-	EyeOutlined,
-	SortAscendingOutlined,
-	CopyOutlined,
-} from "@ant-design/icons";
-import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
-import { Button, Menu, Input, Space, Table } from "antd";
+import { CopyOutlined, EyeOutlined } from "@ant-design/icons";
+import { Button, Input, Space, Table } from "antd";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import useApiPublic from "../../hooks/useApiPublic";
+import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
 import { getEndpoint } from "../../helpers/Utils";
+import useApiPublic from "../../hooks/useApiPublic";
 
 function ApiPublic() {
-	const apiPublic = useApiPublic();
+	const [keyword, setKeyword] = useState("");
+	const { apiPublic, loading } = useApiPublic(keyword);
 	const dataSource = apiPublic.map((apiItem, index) => ({
 		key: `${apiItem.idApi}`,
 		no: `${index + 1}`,
@@ -34,33 +31,6 @@ function ApiPublic() {
 			key: "endpoints",
 		},
 		{
-			title: "",
-			dataIndex: "copy",
-			key: "copy",
-			render: (text, record) => (
-				<Space>
-					{text}
-					<Button
-						icon={<CopyOutlined />}
-						type='default'
-						onClick={() => {
-							navigator.clipboard.writeText(record.endpoints);
-						}}
-					/>
-				</Space>
-			),
-		},
-		// {
-		// 	title: "Project Name",
-		// 	dataIndex: "project",
-		// 	key: "project",
-		// },
-		// {
-		// 	title: "Group Name",
-		// 	dataIndex: "group",
-		// 	key: "group",
-		// },
-		{
 			title: "Description",
 			dataIndex: "description",
 			key: "description",
@@ -71,6 +41,14 @@ function ApiPublic() {
 			key: "detail",
 			render: (text, record) => (
 				<Space>
+					{text}
+					<Button
+						icon={<CopyOutlined />}
+						type='default'
+						onClick={() => {
+							navigator.clipboard.writeText(record.endpoints);
+						}}
+					/>
 					<Link
 						to={{
 							pathname: `api/${record.key}/history`,
@@ -89,18 +67,7 @@ function ApiPublic() {
 	];
 
 	const { Search } = Input;
-	const onSearch = (value) => console.log(value);
-
-	const menu = (
-		<Menu>
-			<Menu.Item key='1' icon={<SortAscendingOutlined />}>
-				Ascending
-			</Menu.Item>
-			<Menu.Item key='2' icon={<CalendarOutlined />}>
-				Created at
-			</Menu.Item>
-		</Menu>
-	);
+	const onSearch = (value) => setKeyword(value);
 
 	return (
 		<>
@@ -109,15 +76,16 @@ function ApiPublic() {
 				<h1>APIs Public</h1>
 				<div className='right'>
 					<div className='search-field'>
-						<Search
-							placeholder="search API"
-							onSearch={onSearch}
-						/>
+						<Search placeholder='search API' onSearch={onSearch} />
 					</div>
 				</div>
 			</div>
 			<div className='datatable datatable-api'>
-				<Table dataSource={dataSource} columns={columns} />
+				<Table
+					dataSource={dataSource}
+					columns={columns}
+					loading={loading}
+				/>
 			</div>
 		</>
 	);

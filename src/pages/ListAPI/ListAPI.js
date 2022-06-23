@@ -2,6 +2,7 @@ import {
 	DeleteOutlined,
 	EyeOutlined,
 	PlusOutlined,
+	EditOutlined,
 	ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import { Button, Input, Space, Table, Modal } from "antd";
@@ -19,7 +20,7 @@ function ListAPI() {
 	const { confirm } = Modal;
 	const [keyword, setKeyword] = useState("");
 	const [refresh, setRefresh] = useState("");
-	const api = useApi(idProject, idGroup, keyword, refresh);
+	const { api, loading } = useApi(idProject, idGroup, keyword, refresh);
 
 	const dataSource = api.map((apiItem, index) => ({
 		key: `${apiItem.idApi}`,
@@ -75,6 +76,22 @@ function ListAPI() {
 						}}
 					>
 						<Button icon={<EyeOutlined />} type='primary' />
+					</Link>
+					<Link
+						to={{
+							pathname: `/project/${idProject}/${projectName}/group/${idGroup}/${groupName}/form-api`,
+							state: {
+								breadcrumb: [
+									...breadcrumb,
+									`Edit API - ${getEndpoint(
+										record.endpoints
+									)}`,
+								],
+								idApi: record.key,
+							},
+						}}
+					>
+						<Button icon={<EditOutlined />} type='secondary' />
 					</Link>
 					<Button
 						icon={<DeleteOutlined />}
@@ -148,7 +165,11 @@ function ListAPI() {
 				</div>
 			</div>
 			<div className='datatable datatable-group'>
-				<Table dataSource={dataSource} columns={columns} />
+				<Table
+					dataSource={dataSource}
+					columns={columns}
+					loading={loading}
+				/>
 			</div>
 		</>
 	);

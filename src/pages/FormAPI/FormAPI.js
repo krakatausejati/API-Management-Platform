@@ -1,21 +1,25 @@
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input, Select, Switch } from "antd";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
 import { getUserId, handleURLName } from "../../helpers/Utils";
+import useAPIDetail from "../../hooks/useAPIDetail";
 import useConnection from "../../hooks/useConnection";
 import useListUser from "../../hooks/useListUser";
 import useSchemaColumn from "../../hooks/useSchemaColumn";
 import useSchemaTable from "../../hooks/useSchemaTable";
 import useSchemaView from "../../hooks/useSchemaView";
 import { APIService } from "../../services/APIService";
-import "./create-api.css";
+import "./form-api.css";
 
 export default function FormAPI() {
 	let { projectName, idGroup, groupName } = useParams();
+	let data = useLocation();
+	const [form] = Form.useForm();
+
 	const history = useHistory();
-	const connections = useConnection();
+	const { connection } = useConnection();
 	const users = useListUser();
 	const apiOwnerId = getUserId();
 	const userData =
@@ -26,6 +30,27 @@ export default function FormAPI() {
 			  }))
 			: [];
 	const [connectionSelected, setConnectionSelected] = useState("");
+
+	const idApi = data.state.idApi ?? null;
+	const apiDetail = useAPIDetail(idApi);
+
+	useEffect(() => {
+		if (!apiDetail) {
+			return null;
+		} else {
+			form.setFieldsValue({
+				idApi,
+				generatedEndpoint: apiDetail.apiEndpoint,
+				table: apiDetail.dbTable,
+				column: apiDetail.selectedColumn,
+				description: apiDetail.description,
+				limit: apiDetail.apiLimit,
+				is_private: apiDetail.private,
+				connection: apiDetail.idConnection,
+				listUser: apiDetail.listUser,
+			});
+		}
+	}, [apiDetail, form, idApi]);
 
 	const connectionConfig =
 		connectionSelected && handleConnectionConfig(connectionSelected);
@@ -38,9 +63,7 @@ export default function FormAPI() {
 	const [tableSelected, setTableSelected] = useState("");
 	const columns = useSchemaColumn(tableSelected, connectionConfig ?? null);
 
-	let data = useLocation();
 	const breadcrumb = data.state.breadcrumb;
-	const [form] = Form.useForm();
 	const [requiredMark, setRequiredMarkType] = useState("");
 
 	const [indeterminate, setIndeterminate] = useState(false);
@@ -102,21 +125,31 @@ export default function FormAPI() {
 			values
 		);
 
-		APIService.createAPI(values)
-			.then(() => {
-				history.goBack();
-			})
-			.catch((error) => {
-				console.log("Something went wrong", error);
-			});
+		if (!idApi) {
+			APIService.createAPI(values)
+				.then(() => {
+					history.goBack();
+				})
+				.catch((error) => {
+					console.log("Something went wrong", error);
+				});
+		} else {
+			APIService.updateAPI(values)
+				.then(() => {
+					history.goBack();
+				})
+				.catch((error) => {
+					console.log("Something went wrong", error);
+				});
+		}
 	};
 
 	function handleConnectionConfig(connectionSelected) {
-		let connection = connections.find(
+		let connectionFind = connection.find(
 			(connectionItem) => connectionItem?.id === connectionSelected
 		);
 
-		return connection;
+		return connectionFind;
 	}
 
 	const handleGeneratedEndpoint = (endpoint) => {
@@ -154,6 +187,13 @@ export default function FormAPI() {
 						>
 							<h2>Database</h2>
 							<Form.Item
+								// label='Connection Name'
+								name='idApi'
+								style={{ display: "none" }}
+							>
+								<Input />
+							</Form.Item>
+							<Form.Item
 								label='Connections'
 								name='connection'
 								rules={[
@@ -169,12 +209,12 @@ export default function FormAPI() {
 										setConnectionSelected(value);
 									}}
 								>
-									{connections.map((connections, index) => (
+									{connection.map((connectionItem) => (
 										<Option
-											value={connections.id}
-											key={connections.id}
+											value={connectionItem.id}
+											key={connectionItem.id}
 										>
-											{connections.connectionName}
+											{connectionItem.connectionName}
 										</Option>
 									))}
 								</Select>

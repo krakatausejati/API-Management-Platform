@@ -45,8 +45,7 @@ export const Statistics = (props) => {
 							<Tooltip />
 						</LineChart>
 					</ResponsiveContainer>
-				</Card>
-				<Card>
+					<Divider />
 					<h1>Most Owner Create API</h1>
 					<ResponsiveContainer width='100%' height={250}>
 						<BarChart
@@ -72,8 +71,10 @@ export const Statistics = (props) => {
 			</div>
 			<div className='sum-request-result'>
 				<Card className='card-result-summary'>
-					<h1>Request Result Summary</h1>
-					<Divider />
+					<div className='result'>
+						<h1>Request Result Summary</h1>
+						<Divider />
+					</div>
 					<div className='sum-success'>
 						<Statistic
 							title='Total of Success'
@@ -81,8 +82,8 @@ export const Statistics = (props) => {
 							valueStyle={{ color: "#3f8600" }}
 						/>
 						<p>requests</p>
+						<Divider />
 					</div>
-					<Divider />
 					<div className='sum-fail'>
 						<Statistic
 							title='Total of Fail'

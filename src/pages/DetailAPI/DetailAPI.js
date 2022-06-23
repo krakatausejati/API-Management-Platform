@@ -8,7 +8,6 @@ import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
 import { getExecutionTime } from "../../helpers/Utils";
 import useAPIDetail from "../../hooks/useAPIDetail";
 import useAPIHistory from "../../hooks/useAPIHistory";
-import useSummaryRequest from "../../hooks/useSummaryRequest";
 import "./detail-api.css";
 
 function DetailAPI() {
@@ -16,10 +15,13 @@ function DetailAPI() {
 	const history = useAPIHistory(idApi);
 	const apiDetail = useAPIDetail(idApi);
 	let data = useLocation();
-	const summaryRequest = useSummaryRequest();
 	const breadcrumb = data.state.breadcrumb;
-	const sumSuccess = history.filter((item) => item.requestStatus === 200).length;
-	const sumFailed  = history.filter((item) => item.requestStatus !== 200).length;
+	const sumSuccess = history.filter(
+		(item) => item.requestStatus === 200
+	).length;
+	const sumFailed = history.filter(
+		(item) => item.requestStatus !== 200
+	).length;
 
 	const dataSource = history.map((historyItem, index) => ({
 		key: `${historyItem.idHistory}`,
@@ -107,7 +109,7 @@ function DetailAPI() {
 								type='primary'
 								onClick={() => {
 									navigator.clipboard.writeText(
-										apiDetail.apiEndpoint
+										`http://localhost:8080${apiDetail.apiEndpoint}`
 									);
 								}}
 							>
@@ -159,7 +161,9 @@ function DetailAPI() {
 							title='Summary Result'
 							value={history.length}
 						/>
-						<p>{sumSuccess} success | {sumFailed} failed</p>
+						<p>
+							{sumSuccess} success | {sumFailed} failed
+						</p>
 					</Card>
 				</div>
 			</div>
