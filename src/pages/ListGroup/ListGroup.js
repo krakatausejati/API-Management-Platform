@@ -14,6 +14,7 @@ import {
 	handleDate,
 	handleURLName,
 	showErrorMessage,
+	getUsername,
 } from "../../helpers/Utils";
 import useGroup from "../../hooks/useGroup";
 import { GroupService } from "../../services/GroupService";
@@ -31,6 +32,7 @@ function ListGroup() {
 	const { group, loading } = useGroup(id, refresh, keyword);
 
 	const userRole = defineRole();
+	const username = getUsername();
 
 	const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -107,6 +109,7 @@ function ListGroup() {
 		render: (text, record) => (
 			<Space>
 				<>
+				{username === record.created_by &&
 					<Button
 						icon={<DeleteOutlined />}
 						onClick={() =>
@@ -114,6 +117,7 @@ function ListGroup() {
 						}
 						danger
 					/>
+				}
 				</>
 			</Space>
 		),

@@ -3,7 +3,7 @@ import { Button, Checkbox, Form, Input, Select, Switch } from "antd";
 import React, { useState, useEffect } from "react";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
-import { getUserId, handleURLName } from "../../helpers/Utils";
+import { getUsername, handleURLName } from "../../helpers/Utils";
 import useAPIDetail from "../../hooks/useAPIDetail";
 import useConnection from "../../hooks/useConnection";
 import useListUser from "../../hooks/useListUser";
@@ -21,7 +21,7 @@ export default function FormAPI() {
 	const history = useHistory();
 	const { connection } = useConnection();
 	const users = useListUser();
-	const apiOwnerId = getUserId();
+	const apiOwner = getUsername();
 	const userData =
 		users.length > 0
 			? users.map((userItem) => ({
@@ -119,7 +119,7 @@ export default function FormAPI() {
 
 	const handleSubmit = (values) => {
 		values.idGroup = idGroup;
-		values.apiOwner = apiOwnerId;
+		values.apiOwner = apiOwner;
 		console.log(
 			"🚀 ~ file: FormAPI.js ~ line 98 ~ handleSubmit ~ values",
 			values

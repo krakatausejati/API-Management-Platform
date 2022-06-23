@@ -5,7 +5,7 @@ import React from "react";
 import { CSVLink } from "react-csv";
 import { Link, useParams, useLocation } from "react-router-dom";
 import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
-import { getExecutionTime } from "../../helpers/Utils";
+import { getExecutionTime, getUserId } from "../../helpers/Utils";
 import useAPIDetail from "../../hooks/useAPIDetail";
 import useAPIHistory from "../../hooks/useAPIHistory";
 import "./detail-api.css";
@@ -15,6 +15,7 @@ function DetailAPI() {
 	const history = useAPIHistory(idApi);
 	const apiDetail = useAPIDetail(idApi);
 	let data = useLocation();
+	const userID = getUserId();
 	const breadcrumb = data.state.breadcrumb;
 	const sumSuccess = history.filter(
 		(item) => item.requestStatus === 200
@@ -98,11 +99,8 @@ function DetailAPI() {
 			<div className='identity-api-wrapper'>
 				<h2>Detail API</h2>
 				<Form layout='vertical'>
-					<Form.Item label='Endpoints' className='endpoints'>
-						<div
-							className='endpoint'
-							style={{ display: "flex", gap: "2em" }}
-						>
+					<div className='identity-api'>
+						<Form.Item label='Endpoints' className='endpoints'>
 							<Input disabled value={apiDetail.apiEndpoint} />
 							<Button
 								icon={<CopyOutlined />}
@@ -115,8 +113,20 @@ function DetailAPI() {
 							>
 								Copy Endpoint
 							</Button>
-						</div>
-					</Form.Item>
+						</Form.Item>
+						<Form.Item label='Access ID'>
+							<Input disabled value={userID} />
+							<Button
+								icon={<CopyOutlined />}
+								type='primary'
+								onClick={() => {
+									navigator.clipboard.writeText(userID);
+								}}
+							>
+								Copy Access ID
+							</Button>
+						</Form.Item>
+					</div>
 					<div className='identity-api'>
 						<Form.Item label='Description'>
 							<Input disabled value={apiDetail.description} />

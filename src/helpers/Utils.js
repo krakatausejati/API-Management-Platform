@@ -60,16 +60,16 @@ export const defineRole = () => {
 	return resource_access["api-auth"].roles;
 };
 
+export const getUserId = () => {
+	const { sub } = parseJwt(localStorage.getItem("access_token"));
+	return sub;
+};
+
 export const getUsername = () => {
 	const { preferred_username } = parseJwt(
 		localStorage.getItem("access_token")
 	);
 	return preferred_username;
-};
-
-export const getUserId = () => {
-	const { sub } = parseJwt(localStorage.getItem("access_token"));
-	return sub;
 };
 
 export const showErrorMessage = (modal, errorMessage) => {

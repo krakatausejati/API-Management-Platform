@@ -11,7 +11,7 @@ const useListUser = () => {
 					let userItem = {};
 					for (let index = 0; index < res.data.length; index++) {
 						userItem = {
-							id: res.data[index].id,
+							id: res.data[index].id,	
 							username: res.data[index].username,
 						};
 						users.push(userItem);

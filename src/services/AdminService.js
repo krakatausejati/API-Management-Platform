@@ -11,12 +11,8 @@ function adminToken() {
 	const body = {
 		client_id: "api-auth",
 		username: "admin",
-		password: "KoTA107",
+		password: "Kota107",
 		grant_type: "password",
-		// client_id: "api-auth",
-		// username: "apimanagement",
-		// password: "Kota107",
-		// grant_type: "password",
 	};
 	return axiosInstance(BASE_URL.KEYCLOAK_AUTH).post("", qs.stringify(body));
 }
