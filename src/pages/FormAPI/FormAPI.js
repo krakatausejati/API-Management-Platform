@@ -6,7 +6,7 @@ import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
 import { getUsername, handleURLName } from "../../helpers/Utils";
 import useAPIDetail from "../../hooks/useAPIDetail";
 import useConnection from "../../hooks/useConnection";
-import useListUser from "../../hooks/useListUser";
+import useListMember from "../../hooks/useListMember";
 import useSchemaColumn from "../../hooks/useSchemaColumn";
 import useSchemaTable from "../../hooks/useSchemaTable";
 import useSchemaView from "../../hooks/useSchemaView";
@@ -14,21 +14,15 @@ import { APIService } from "../../services/APIService";
 import "./form-api.css";
 
 export default function FormAPI() {
-	let { projectName, idGroup, groupName } = useParams();
+	let { idProject, projectName, idGroup, groupName } = useParams();
 	let data = useLocation();
 	const [form] = Form.useForm();
 
 	const history = useHistory();
 	const { connection } = useConnection();
-	const users = useListUser();
+	const members = useListMember(idProject);
 	const apiOwner = getUsername();
-	const userData =
-		users.length > 0
-			? users.map((userItem) => ({
-					label: `${userItem.username}`,
-					value: userItem.id,
-			  }))
-			: [];
+	const userData = members.length > 0 ? members : [];
 	const [connectionSelected, setConnectionSelected] = useState("");
 
 	const idApi = data.state.idApi ?? null;
@@ -145,8 +139,16 @@ export default function FormAPI() {
 	};
 
 	function handleConnectionConfig(connectionSelected) {
+		console.log(
+			"🚀 ~ file: FormAPI.js ~ line 148 ~ handleConnectionConfig ~ connectionSelected",
+			connectionSelected
+		);
 		let connectionFind = connection.find(
 			(connectionItem) => connectionItem?.id === connectionSelected
+		);
+		console.log(
+			"🚀 ~ file: FormAPI.js ~ line 152 ~ handleConnectionConfig ~ connectionFind",
+			connectionFind
 		);
 
 		return connectionFind;
@@ -238,13 +240,19 @@ export default function FormAPI() {
 										}}
 									>
 										{tables.map((tables, index) => (
-											<Option value={tables} key={index}>
-												Table {tables}
+											<Option
+												value={tables.tableName}
+												key={index}
+											>
+												Table {tables.tableName}
 											</Option>
 										))}
 										{views.map((views, index) => (
-											<Option value={views} key={index}>
-												View {views}
+											<Option
+												value={views.viewName}
+												key={index}
+											>
+												View {views.viewName}
 											</Option>
 										))}
 									</Select>
@@ -338,7 +346,10 @@ export default function FormAPI() {
 								/>
 							</Form.Item>
 							{isPrivate && (
-								<Form.Item name='listUser'>
+								<Form.Item
+									label='Member of Project'
+									name='listUser'
+								>
 									<Checkbox.Group
 										options={userData}
 										className='checkbox-group'
