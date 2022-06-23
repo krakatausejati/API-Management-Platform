@@ -6,6 +6,7 @@ import { Statistics } from "../../components/molecules/Statistics";
 import useSummaryRequest from "../../hooks/useSummaryRequest";
 import useLastWeekUsage from "../../hooks/useLastWeekUsage";
 import useMostUsedAPI from "../../hooks/useMostUsedAPI";
+import useMostCreatedApi from "../../hooks/useMostCreatedApi";
 import "./dashboard.css";
 import { getEndpoint } from "../../helpers/Utils";
 
@@ -13,7 +14,9 @@ function Dashboard() {
 	const summaryRequest = useSummaryRequest();
 	const { sumSuccess, sumFailed } = summaryRequest;
 	const lastWeekUsage = useLastWeekUsage();
-	const mostUsedAPI = useMostUsedAPI();
+	console.log(lastWeekUsage);
+	const { mostUsedAPI, loading } = useMostUsedAPI();
+	const mostCreatedApi = useMostCreatedApi();
 	const dataSource = mostUsedAPI.map((apiItem, index) => ({
 		key: `${apiItem.idApi}`,
 		no: `${index + 1}`,
@@ -74,6 +77,7 @@ function Dashboard() {
 				totalFail={sumFailed}
 				data={lastWeekUsage}
 				maxValue={Math.max(lastWeekUsage)}
+				dataCreatedAPI={mostCreatedApi}
 			/>
 			<div className='header-datatable'>
 				<h1>Top 10's API</h1>
@@ -82,6 +86,7 @@ function Dashboard() {
 				<Table
 					dataSource={dataSource}
 					columns={columns}
+					loading={loading}
 					pagination={false}
 				/>
 			</div>

@@ -18,6 +18,13 @@
 	font-size: 84px;
 }
 
+.card-result-summary {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	height: 100%;
+}
+
 .header-datatable {
 	display: flex;
 	justify-content: space-between;
