@@ -5,6 +5,7 @@ import PrivateRoute from "./helpers/PrivateRoute";
 import keycloak from "./Keycloak";
 import DashboardLayout from "./layouts/DashboardLayout";
 import ApiPublic from "./pages/APIPublic/APIPublic";
+import NotFound from "./pages/NotFound/NotFound";
 import Login from "./pages/Auth/Login";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import DetailAPI from "./pages/DetailAPI/DetailAPI";
@@ -65,10 +66,7 @@ function App() {
 							<DashboardLayout children={<DetailAPI />} />
 						</PrivateRoute>
 					</Route>
-					<Route
-						path='/api/:idApi/history'
-						exact
-					>
+					<Route path='/api/:idApi/history' exact>
 						<PrivateRoute>
 							<DashboardLayout children={<DetailAPI />} />
 						</PrivateRoute>
@@ -87,6 +85,9 @@ function App() {
 						<PrivateRoute>
 							<DashboardLayout children={<Connection />} />
 						</PrivateRoute>
+					</Route>
+					<Route path='*'>
+						<NotFound />
 					</Route>
 				</Switch>
 			</ReactKeycloakProvider>
