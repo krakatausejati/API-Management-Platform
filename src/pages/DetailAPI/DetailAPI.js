@@ -100,7 +100,11 @@ function DetailAPI() {
 				<h2>Detail API</h2>
 				<Form layout='vertical'>
 					<div className='identity-api'>
-						<Form.Item label='Endpoints' className='endpoints'>
+						<Form.Item
+							label='Endpoints'
+							className='endpoints'
+							style={{ display: "flex", gap: "2em" }}
+						>
 							<Input disabled value={apiDetail.apiEndpoint} />
 							<Button
 								icon={<CopyOutlined />}
@@ -114,7 +118,10 @@ function DetailAPI() {
 								Copy Endpoint
 							</Button>
 						</Form.Item>
-						<Form.Item label='Access ID'>
+						<Form.Item
+							label='Access ID'
+							style={{ display: "flex", gap: "2em" }}
+						>
 							<Input disabled value={userID} />
 							<Button
 								icon={<CopyOutlined />}

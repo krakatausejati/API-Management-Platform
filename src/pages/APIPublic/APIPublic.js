@@ -16,7 +16,6 @@ function ApiPublic() {
 		description: `${apiItem.description}`,
 		project: `Nama Project`,
 		group: `Nama Group`,
-		detail: "...",
 	}));
 
 	const columns = [
