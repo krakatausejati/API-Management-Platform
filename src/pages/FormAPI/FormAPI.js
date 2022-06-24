@@ -55,7 +55,13 @@ export default function FormAPI() {
 	const [isPrivate, setIsPrivate] = useState("");
 
 	const [tableSelected, setTableSelected] = useState("");
-	const columns = useSchemaColumn(tableSelected, connectionConfig ?? null);
+	const tableSelectParsed = tableSelected && JSON.parse(tableSelected);
+	const columns = useSchemaColumn(
+		(tableSelectParsed?.tableName
+			? tableSelectParsed.tableName
+			: tableSelectParsed.viewName) ?? null,
+		connectionConfig ?? null
+	);
 
 	const breadcrumb = data.state.breadcrumb;
 	const [requiredMark, setRequiredMarkType] = useState("");
@@ -139,16 +145,8 @@ export default function FormAPI() {
 	};
 
 	function handleConnectionConfig(connectionSelected) {
-		console.log(
-			"🚀 ~ file: FormAPI.js ~ line 148 ~ handleConnectionConfig ~ connectionSelected",
-			connectionSelected
-		);
 		let connectionFind = connection.find(
 			(connectionItem) => connectionItem?.id === connectionSelected
-		);
-		console.log(
-			"🚀 ~ file: FormAPI.js ~ line 152 ~ handleConnectionConfig ~ connectionFind",
-			connectionFind
 		);
 
 		return connectionFind;
@@ -241,7 +239,7 @@ export default function FormAPI() {
 									>
 										{tables.map((tables, index) => (
 											<Option
-												value={tables.tableName}
+												value={JSON.stringify(tables)}
 												key={index}
 											>
 												Table {tables.tableName}
@@ -249,13 +247,21 @@ export default function FormAPI() {
 										))}
 										{views.map((views, index) => (
 											<Option
-												value={views.viewName}
-												key={index}
+												value={JSON.stringify(views)}
+												key={index + 100}
 											>
 												View {views.viewName}
 											</Option>
 										))}
 									</Select>
+									<span style={{ color: "#000" }}>
+										(
+										{(tableSelectParsed?.tableDescription
+											? tableSelectParsed.tableDescription
+											: tableSelectParsed.viewDescription) ??
+											null}
+										)
+									</span>
 								</Form.Item>
 							)}
 
