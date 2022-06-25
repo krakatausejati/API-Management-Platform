@@ -3,10 +3,11 @@ import { Button, Checkbox, Form, Input, Select, Switch } from "antd";
 import React, { useState, useEffect } from "react";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
-import { getUsername, handleURLName } from "../../helpers/Utils";
+import { getEndpoint, getUsername, handleURLName } from "../../helpers/Utils";
 import useAPIDetail from "../../hooks/useAPIDetail";
 import useConnection from "../../hooks/useConnection";
 import useListMember from "../../hooks/useListMember";
+import useListUser from "../../hooks/useListUser";
 import useSchemaColumn from "../../hooks/useSchemaColumn";
 import useSchemaTable from "../../hooks/useSchemaTable";
 import useSchemaView from "../../hooks/useSchemaView";
@@ -20,20 +21,32 @@ export default function FormAPI() {
 
 	const history = useHistory();
 	const { connection } = useConnection();
-	const members = useListMember(idProject);
+	// const members = useListMember(idProject);
 	const apiOwner = getUsername();
-	const userData = members.length > 0 ? members : [];
+	// const userData = members.length > 0 ? members : [];
 	const [connectionSelected, setConnectionSelected] = useState("");
+	const users = useListUser() ?? [];
+
+	const usersData =
+		users.length > 0
+			? users.map((userItem) => ({
+					label: `${userItem.username}`,
+					value: userItem.id,
+			  }))
+			: [];
 
 	const idApi = data.state.idApi ?? null;
 	const apiDetail = useAPIDetail(idApi);
 
 	useEffect(() => {
-		if (!apiDetail) {
-			return null;
-		} else {
+		if (apiDetail !== undefined) {
+			console.log(
+				"🚀 ~ file: FormAPI.js ~ line 43 ~ useEffect ~ apiDetail",
+				apiDetail
+			);
 			form.setFieldsValue({
 				idApi,
+				endpoint: getEndpoint(apiDetail.apiEndpoint),
 				generatedEndpoint: apiDetail.apiEndpoint,
 				table: apiDetail.dbTable,
 				column: apiDetail.selectedColumn,
@@ -43,6 +56,8 @@ export default function FormAPI() {
 				connection: apiDetail.idConnection,
 				listUser: apiDetail.listUser,
 			});
+		} else {
+			return null;
 		}
 	}, [apiDetail, form, idApi]);
 
@@ -120,6 +135,7 @@ export default function FormAPI() {
 	const handleSubmit = (values) => {
 		values.idGroup = idGroup;
 		values.apiOwner = apiOwner;
+		values.table = JSON.parse(values.table);
 		console.log(
 			"🚀 ~ file: FormAPI.js ~ line 98 ~ handleSubmit ~ values",
 			values
@@ -220,49 +236,53 @@ export default function FormAPI() {
 								</Select>
 							</Form.Item>
 
-							{connectionSelected && (
-								<Form.Item
-									label='Table / View'
-									name='table'
-									rules={[
-										{
-											required: true,
-											message:
-												"Please choose the table or view!",
-										},
-									]}
-								>
-									<Select
-										onChange={(value) => {
-											setTableSelected(value);
-										}}
+							{(connectionSelected || apiDetail) && (
+								<>
+									<Form.Item
+										label='Table / View'
+										name='table'
+										rules={[
+											{
+												required: true,
+												message:
+													"Please choose the table or view!",
+											},
+										]}
 									>
-										{tables.map((tables, index) => (
-											<Option
-												value={JSON.stringify(tables)}
-												key={index}
-											>
-												Table {tables.tableName}
-											</Option>
-										))}
-										{views.map((views, index) => (
-											<Option
-												value={JSON.stringify(views)}
-												key={index + 100}
-											>
-												View {views.viewName}
-											</Option>
-										))}
-									</Select>
+										<Select
+											onChange={(value) => {
+												setTableSelected(value);
+											}}
+										>
+											{tables.map((tables, index) => (
+												<Option
+													value={JSON.stringify(
+														tables
+													)}
+													key={index}
+												>
+													Table {tables.tableName}
+												</Option>
+											))}
+											{views.map((views, index) => (
+												<Option
+													value={JSON.stringify(
+														views
+													)}
+													key={index + 100}
+												>
+													View {views.viewName}
+												</Option>
+											))}
+										</Select>
+									</Form.Item>
 									<span style={{ color: "#000" }}>
-										(
 										{(tableSelectParsed?.tableDescription
-											? tableSelectParsed.tableDescription
-											: tableSelectParsed.viewDescription) ??
+											? `(${tableSelectParsed.tableDescription})`
+											: `(${tableSelectParsed.viewDescription})`) ??
 											null}
-										)
 									</span>
-								</Form.Item>
+								</>
 							)}
 
 							{tableSelected && (
@@ -342,7 +362,7 @@ export default function FormAPI() {
 							<Form.Item
 								label='Private'
 								name='is_private'
-								initialValue={false}
+								initialValue={isPrivate ?? false}
 							>
 								<Switch
 									defaultChecked={false}
@@ -357,7 +377,7 @@ export default function FormAPI() {
 									name='listUser'
 								>
 									<Checkbox.Group
-										options={userData}
+										options={usersData}
 										className='checkbox-group'
 									/>
 								</Form.Item>

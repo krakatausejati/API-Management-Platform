@@ -1,6 +1,6 @@
 import axiosInstance from "../helpers/Axios";
 import { BASE_URL } from "../helpers/Constant";
-import { defineRole, parseJwt } from "../helpers/Utils";
+import { defineRole, parseJwt, getUsername } from "../helpers/Utils";
 
 export const GroupService = {
 	getAllGroup,
@@ -9,8 +9,10 @@ export const GroupService = {
 };
 
 function getAllGroup(idProject, keyword) {
+	const user = getUsername();
 	return axiosInstance(BASE_URL.PROJECT).get(`/${idProject}/groups`, {
 		params: {
+			user,
 			keyword,
 		},
 	});

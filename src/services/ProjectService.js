@@ -9,7 +9,8 @@ export const ProjectService = {
 	getListMemberProject,
 };
 
-function getAllProject(keyword, user) {
+function getAllProject(keyword) {
+	const user = getUsername();
 	return axiosInstance(BASE_URL.PROJECT).get("", {
 		params: {
 			keyword,

@@ -7,7 +7,8 @@ export const handleURLName = (url) => {
 };
 
 export const getEndpoint = (url) => {
-	let urlEndpoint = url.split("/");
+	let urlEndpoint = "";
+	if (url !== undefined) urlEndpoint = url.split("/");
 	return urlEndpoint[urlEndpoint.length - 1];
 };
 

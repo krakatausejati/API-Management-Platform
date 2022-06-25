@@ -23,7 +23,7 @@ function Project() {
 	const [refresh, setRefresh] = useState(new Date().getTime());
 	const [keyword, setKeyword] = useState("");
 	const username = getUsername();
-	const { project, loading } = useProject(refresh, keyword, username);
+	const { project, loading } = useProject(refresh, keyword);
 	const [form] = Form.useForm();
 	const { confirm } = Modal;
 	const [isModalVisible, setIsModalVisible] = useState(false);

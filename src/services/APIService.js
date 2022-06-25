@@ -48,7 +48,7 @@ function createAPI(values) {
 
 	let dataAPI = {
 		apiEndpoint: generatedEndpoint,
-		dbTable: table,
+		dbTable: table.tableName,
 		selectedColumn: columns,
 		description,
 		apiLimit: limit,

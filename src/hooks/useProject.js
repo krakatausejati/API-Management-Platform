@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { ProjectService } from "../services/ProjectService";
 
-const useProject = (refresh, keyword, user) => {
+const useProject = (refresh, keyword) => {
 	const [project, setProject] = useState([]);
 	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
 		setLoading(true);
-		ProjectService.getAllProject(keyword, user)
+		ProjectService.getAllProject(keyword)
 			.then((response) => {
 				setProject(response.data);
 			})
@@ -15,7 +15,7 @@ const useProject = (refresh, keyword, user) => {
 				console.log("Something went wrong", error);
 			})
 			.finally(() => setLoading(false));
-	}, [refresh, keyword, user]);
+	}, [refresh, keyword]);
 
 	return { project, loading };
 };
