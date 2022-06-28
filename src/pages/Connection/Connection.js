@@ -97,10 +97,6 @@ function Connection() {
 	};
 
 	const handleTest = (values) => {
-		console.log(
-			"🚀 ~ file: Connection.js ~ line 148 ~ handleTest ~ values",
-			values
-		);
 		ConnectionService.testConnection(values)
 			.then((res) => {
 				const [successMessage] = res.data.messages;

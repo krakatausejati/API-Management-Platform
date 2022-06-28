@@ -130,10 +130,6 @@ function Project() {
 	};
 
 	const handleOk = (values) => {
-		console.log(
-			"🚀 ~ file: Project.js ~ line 128 ~ handleOk ~ values",
-			values
-		);
 		ProjectService.createProject(values)
 			.then(() => {
 				setRefresh(new Date().getTime());

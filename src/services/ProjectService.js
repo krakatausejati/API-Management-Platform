@@ -33,10 +33,7 @@ function createProject({ projectName, description, listMember }) {
 		description,
 		role,
 	};
-	console.log(
-		"🚀 ~ file: ProjectService.js ~ line 24 ~ createProject ~ dataProject",
-		dataProject
-	);
+
 	return axiosInstance(BASE_URL.PROJECT).post("", dataProject, {
 		headers: {
 			"Content-Type": "application/json",

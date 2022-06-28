@@ -81,17 +81,13 @@ function updateAPI(values) {
 		idGroup,
 		apiOwner,
 	} = values;
-	console.log(
-		"🚀 ~ file: APIService.js ~ line 83 ~ updateAPI ~ values",
-		values
-	);
 
 	const columns = column.join();
 
 	let dataAPI = {
 		idApi,
 		apiEndpoint: generatedEndpoint,
-		dbTable: table,
+		dbTable: table.tableName ? table.tableName : table,
 		selectedColumn: columns,
 		description,
 		apiLimit: limit,

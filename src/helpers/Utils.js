@@ -1,4 +1,5 @@
 import moment from "moment";
+import { CloseCircleOutlined } from "@ant-design/icons";
 
 export const handleURLName = (url) => {
 	let res = url.toLowerCase();
@@ -73,7 +74,11 @@ export const getUsername = () => {
 	return preferred_username;
 };
 
-export const showErrorMessage = (modal, icon = null, errorMessage) => {
+export const showErrorMessage = (
+	modal,
+	icon = <CloseCircleOutlined />,
+	errorMessage
+) => {
 	modal.error({
 		title: "Error",
 		icon: icon,
@@ -86,10 +91,9 @@ export const showErrorMessage = (modal, icon = null, errorMessage) => {
 	});
 };
 
-export const showSuccessMessage = (modal, icon = null, successMessage) => {
+export const showSuccessMessage = (modal, successMessage) => {
 	modal.success({
 		title: "Success",
-		icon: icon,
 		content: `${successMessage}`,
 		okText: "Ok",
 		okType: "secondary",
@@ -97,4 +101,13 @@ export const showSuccessMessage = (modal, icon = null, successMessage) => {
 
 		onOk() {},
 	});
+};
+
+export const isJsonString = (str) => {
+	try {
+		JSON.parse(str);
+	} catch (e) {
+		return false;
+	}
+	return true;
 };

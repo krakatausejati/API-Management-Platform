@@ -1,12 +1,16 @@
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input, Select, Switch } from "antd";
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { Breadcrumbs } from "../../components/molecules/Breadcrumbs";
-import { getEndpoint, getUsername, handleURLName } from "../../helpers/Utils";
+import {
+	getEndpoint,
+	getUsername,
+	handleURLName,
+	isJsonString,
+} from "../../helpers/Utils";
 import useAPIDetail from "../../hooks/useAPIDetail";
 import useConnection from "../../hooks/useConnection";
-import useListMember from "../../hooks/useListMember";
 import useListUser from "../../hooks/useListUser";
 import useSchemaColumn from "../../hooks/useSchemaColumn";
 import useSchemaTable from "../../hooks/useSchemaTable";
@@ -15,7 +19,7 @@ import { APIService } from "../../services/APIService";
 import "./form-api.css";
 
 export default function FormAPI() {
-	let { idProject, projectName, idGroup, groupName } = useParams();
+	let { projectName, idGroup, groupName } = useParams();
 	let data = useLocation();
 	const [form] = Form.useForm();
 
@@ -40,16 +44,14 @@ export default function FormAPI() {
 
 	useEffect(() => {
 		if (apiDetail !== undefined) {
-			console.log(
-				"🚀 ~ file: FormAPI.js ~ line 43 ~ useEffect ~ apiDetail",
-				apiDetail
-			);
 			form.setFieldsValue({
 				idApi,
 				endpoint: getEndpoint(apiDetail.apiEndpoint),
 				generatedEndpoint: apiDetail.apiEndpoint,
 				table: apiDetail.dbTable,
-				column: apiDetail.selectedColumn,
+				column: apiDetail.selectedColumn
+					? apiDetail.selectedColumn.split(",")
+					: null,
 				description: apiDetail.description,
 				limit: apiDetail.apiLimit,
 				is_private: apiDetail.private,
@@ -135,12 +137,9 @@ export default function FormAPI() {
 	const handleSubmit = (values) => {
 		values.idGroup = idGroup;
 		values.apiOwner = apiOwner;
-		values.table = JSON.parse(values.table);
-		console.log(
-			"🚀 ~ file: FormAPI.js ~ line 98 ~ handleSubmit ~ values",
-			values
-		);
-
+		values.table = isJsonString(values.table)
+			? JSON.parse(values.table)
+			: values.table;
 		if (!idApi) {
 			APIService.createAPI(values)
 				.then(() => {
@@ -277,7 +276,7 @@ export default function FormAPI() {
 										</Select>
 									</Form.Item>
 									<span style={{ color: "#000" }}>
-										{(tableSelectParsed?.tableDescription
+										{(tableSelectParsed.tableDescription
 											? `(${tableSelectParsed.tableDescription})`
 											: `(${tableSelectParsed.viewDescription})`) ??
 											null}
@@ -285,7 +284,7 @@ export default function FormAPI() {
 								</>
 							)}
 
-							{tableSelected && (
+							{(tableSelected || apiDetail) && (
 								<Form.Item
 									label='Column'
 									name='column'
@@ -362,7 +361,7 @@ export default function FormAPI() {
 							<Form.Item
 								label='Private'
 								name='is_private'
-								initialValue={isPrivate ?? false}
+								initialValue={apiDetail.private ?? false}
 							>
 								<Switch
 									defaultChecked={false}
@@ -371,7 +370,7 @@ export default function FormAPI() {
 									}}
 								/>
 							</Form.Item>
-							{isPrivate && (
+							{(isPrivate || apiDetail) && (
 								<Form.Item
 									label='Member of Project'
 									name='listUser'
