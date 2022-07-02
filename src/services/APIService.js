@@ -106,8 +106,9 @@ function updateAPI(values) {
 	});
 }
 
-function deleteAPI(idProject, idGroup) {
-	return axiosInstance(BASE_URL.API).delete(`/${idProject}`);
+function deleteAPI(idApi) {
+	console.log(idApi);
+	return axiosInstance(BASE_URL.API).delete(`/${idApi}`);
 }
 
 function getAllAPI(idProject, idGroup, keyword) {

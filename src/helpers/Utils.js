@@ -82,7 +82,6 @@ export const showErrorMessage = (
 	modal.error({
 		title: "Error",
 		icon: icon,
-		content: `${errorMessage}`,
 		okText: "Ok",
 		okType: "secondary",
 		cancelText: "No",

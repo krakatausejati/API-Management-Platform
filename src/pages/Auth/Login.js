@@ -44,13 +44,11 @@ function Login() {
 				history.push("/dashboard");
 			})
 			.catch((error) => {
-				if (error.response) {
-					if (error.response.status === 401) {
-						Modal.error({
-							title: "Login Failed",
-							content: `${error.response.statusText}: Invalid email or password mismatch!`,
-						});
-					}
+				if (error) {
+					Modal.error({
+						title: "Login Failed",
+						content: `${error.error_description}!`,
+					});
 				} else {
 					Modal.error({
 						title: "Login Failed",

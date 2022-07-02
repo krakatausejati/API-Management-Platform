@@ -73,11 +73,6 @@ function ApiPublic() {
 			<Breadcrumbs breadcrumb={["API Public"]} />
 			<div className='header-datatable'>
 				<h1>APIs Public</h1>
-				<div className='right'>
-					<div className='search-field'>
-						<Search placeholder='search API' onSearch={onSearch} />
-					</div>
-				</div>
 			</div>
 			<div className='datatable datatable-api'>
 				<Table
