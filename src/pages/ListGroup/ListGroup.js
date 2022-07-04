@@ -109,15 +109,15 @@ function ListGroup() {
 		render: (text, record) => (
 			<Space>
 				<>
-				{username === record.created_by &&
-					<Button
-						icon={<DeleteOutlined />}
-						onClick={() =>
-							showDeleteConfirm(record.key, record.sum_api)
-						}
-						danger
-					/>
-				}
+					{username === record.created_by && (
+						<Button
+							icon={<DeleteOutlined />}
+							onClick={() =>
+								showDeleteConfirm(record.key, record.sum_api)
+							}
+							danger
+						/>
+					)}
 				</>
 			</Space>
 		),
@@ -131,7 +131,7 @@ function ListGroup() {
 
 	const handleOk = (values) => {
 		GroupService.createGroup(values, id)
-			.then((response) => {
+			.then(() => {
 				setRefresh(new Date().getTime());
 				setIsModalVisible(false);
 			})

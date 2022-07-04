@@ -107,7 +107,6 @@ function updateAPI(values) {
 }
 
 function deleteAPI(idApi) {
-	console.log(idApi);
 	return axiosInstance(BASE_URL.API).delete(`/${idApi}`);
 }
 

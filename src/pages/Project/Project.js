@@ -18,6 +18,7 @@ import {
 import useListUser from "../../hooks/useListUser";
 import useProject from "../../hooks/useProject";
 import { ProjectService } from "../../services/ProjectService";
+import { GroupService } from "../../services/GroupService";
 
 function Project() {
 	const [refresh, setRefresh] = useState(new Date().getTime());
@@ -25,8 +26,12 @@ function Project() {
 	const username = getUsername();
 	const { project, loading } = useProject(refresh, keyword);
 	const [form] = Form.useForm();
+	const [formGroup] = Form.useForm();
 	const { confirm } = Modal;
 	const [isModalVisible, setIsModalVisible] = useState(false);
+	const [isModalVisibleGroup, setIsModalVisibleGroup] = useState(false);
+	const [idProject, setIdProject] = useState("");
+
 	const dataSource = project.map((projectItem, index) => ({
 		key: `${projectItem.idProject}`,
 		no: `${index + 1}`,
@@ -131,9 +136,28 @@ function Project() {
 
 	const handleOk = (values) => {
 		ProjectService.createProject(values)
-			.then(() => {
+			.then((res) => {
 				setRefresh(new Date().getTime());
 				setIsModalVisible(false);
+				setIdProject(res.data.payload.idProject);
+				setIsModalVisibleGroup(true);
+			})
+			.catch((error) => {
+				const [errorMessage] = error.messages;
+
+				showErrorMessage(
+					Modal,
+					<ExclamationCircleOutlined />,
+					errorMessage
+				);
+			});
+	};
+
+	const handleOkGroup = (values) => {
+		GroupService.createGroup(values, idProject)
+			.then(() => {
+				setRefresh(new Date().getTime());
+				setIsModalVisibleGroup(false);
 			})
 			.catch((error) => {
 				const [errorMessage] = error.messages;
@@ -184,8 +208,8 @@ function Project() {
 				onOk={() => {
 					form.validateFields()
 						.then((values) => {
-							form.resetFields();
 							handleOk(values);
+							form.resetFields();
 						})
 						.catch((info) => {
 							console.log("Validate Failed:", info);
@@ -254,8 +278,51 @@ function Project() {
 				</Form>
 			</Modal>
 
-			{/* Delete Modal */}
-			<Modal></Modal>
+			<Modal
+				title='Add Group'
+				visible={isModalVisibleGroup}
+				onOk={() => {
+					formGroup
+						.validateFields()
+						.then((values) => {
+							handleOkGroup(values);
+							formGroup.resetFields();
+						})
+						.catch((info) => {
+							console.log("Validate Failed:", info);
+						});
+				}}
+				okText='Create Group'
+			>
+				<Form layout='vertical' form={formGroup}>
+					<Form.Item
+						label='Group Name'
+						name='groupName'
+						style={{ width: "100%" }}
+						rules={[
+							{
+								required: true,
+								message: "Please input the group name!",
+							},
+						]}
+					>
+						<Input />
+					</Form.Item>
+					<Form.Item
+						label='Description'
+						name='description'
+						style={{ width: "100%" }}
+						rules={[
+							{
+								required: true,
+								message: "Please input the description!",
+							},
+						]}
+					>
+						<Input />
+					</Form.Item>
+				</Form>
+			</Modal>
 			{/* Modal */}
 
 			<Breadcrumbs breadcrumb={["Project"]} />
